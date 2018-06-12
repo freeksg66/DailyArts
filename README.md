@@ -1,0 +1,2 @@
+# DailyArts
+仿IOS端的一款叫DailyArts的APP，目的是在Android端实现尽量多的功能和近似的效果。
