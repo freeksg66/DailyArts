@@ -20,10 +20,22 @@ public class SharedPreferencesUtils {
     public static boolean saveCollectImage(Context context, ImageModel model) {
         List<ImageModel> modelList = getCollectImages(context);
         if(modelList == null) return false;
-        else modelList.add(model);
+        for (ImageModel item:modelList) {
+            if (item.getId().equals(model.getId())) {
+                return true;
+            }
+        }
+        modelList.add(model);
         SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
         Gson gson = new Gson();
         return preferences.edit().putString(Constant.SHAREPREFRENCE_COLLECTION_IMAGES, gson.toJson(modelList)).commit();
+    }
+
+    public static boolean saveCollectImages(Context context, List<ImageModel> list) {
+        if(list == null || list.size() < 0) return false;
+        SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        return preferences.edit().putString(Constant.SHAREPREFRENCE_COLLECTION_IMAGES, gson.toJson(list)).commit();
     }
 
     public static List<ImageModel> getCollectImages(Context context){
@@ -40,7 +52,12 @@ public class SharedPreferencesUtils {
 
     public static boolean checkCollect(Context context, ImageModel imageModel){
         List<ImageModel> list = getCollectImages(context);
-        return list.contains(imageModel);
+        for (ImageModel item:list) {
+            if (item.getId().equals(imageModel.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean deleteCollectImage(Context context, ImageModel imageModel){
@@ -49,7 +66,7 @@ public class SharedPreferencesUtils {
         for (ImageModel item:list) {
             if(item.getId().equals(imageModel.getId())){
                 list.remove(item);
-                return true;
+                return saveCollectImages(context, list);
             }
         }
         return false;

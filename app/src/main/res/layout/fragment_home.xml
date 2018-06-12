@@ -11,7 +11,7 @@
         android:layout_height="@dimen/action_bar_height"/>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/gvp_home_gallery"
+        android:id="@+id/vp_home_gallery"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:paddingLeft="60dp"

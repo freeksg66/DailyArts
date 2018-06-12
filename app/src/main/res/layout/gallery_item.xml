@@ -34,4 +34,12 @@
             android:gravity="center"/>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_my_collection"
+        android:layout_width="60dp"
+        android:layout_height="72dp"
+        android:src="@drawable/collection_true"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+
 </LinearLayout>

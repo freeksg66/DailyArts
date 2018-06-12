@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.github.dailyarts.R;
@@ -21,6 +22,9 @@ import com.github.dailyarts.ui.fragment.WatchImageFragment;
 public class WatchImageActivity extends BaseActivity {
     private WatchImageFragment mWatchImageFragment;
 
+    @Autowired
+    String bigImageUrl;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_watch_image;
@@ -34,7 +38,9 @@ public class WatchImageActivity extends BaseActivity {
     @Override
     protected void onInitView() {
         RouterManager.getInstance().inject(this);
-        mWatchImageFragment = getStoredFragment(WatchImageFragment.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("BigImageUrl", bigImageUrl);
+        mWatchImageFragment = getStoredFragment(WatchImageFragment.class, bundle);
         addFragment(mWatchImageFragment);
     }
 }

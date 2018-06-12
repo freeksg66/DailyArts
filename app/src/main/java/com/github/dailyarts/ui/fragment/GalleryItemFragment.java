@@ -38,6 +38,7 @@ import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.activity.ImageDetailsActivity;
 import com.github.dailyarts.utils.ImageLoadUtils;
+import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
 
 import rx.Scheduler;
@@ -52,12 +53,13 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     private static String TAG = "GalleryItemFragment";
 
     private LinearLayout llItemTime;
-    private ImageView ivGalleryImage;
+    private ImageView ivGalleryImage, ivCollection;
     private TextView tvMonth, tvDay;
 
     private DateModel mDateModel;
 
     private boolean mLoadSuccess = false;
+    private boolean hasCollected = true;
 
     private ImageModel mImageModel;
 
@@ -76,6 +78,8 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         ivGalleryImage = rootView.findViewById(R.id.iv_gallery_item_image);
         tvMonth = rootView.findViewById(R.id.tv_gallery_item_month);
         tvDay = rootView.findViewById(R.id.tv_gallery_item_day);
+        ivCollection = rootView.findViewById(R.id.iv_my_collection);
+        ivCollection.setOnClickListener(v -> collectImage());
 
         //获得ViewTreeObserver
         ViewTreeObserver observer=ivGalleryImage.getViewTreeObserver();
@@ -104,21 +108,26 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
             }else {
                 mPresenter.getImage(mDateModel.toInt());
             }
-            ivGalleryImage.setOnClickListener(v -> {
-                if(mLoadSuccess){
-                    // 进入图片详情页
-                    RouterManager
-                            .getInstance()
-                            .startActivity(
-                                    RouterConstant.ImageDetailsActivityConst.PATH,
-                                    RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
-                                    mImageModel);
-                }else {
-                    ToastUtils.show(getContext(), "努力加载中...");
-                }
-            });
+            ivGalleryImage.setOnClickListener(v -> toImageDetail());
             tvMonth.setText(String.valueOf(mDateModel.month) + "月");
             tvDay.setText(String.valueOf(mDateModel.day) + "日");
+        }
+        else if(mImageModel != null){
+            llItemTime.setVisibility(View.GONE);
+            ivCollection.setVisibility(View.VISIBLE);
+            mLoadSuccess = false;
+            Glide.with(getContext())
+                    .load(mImageModel.getBigImg())
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            mLoadSuccess = true;
+                            ivGalleryImage.setImageBitmap(resource);
+                        }
+                    });
+            ivGalleryImage.setOnClickListener(v -> toImageDetail());
         }
         else {
             ivGalleryImage.setImageResource(R.drawable.image_placeholder);
@@ -129,6 +138,49 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     public void setData(DateModel dateModel){
         mDateModel = dateModel;
+    }
+
+    public void setData(ImageModel imageModel){
+        mImageModel = imageModel;
+    }
+
+    private void toImageDetail(){
+        if(mLoadSuccess){
+            // 进入图片详情页
+            RouterManager
+                    .getInstance()
+                    .startActivity(
+                            RouterConstant.ImageDetailsActivityConst.PATH,
+                            RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
+                            mImageModel);
+        }else {
+            ToastUtils.show(getContext(), "努力加载中...");
+        }
+    }
+
+    private void collectImage(){
+        if(mImageModel == null) return;
+        if(hasCollected){
+            if(SharedPreferencesUtils.deleteCollectImage(getContext(), mImageModel)) {
+                ToastUtils.ShowCenter(getContext(), "取消收藏成功√");
+                ivCollection.setImageResource(R.drawable.collection_false);
+                hasCollected = false;
+            }
+            else {
+                ToastUtils.ShowCenter(getContext(), "取消收藏失败×");
+                ivCollection.setImageResource(R.drawable.collection_true);
+            }
+        }else {
+            if(SharedPreferencesUtils.saveCollectImage(getContext(), mImageModel)) {
+                ToastUtils.ShowCenter(getContext(), "收藏成功√");
+                ivCollection.setImageResource(R.drawable.collection_true);
+                hasCollected = true;
+            }
+            else {
+                ToastUtils.ShowCenter(getContext(), "收藏失败×");
+                ivCollection.setImageResource(R.drawable.collection_false);
+            }
+        }
     }
 
     @Override

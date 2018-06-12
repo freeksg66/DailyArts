@@ -205,7 +205,7 @@ public class MainFragment extends BaseFragment{
         appActionBar = contentView.findViewById(R.id.mine_toolbar);
         ivHomeUserSetting = appActionBar.findViewById(R.id.iv_user_setting);
         ivHomeFindArts = appActionBar.findViewById(R.id.iv_find_arts);
-        mGalleryViewPager = contentView.findViewById(R.id.gvp_home_gallery);
+        mGalleryViewPager = contentView.findViewById(R.id.vp_home_gallery);
 
         ivHomeUserSetting.setOnClickListener(new View.OnClickListener() {
             @Override

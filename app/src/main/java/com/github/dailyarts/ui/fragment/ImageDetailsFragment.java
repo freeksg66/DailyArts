@@ -82,6 +82,7 @@ public class ImageDetailsFragment extends BaseFragment {
         tvImageIntro = rootView.findViewById(R.id.tv_details_image_introduction);
         ivZoom = rootView.findViewById(R.id.iv_details_zoom);
         ivComment = rootView.findViewById(R.id.iv_details_comment);
+        ivCollection = rootView.findViewById(R.id.iv_detail_collection);
         ivDownload = rootView.findViewById(R.id.iv_details_download);
         ivShare = rootView.findViewById(R.id.iv_details_share);
         rlCover = rootView.findViewById(R.id.rl_details_cover);
@@ -121,30 +122,34 @@ public class ImageDetailsFragment extends BaseFragment {
 
         isZoomEnable = false;
         ssivBigImage.setZoomEnabled(false);
-        ssivBigImage.setOnClickListener(v -> {
-                Log.e(TAG, "SSIV click! isZoomEnable="+String.valueOf(isZoomEnable));
-                isZoomEnable = !isZoomEnable;
-                ssivBigImage.setZoomEnabled(isZoomEnable);
-                animZoomEnable(isZoomEnable);
-            });
 
         isFirstPage = true;
-        rlCover.setOnClickListener(v -> {
-                isFirstPage = !isFirstPage;
-                animJumpPage(isFirstPage);
-        });
+
+        if(hasCollected){
+            ivCollection.setImageResource(R.drawable.collection_true);
+        }else {
+            ivCollection.setImageResource(R.drawable.collection_false);
+        }
 
         initListener();
     }
 
     private void initListener(){
-        ivZoom.setOnClickListener(v -> {
+        ssivBigImage.setOnClickListener(v -> {
+            Log.e(TAG, "SSIV click! isZoomEnable="+String.valueOf(isZoomEnable));
+            isZoomEnable = !isZoomEnable;
+            ssivBigImage.setZoomEnabled(isZoomEnable);
+            animZoomEnable(isZoomEnable);
+        });
+        rlCover.setOnClickListener(v -> {
+            isFirstPage = !isFirstPage;
+            animJumpPage(isFirstPage);
+        });
+        ivZoom.setOnClickListener(v ->
             RouterManager
                     .getInstance()
-                    .createUri(RouterConstant.WatchImageActivityConst.PATH)
-                    .addParams(RouterConstant.WatchImageActivityConst.BIG_IMAGE_URL, mImageModel.getBigImg())
-                    .buildByUri();
-        });
+                    .startActivity(RouterConstant.WatchImageActivityConst.PATH, RouterConstant.WatchImageActivityConst.BIG_IMAGE_URL, mImageModel.getBigImg())
+        );
         ivComment.setOnClickListener(v -> ToastUtils.show(getContext(), "评论功能暂未开放！"));
         ivCollection.setOnClickListener(v -> collectImage());
         ivDownload.setOnClickListener(v -> saveImage());
@@ -153,16 +158,6 @@ public class ImageDetailsFragment extends BaseFragment {
     private void collectImage(){
         if(mImageModel == null) return;
         if(hasCollected){
-            if(SharedPreferencesUtils.saveCollectImage(getContext(), mImageModel)) {
-                ToastUtils.ShowCenter(getContext(), "收藏成功√");
-                ivCollection.setImageResource(R.drawable.collection_true);
-                hasCollected = true;
-            }
-            else {
-                ToastUtils.ShowCenter(getContext(), "收藏失败×");
-                ivCollection.setImageResource(R.drawable.collection_false);
-            }
-        }else {
             if(SharedPreferencesUtils.deleteCollectImage(getContext(), mImageModel)) {
                 ToastUtils.ShowCenter(getContext(), "取消收藏成功√");
                 ivCollection.setImageResource(R.drawable.collection_false);
@@ -171,6 +166,16 @@ public class ImageDetailsFragment extends BaseFragment {
             else {
                 ToastUtils.ShowCenter(getContext(), "取消收藏失败×");
                 ivCollection.setImageResource(R.drawable.collection_true);
+            }
+        }else {
+            if(SharedPreferencesUtils.saveCollectImage(getContext(), mImageModel)) {
+                ToastUtils.ShowCenter(getContext(), "收藏成功√");
+                ivCollection.setImageResource(R.drawable.collection_true);
+                hasCollected = true;
+            }
+            else {
+                ToastUtils.ShowCenter(getContext(), "收藏失败×");
+                ivCollection.setImageResource(R.drawable.collection_false);
             }
         }
     }

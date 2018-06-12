@@ -95,6 +95,13 @@ public class RouterManager {
     }
 
     /**
+     * 带Parcelable参数
+     */
+    public void startActivity(String uri, String tag, String value){
+        ARouter.getInstance().build(uri).withString(tag, value).navigation();
+    }
+
+    /**
      * 无参数
      * /test/testactivity
      *

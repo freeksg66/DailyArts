@@ -49,6 +49,6 @@ public interface RouterConstant {
 
     interface WatchImageActivityConst {
         String PATH = "/main/WatchImageActivity";
-        String BIG_IMAGE_URL = "BigImageUrl";
+        String BIG_IMAGE_URL = "bigImageUrl";
     }
 }
