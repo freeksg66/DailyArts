@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorHomeBg">
+    <com.github.dailyarts.ui.widget.AppActionBar
+        android:id="@+id/mine_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/about"/>
+
+</LinearLayout>

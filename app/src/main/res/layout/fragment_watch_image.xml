@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--ActionBar-->
+    <com.github.dailyarts.ui.widget.AppActionBar
+        android:id="@+id/mine_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"/>
+
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        android:id="@+id/ssiv_watch_big_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/image_placeholder"
+        android:scaleType="centerCrop"/>
+
+</LinearLayout>

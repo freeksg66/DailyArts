@@ -1,0 +1,155 @@
+package com.github.dailyarts.ui.fragment;
+
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.github.dailyarts.R;
+import com.github.dailyarts.entity.DateModel;
+import com.github.dailyarts.entity.GalleryModel;
+import com.github.dailyarts.entity.ImageMessageModel;
+import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.net.DailyArtsAPI;
+import com.github.dailyarts.net.NetError;
+import com.github.dailyarts.net.NetSubscriber;
+import com.github.dailyarts.presenter.GalleryImagePresenter;
+import com.github.dailyarts.presenter.GalleryImagesContract;
+import com.github.dailyarts.repository.GalleryImagesRepository;
+import com.github.dailyarts.router.RouterConstant;
+import com.github.dailyarts.router.RouterManager;
+import com.github.dailyarts.ui.activity.ImageDetailsActivity;
+import com.github.dailyarts.utils.ImageLoadUtils;
+import com.github.dailyarts.utils.ToastUtils;
+
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * Created by legao005426 on 2018/5/7.
+ */
+
+public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView{
+    private static String TAG = "GalleryItemFragment";
+
+    private LinearLayout llItemTime;
+    private ImageView ivGalleryImage;
+    private TextView tvMonth, tvDay;
+
+    private DateModel mDateModel;
+
+    private boolean mLoadSuccess = false;
+
+    private ImageModel mImageModel;
+
+    private GalleryImagesContract.IPresenter mPresenter;
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.gallery_item;
+    }
+
+    @Override
+    protected void onInitView() {
+        mPresenter = new GalleryImagePresenter(this, new GalleryImagesRepository(getHoldingActivity()));
+
+        llItemTime = rootView.findViewById(R.id.ll_item_time);
+        ivGalleryImage = rootView.findViewById(R.id.iv_gallery_item_image);
+        tvMonth = rootView.findViewById(R.id.tv_gallery_item_month);
+        tvDay = rootView.findViewById(R.id.tv_gallery_item_day);
+
+        //获得ViewTreeObserver
+        ViewTreeObserver observer=ivGalleryImage.getViewTreeObserver();
+        //注册观察者，监听变化
+        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                if(observer.isAlive()){
+                    observer.removeOnPreDrawListener(this);
+                }
+                //获得宽高
+                int viewWidth = ivGalleryImage.getMeasuredWidth();
+                int viewHeight = viewWidth * 16 / 9;
+                ViewGroup.LayoutParams params = ivGalleryImage.getLayoutParams();
+                params.width = viewWidth;
+                params.height = viewHeight;
+                ivGalleryImage.setLayoutParams(params);
+                ivGalleryImage.requestLayout();
+                return true;
+            }
+        });
+
+        if(null != mDateModel) {
+            if(mDateModel.offset == 1){
+                ivGalleryImage.setImageResource(R.drawable.tomorrow);
+            }else {
+                mPresenter.getImage(mDateModel.toInt());
+            }
+            ivGalleryImage.setOnClickListener(v -> {
+                if(mLoadSuccess){
+                    // 进入图片详情页
+                    RouterManager
+                            .getInstance()
+                            .startActivity(
+                                    RouterConstant.ImageDetailsActivityConst.PATH,
+                                    RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
+                                    mImageModel);
+                }else {
+                    ToastUtils.show(getContext(), "努力加载中...");
+                }
+            });
+            tvMonth.setText(String.valueOf(mDateModel.month) + "月");
+            tvDay.setText(String.valueOf(mDateModel.day) + "日");
+        }
+        else {
+            ivGalleryImage.setImageResource(R.drawable.image_placeholder);
+            tvMonth.setText("未知月");
+            tvDay.setText("未知日");
+        }
+    }
+
+    public void setData(DateModel dateModel){
+        mDateModel = dateModel;
+    }
+
+    @Override
+    public void loadPicture(ImageModel imageModel) {
+        mImageModel = imageModel;
+        mLoadSuccess = false;
+        Glide.with(getContext())
+                .load(imageModel.getBigImg())
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        mLoadSuccess = true;
+                        ivGalleryImage.setImageBitmap(resource);
+                    }
+                });
+    }
+
+    @Override
+    public void loadPictureFail(String errorMessage) {
+        ToastUtils.show(getContext(), errorMessage);
+    }
+}

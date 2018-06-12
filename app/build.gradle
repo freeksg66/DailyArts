@@ -1,0 +1,131 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+    defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        vectorDrawables.useSupportLibrary = true
+
+        multiDexEnabled true
+
+        //允许库发布Debug版本
+        defaultPublishConfig 'release'
+        publishNonDefault true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main { res.srcDirs = ['src/main/res'] }
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    api rootProject.ext.dependencies["appcompat-v7"]
+    api rootProject.ext.dependencies["recyclerview-v7"]
+    api rootProject.ext.dependencies["design"]
+    api rootProject.ext.dependencies["support-v4"]
+    api rootProject.ext.dependencies["multidex"]
+    api rootProject.ext.dependencies["rxandroid"]
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies["rxlifecycle"]
+    api rootProject.ext.dependencies["rxlifecycle-components"]
+    api rootProject.ext.dependencies["retrofit"]
+    api rootProject.ext.dependencies["converter-gson"]
+    api rootProject.ext.dependencies["adapter-rxjava"]
+    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["logging-interceptor"]
+    api rootProject.ext.dependencies["parceler-api"]
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["glide-transformations"]
+    api rootProject.ext.dependencies["arouter-api"]
+    api rootProject.ext.dependencies["subsampling-scale-image-view"]
+
+    implementation rootProject.ext.dependencies["jsr250-api"]
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    annotationProcessor rootProject.ext.dependencies["parceler"]
+}
+
+//android {
+//    compileSdkVersion 26
+//    defaultConfig {
+//        applicationId "com.github.dailyarts"
+//        minSdkVersion 21
+//        targetSdkVersion 26
+//        versionCode 1
+//        versionName "1.0"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments = [ moduleName : project.getName() ]
+//            }
+//        }
+//    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        targetCompatibility 1.8
+//        sourceCompatibility 1.8
+//    }
+//}
+//
+//dependencies {
+//    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    //noinspection GradleCompatible
+//    implementation 'com.android.support:appcompat-v7:26.1.0'
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+//    // Glide
+//    compile 'com.github.bumptech.glide:glide:3.7.0'
+//    compile 'com.android.support:support-v4:26.1.0'
+//    // retrofit2
+//    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+//    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+//    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+//    // Okhttp
+//    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+//    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+//    // Rx
+//    compile 'io.reactivex:rxjava:1.1.0'
+//    compile 'io.reactivex:rxandroid:1.1.0'
+//    compile 'com.trello:rxlifecycle:0.6.1'
+//    compile 'com.trello:rxlifecycle-components:0.6.1'
+//    // others
+//    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+//    // ARouter
+//    compile 'com.alibaba:arouter-api:1.2.2'
+//    annotationProcessor 'com.alibaba:arouter-compiler:1.1.3'
+//    implementation 'com.android.support:recyclerview-v7:28.0.0-alpha3'
+//}

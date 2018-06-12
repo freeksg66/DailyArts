@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorHomeBg">
+    <!--ActionBar-->
+    <com.github.dailyarts.ui.widget.AppActionBar
+        android:id="@+id/mine_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"/>
+
+    <EditText
+        android:id="@+id/et_demand_message"
+        android:layout_width="match_parent"
+        android:layout_height="257dp"
+        android:hint="请输入您推荐的画家或名画名称，我们将会代为分享。感谢您！"
+        android:gravity="top|left"
+        android:textColorHint="@android:color/darker_gray"
+        android:layout_marginTop="25dp"
+        android:background="@color/colorEdit"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"/>
+    <EditText
+        android:id="@+id/et_demand_contract_info"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:hint="请留下您的联系方式 如：QQ 电邮"
+        android:textColorHint="@android:color/darker_gray"
+        android:layout_marginTop="3dp"
+        android:background="@color/colorEdit"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"/>
+
+</LinearLayout>

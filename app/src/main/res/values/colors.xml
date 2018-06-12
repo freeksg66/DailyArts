@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorActionBar">#252628</color>
+    <color name="colorActionBarTrans">#80252628</color>
+    <color name="colorHomeBg">#1E2021</color>
+    <color name="colorSlideBg">#202526</color>
+    <color name="colorEdit">#292D2E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="orange">#DD7035</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider_color">#ebebeb</color>
+    <color name="toast_background">#70000000</color>
+    <color name="cW1">#ffffff</color>
+</resources>

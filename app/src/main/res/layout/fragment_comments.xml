@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorHomeBg">
+    <!--ActionBar-->
+    <com.github.dailyarts.ui.widget.AppActionBar
+        android:id="@+id/mine_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"/>
+
+    <!--Bottom-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black">
+        <EditText
+            android:id="@+id/et_comments_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@drawable/bg_edittext"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:id="@+id/tv_comments_publish"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="发表"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15sp"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginVertical="5dp"
+            android:layout_marginRight="5dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
