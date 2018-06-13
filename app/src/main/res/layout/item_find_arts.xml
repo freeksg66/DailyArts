@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginTop="10dp">
+    <ImageView
+        android:id="@+id/iv_find_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/image_placeholder"
+        android:scaleType="centerCrop"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_find_image_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="戴草帽的自画像"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/tv_find_image_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="文森特 梵高"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.github.dailyarts.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -13,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,12 +26,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.dailyarts.R;
 import com.github.dailyarts.config.GlideCircleTransform;
+import com.github.dailyarts.contract.FindArtsContract;
 import com.github.dailyarts.entity.DateModel;
+import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.presenter.FindArtsPresenter;
+import com.github.dailyarts.repository.FindArtsRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.activity.MainActivity;
 import com.github.dailyarts.ui.activity.MyGalleryActivity;
 import com.github.dailyarts.ui.activity.PaintingDemandActivity;
+import com.github.dailyarts.ui.adapter.FindArtsAdapter;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.utils.DataCleanUtils;
@@ -43,7 +51,7 @@ import java.util.List;
  * Created by legao005426 on 2018/6/11.
  */
 
-public class MainFragment extends BaseFragment{
+public class MainFragment extends BaseFragment implements FindArtsContract.IView{
     public static final String TAG = "MainFragment";
 
     private DrawerLayout mDrawer;
@@ -61,16 +69,19 @@ public class MainFragment extends BaseFragment{
     private TextView tvMyGallery, tvOfflineCache, tvPaintingDemand, tvAbout;
     private ImageView ivBack, ivUserProfile;
 
-    // rightRightVoew
+    // rightRightView
     private EditText etName;
     private RelativeLayout rlFindNothing;
     private RecyclerView rvFindArts;
+    private FindArtsAdapter mFindArtsAdapter;
 
     private static final int LEFT_BTN = -1;
     private static final int RIGHT_BTN = 1;
     private static final int MID_BTN = 0;
 
     private int swipeStatus = MID_BTN;
+
+    private FindArtsContract.IPresenter mPresenter;
 
     @Override
     protected int getLayoutResource() {
@@ -79,6 +90,8 @@ public class MainFragment extends BaseFragment{
 
     @Override
     protected void onInitView() {
+        mPresenter = new FindArtsPresenter(new FindArtsRepository(getHoldingActivity()), this);
+
         mDrawer = rootView.findViewById(R.id.dl_main_drawer);
         mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         initContentLayout(R.layout.fragment_home);
@@ -183,6 +196,28 @@ public class MainFragment extends BaseFragment{
         rvFindArts = rightView.findViewById(R.id.rv_find_arts);
 
         rvFindArts.setLayoutManager(new LinearLayoutManager(getContext()));
+        mFindArtsAdapter = new FindArtsAdapter(getContext(), new ArrayList<>());
+        mFindArtsAdapter.setOnItemClickListener(model -> {
+                if(model == null || model.getBigImg() == null || model.getBigImg().equals("")) return;
+                // 进入图片详情页
+                RouterManager
+                        .getInstance()
+                        .startActivity(
+                                RouterConstant.ImageDetailsActivityConst.PATH,
+                                RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
+                                model);
+            });
+        rvFindArts.setAdapter(mFindArtsAdapter);
+        etName.setOnEditorActionListener((view, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                hideSoftKeyboard(getContext());
+                String key = etName.getText().toString();
+                if(key == null || key.equals("")) return false;
+                mPresenter.searchImages(key);
+                return true;
+            }
+            return false;
+        });
         mRightContainer.addView(rightView);
     }
     private void initContentLayout(@LayoutRes int layoutResID){
@@ -252,6 +287,28 @@ public class MainFragment extends BaseFragment{
 
     private void getUserProfile(){
         //
+    }
+
+    private void hideSoftKeyboard(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        // 获取软键盘的显示状态
+        boolean isOpen=imm.isActive();
+        if(isOpen){
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    @Override
+    public void showImageList(List<ImageModel> list) {
+        rlFindNothing.setVisibility(View.GONE);
+        rvFindArts.setVisibility(View.VISIBLE);
+        mFindArtsAdapter.setData(list);
+    }
+
+    @Override
+    public void showNothing() {
+        rlFindNothing.setVisibility(View.VISIBLE);
+        rvFindArts.setVisibility(View.GONE);
     }
 
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {

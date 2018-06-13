@@ -1,49 +1,27 @@
 package com.github.dailyarts.ui.fragment;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.DateModel;
-import com.github.dailyarts.entity.GalleryModel;
-import com.github.dailyarts.entity.ImageMessageModel;
 import com.github.dailyarts.entity.ImageModel;
-import com.github.dailyarts.net.DailyArtsAPI;
-import com.github.dailyarts.net.NetError;
-import com.github.dailyarts.net.NetSubscriber;
 import com.github.dailyarts.presenter.GalleryImagePresenter;
-import com.github.dailyarts.presenter.GalleryImagesContract;
+import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.repository.GalleryImagesRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
-import com.github.dailyarts.ui.activity.ImageDetailsActivity;
-import com.github.dailyarts.utils.ImageLoadUtils;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
-
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by legao005426 on 2018/5/7.

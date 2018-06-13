@@ -1,14 +1,10 @@
 package com.github.dailyarts.presenter;
 
-import com.github.dailyarts.entity.DateModel;
-import com.github.dailyarts.entity.GalleryModel;
+import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.entity.ImageMessageModel;
-import com.github.dailyarts.entity.ImageModel;
 import com.github.dailyarts.net.NetError;
 import com.github.dailyarts.net.NetSubscriber;
 import com.github.dailyarts.repository.GalleryImagesRepository;
-
-import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

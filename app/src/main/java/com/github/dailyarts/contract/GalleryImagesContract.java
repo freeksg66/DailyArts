@@ -1,4 +1,4 @@
-package com.github.dailyarts.presenter;
+package com.github.dailyarts.contract;
 
 import com.github.dailyarts.entity.DateModel;
 import com.github.dailyarts.entity.GalleryModel;

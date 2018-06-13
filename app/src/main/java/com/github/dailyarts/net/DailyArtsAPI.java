@@ -1,11 +1,14 @@
 package com.github.dailyarts.net;
 
+import com.github.dailyarts.entity.ImageMessageListModel;
 import com.github.dailyarts.entity.ImageMessageModel;
 
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -18,9 +21,14 @@ public class DailyArtsAPI {
     }
 
     public interface Api{
+        // 按日期获取图片
         @FormUrlEncoded
         @POST("info")
         Observable<Response<ImageMessageModel>> getImageMessage(@Field("date") int date);
+
+        // 按关键字搜索图片
+        @GET("search")
+        Observable<Response<ImageMessageListModel>> searchImageMessage(@Query("devicetype") String deviceType, @Query("key") String key, @Query("productid") int id, @Query("version") String version);
     }
 
     public static Api getInstance(){
