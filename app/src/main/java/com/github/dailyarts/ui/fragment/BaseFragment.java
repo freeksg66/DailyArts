@@ -9,7 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.dailyarts.event.NetConnectionChangeEvent;
 import com.github.dailyarts.ui.activity.BaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by legao005426 on 2018/6/11.
@@ -100,6 +105,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) EventBus.getDefault().unregister(this);
     }
 
     public void startLoading() {
@@ -113,10 +119,20 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    /**
+     * 网络连接状态变化时调用
+     *
+     * @param event 包含网络连接状态和当前网络类型
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkChange(NetConnectionChangeEvent event) {
     }
 }

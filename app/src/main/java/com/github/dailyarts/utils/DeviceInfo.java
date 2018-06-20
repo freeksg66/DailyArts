@@ -14,6 +14,8 @@ import android.view.WindowManager;
 
 import java.util.UUID;
 
+import github.nisrulz.easydeviceinfo.EasyNetworkMod;
+
 /**
  * Created by legao005426 on 2018/5/7.
  */
@@ -190,15 +192,15 @@ public class DeviceInfo {
         return "";
     }
 
-//    public static boolean isNetworkAvailable(Context context) {
-//        if (null == context) return false;
-//        return new EasyNetworkMod(context).isNetworkAvailable();
-//    }
-//
-//    public static boolean isWifiEnabled(Context context) {
-//        if (null == context) return false;
-//        return new EasyNetworkMod(context).isWifiEnabled();
-//    }
+    public static boolean isNetworkAvailable(Context context) {
+        if (null == context) return false;
+        return new EasyNetworkMod(context).isNetworkAvailable();
+    }
+
+    public static boolean isWifiEnabled(Context context) {
+        if (null == context) return false;
+        return new EasyNetworkMod(context).isWifiEnabled();
+    }
 
     public static int getScreenWidth(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
@@ -226,9 +228,9 @@ public class DeviceInfo {
         return metrics;
     }
 
-//    public static int getNetworkType(Context context) {
-//        return new EasyNetworkMod(context).getNetworkType();
-//    }
+    public static int getNetworkType(Context context) {
+        return new EasyNetworkMod(context).getNetworkType();
+    }
 
 
     /**

@@ -26,6 +26,7 @@ import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.event.CollectionEvent;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.activity.WatchImageActivity;
@@ -33,6 +34,8 @@ import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.utils.ImageLoadUtils;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -59,12 +62,14 @@ public class ImageDetailsFragment extends BaseFragment {
 
     private boolean isZoomEnable = false;
     private boolean isFirstPage = true;
+    private boolean collectedStatus = false; // 记录初始关注状态
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mImageModel = getArguments().getParcelable("BigImage");
         hasCollected = getArguments().getBoolean("HasCollected", false);
+        collectedStatus = hasCollected;
     }
 
     @Override
@@ -255,5 +260,13 @@ public class ImageDetailsFragment extends BaseFragment {
         moveAnimation.setRepeatCount(0);
         moveAnimation.setRepeatMode(ValueAnimator.REVERSE);
         moveAnimation.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(collectedStatus != hasCollected){
+            EventBus.getDefault().post(new CollectionEvent(mImageModel, hasCollected));
+        }
     }
 }

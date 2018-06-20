@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.DateModel;
 import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.event.CollectionEvent;
 import com.github.dailyarts.presenter.GalleryImagePresenter;
 import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.repository.GalleryImagesRepository;
@@ -22,6 +23,9 @@ import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by legao005426 on 2018/5/7.
@@ -181,5 +185,16 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     @Override
     public void loadPictureFail(String errorMessage) {
         ToastUtils.show(getContext(), errorMessage);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onCollectionChange(CollectionEvent event){
+        if(event.imageModel.getId().equals(mImageModel.getId())){
+            if(event.status) {
+                ivCollection.setImageResource(R.drawable.collection_true);
+            }else {
+                ivCollection.setImageResource(R.drawable.collection_false);
+            }
+        }
     }
 }
