@@ -39,6 +39,7 @@ import com.github.dailyarts.ui.activity.PaintingDemandActivity;
 import com.github.dailyarts.ui.adapter.FindArtsAdapter;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
+import com.github.dailyarts.ui.widget.TipsDialog;
 import com.github.dailyarts.utils.DataCleanUtils;
 import com.github.dailyarts.utils.DeviceInfo;
 
@@ -158,7 +159,20 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             @Override
             public void onClick(View v) {
                 try {
-                    Toast.makeText(getContext(), "共有"+ DataCleanUtils.getCacheSize(getContext().getCacheDir().getAbsoluteFile())+"缓存", Toast.LENGTH_SHORT).show();
+                    String content = "目前缓存" + DataCleanUtils.getCacheSize(getContext().getCacheDir().getAbsoluteFile()) + "，\n您确定要清除缓存吗？";
+                    TipsDialog.ButtonClickListener listener = new TipsDialog.ButtonClickListener() {
+                        @Override
+                        public void leftButtonClick() {
+                        }
+
+                        @Override
+                        public void rightButtonClick() {
+                            DataCleanUtils.cleanInternalCache(getContext());
+                            DataCleanUtils.cleanExternalCache(getContext());
+                        }
+                    };
+                    TipsDialog dialog = TipsDialog.getInstance("提示", content, "取消", "确定", listener);
+                    dialog.show(getChildFragmentManager(), dialog.getClass().getName());
                 }catch (Exception e){
                     e.printStackTrace();
                 }
