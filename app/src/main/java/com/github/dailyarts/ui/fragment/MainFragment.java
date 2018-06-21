@@ -243,10 +243,12 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, 1 - mFragmentsLength);
         GalleryItemFragment item;
+        int offset = 1 - mFragmentsLength; // 与今天日期的偏差，早于今天日期的offset<0，否则offset>=0
         for(int i=0; i<mFragmentsLength; i++){
             item = new GalleryItemFragment();
             c.add(Calendar.DAY_OF_MONTH, 1);
-            item.setData(new DateModel(c.get(Calendar.YEAR)-2, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength));
+            offset += 1;
+            item.setData(new DateModel(c.get(Calendar.YEAR)-2, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
             mFragments.add(item);
         }
 

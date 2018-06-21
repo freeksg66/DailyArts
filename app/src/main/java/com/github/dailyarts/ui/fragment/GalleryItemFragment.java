@@ -40,8 +40,9 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     private DateModel mDateModel;
 
-    private boolean mLoadSuccess = false;
-    private boolean hasCollected = true;
+    private boolean mLoadSuccess = false; // 是否加载成功
+    private boolean hasCollected = true; // 是否已经收藏
+    private boolean isTomorrow = false; // 是否是明天
 
     private ImageModel mImageModel;
 
@@ -118,8 +119,9 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         }
     }
 
-    public void setData(DateModel dateModel){
+    public void setData(DateModel dateModel, int offset){
         mDateModel = dateModel;
+        isTomorrow = offset == 1;
     }
 
     public void setData(ImageModel imageModel){
@@ -136,7 +138,11 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                             RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
                             mImageModel);
         }else {
-            ToastUtils.show(getContext(), "努力加载中...");
+            if(isTomorrow){
+                ToastUtils.show(getContext(), "敬请期待！");
+            }else {
+                ToastUtils.show(getContext(), "努力加载中...");
+            }
         }
     }
 
