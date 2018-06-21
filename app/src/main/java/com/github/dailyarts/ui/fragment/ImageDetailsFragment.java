@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.activity.WatchImageActivity;
 import com.github.dailyarts.ui.widget.AppActionBar;
+import com.github.dailyarts.utils.DeviceInfo;
 import com.github.dailyarts.utils.ImageLoadUtils;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
@@ -54,8 +56,7 @@ public class ImageDetailsFragment extends BaseFragment {
     private ImageView ivZoom, ivComment, ivCollection, ivDownload, ivShare;
     private RelativeLayout rlCover;
     private ScrollView svIntro;
-    private RelativeLayout rlTools;
-    private RelativeLayout rlNextPage;
+    private LinearLayout llTools;
 
     private ImageModel mImageModel;
     private boolean hasCollected = false;
@@ -63,6 +64,11 @@ public class ImageDetailsFragment extends BaseFragment {
     private boolean isZoomEnable = false;
     private boolean isFirstPage = true;
     private boolean collectedStatus = false; // 记录初始关注状态
+
+    private int mBigImageSlideHeight = 0; // 大图滑动距离
+    private int mCoverSlideHeight = 0; // 封面滑动距离
+    private int mTextSlideHeight = 0; // 描述部分滑动距离
+    private int mToolsHeight = 0; // 底部工具栏滑动距离
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -92,8 +98,7 @@ public class ImageDetailsFragment extends BaseFragment {
         ivShare = rootView.findViewById(R.id.iv_details_share);
         rlCover = rootView.findViewById(R.id.rl_details_cover);
         svIntro = rootView.findViewById(R.id.sv_details_introduction);
-        rlTools = rootView.findViewById(R.id.rl_details_tools);
-        rlNextPage = rootView.findViewById(R.id.rl_details_next_page);
+        llTools = rootView.findViewById(R.id.ll_details_tools);
 
         ssivBigImage.setMinScale(0.5F);
         ssivBigImage.setMaxScale(10F);
@@ -136,6 +141,17 @@ public class ImageDetailsFragment extends BaseFragment {
             ivCollection.setImageResource(R.drawable.collection_false);
         }
 
+        ssivBigImage.post(() -> mBigImageSlideHeight = ssivBigImage.getHeight());
+        rlCover.post(() -> mCoverSlideHeight = rlCover.getTop() - appActionBar.getHeight());
+        svIntro.post(() -> {
+            mTextSlideHeight = ssivBigImage.getHeight() - rlCover.getHeight() - appActionBar.getHeight();
+            svIntro.setVisibility(View.GONE);
+        });
+        llTools.post(() -> {
+            mToolsHeight = llTools.getHeight();
+            llTools.setVisibility(View.GONE);
+        });
+
         initListener();
     }
 
@@ -158,6 +174,8 @@ public class ImageDetailsFragment extends BaseFragment {
         ivComment.setOnClickListener(v -> ToastUtils.show(getContext(), "评论功能暂未开放！"));
         ivCollection.setOnClickListener(v -> collectImage());
         ivDownload.setOnClickListener(v -> saveImage());
+
+        appActionBar.setLeftBackBtnClickListener(v -> backFunction());
     }
 
     private void collectImage(){
@@ -218,14 +236,21 @@ public class ImageDetailsFragment extends BaseFragment {
 
     private void animJumpPage(boolean isFirstPage){
         if(isFirstPage){
-            moveAnim(ssivBigImage, 0 - rlTools.getBottom(), 0f);
-            moveAnim(rlCover, appActionBar.getHeight() - rlNextPage.getHeight(), 0f);
-            moveAnim(rlNextPage, 0f, rlNextPage.getBottom());
+            moveAnim(ssivBigImage, 0 - mBigImageSlideHeight, 0F);
+            moveAnim(rlCover, 0 - mCoverSlideHeight, 0F);
+            moveAnim(svIntro, 0F, mTextSlideHeight);
+            moveAnim(llTools, 0F, mToolsHeight);
         }else {
-            moveAnim(ssivBigImage, 0f, 0 - ssivBigImage.getBottom());
-            moveAnim(rlCover, 0f, 0 - rlCover.getTop() + appActionBar.getBottom());
-            rlNextPage.setVisibility(View.VISIBLE);
-            moveAnim(rlNextPage, ssivBigImage.getHeight() - appActionBar.getHeight() - rlCover.getHeight(), 0f);
+            if(svIntro.getVisibility() == View.GONE){
+                svIntro.setVisibility(View.VISIBLE);
+            }
+            if(llTools.getVisibility() == View.GONE){
+                llTools.setVisibility(View.VISIBLE);
+            }
+            moveAnim(ssivBigImage, 0F, 0 - mBigImageSlideHeight);
+            moveAnim(rlCover, 0F, 0 - mCoverSlideHeight);
+            moveAnim(svIntro, mTextSlideHeight, 0F);
+            moveAnim(llTools, mToolsHeight, 0F);
         }
     }
 
@@ -269,4 +294,14 @@ public class ImageDetailsFragment extends BaseFragment {
             EventBus.getDefault().post(new CollectionEvent(mImageModel, hasCollected));
         }
     }
+
+    public void backFunction(){
+        if(isFirstPage){
+            getActivity().finish();
+        }else {
+            isFirstPage = true;
+            animJumpPage(true);
+        }
+    }
+
 }

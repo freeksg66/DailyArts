@@ -113,4 +113,8 @@ public class AppActionBar extends FrameLayout {
             tvSubmit.setVisibility(VISIBLE);
         }
     }
+
+    public void setLeftBackBtnClickListener(OnClickListener listener){
+        ivLeftBtn.setOnClickListener(listener);
+    }
 }

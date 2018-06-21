@@ -67,7 +67,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private int mFragmentsLength = 100; // 长度必须大于3
 
     // leftView
-    private TextView tvMyGallery, tvOfflineCache, tvPaintingDemand, tvAbout;
+    private TextView tvDate, tvMyGallery, tvOfflineCache, tvPaintingDemand, tvAbout;
     private ImageView ivBack, ivUserProfile;
 
     // rightRightView
@@ -143,6 +143,8 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         mLeftContainer = rootView.findViewById(R.id.rl_left_drawer_layout);
         View leftView = getLayoutInflater().inflate(layoutResID, null);
         leftView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        tvDate = leftView.findViewById(R.id.tv_user_setting_date);
+        initDate();
         tvMyGallery = leftView.findViewById(R.id.tv_my_gallery);
         tvOfflineCache = leftView.findViewById(R.id.tv_offline_cache);
         tvPaintingDemand = leftView.findViewById(R.id.tv_painting_demand);
@@ -297,6 +299,12 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         appActionBar.hideLeftBtn();
         appActionBar.showUserSetting();
         appActionBar.showFindArts();
+    }
+
+    private void initDate(){
+        Calendar c = Calendar.getInstance();
+        String content = c.get(Calendar.YEAR) + "年" + (c.get(Calendar.MONTH) + 1) + "月" + c.get(Calendar.DATE) + "日";
+        tvDate.setText(content);
     }
 
     private void getUserProfile(){
