@@ -109,17 +109,7 @@ public class ImageDetailsFragment extends BaseFragment {
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        ViewTreeObserver observer =  ssivBigImage.getViewTreeObserver();
-                        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                if(observer.isAlive()){
-                                    observer.removeOnPreDrawListener(this);
-                                }
-                                ssivBigImage.setImage(ImageSource.bitmap(resource.copy(resource.getConfig(), true)), initImageViewState(resource.getWidth(), resource.getHeight(), ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight()));
-                                return true;
-                            }
-                        });
+                        ssivBigImage.post(() -> ssivBigImage.setImage(ImageSource.bitmap(resource), initImageViewState(resource.getWidth(), resource.getHeight(), ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight())));
                     }
                 });
         Glide.with(this)
@@ -157,7 +147,6 @@ public class ImageDetailsFragment extends BaseFragment {
 
     private void initListener(){
         ssivBigImage.setOnClickListener(v -> {
-            Log.e(TAG, "SSIV click! isZoomEnable="+String.valueOf(isZoomEnable));
             isZoomEnable = !isZoomEnable;
             ssivBigImage.setZoomEnabled(isZoomEnable);
             animZoomEnable(isZoomEnable);

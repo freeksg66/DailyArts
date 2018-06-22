@@ -1,7 +1,5 @@
 package com.github.dailyarts.entity;
 
-import com.github.dailyarts.ui.widget.GalleryViewPager.GalleryViewPager;
-
 /**
  * Created by legao005426 on 2018/5/7.
  */
@@ -12,43 +10,43 @@ public class GalleryModel {
     private int day;
     private int resId;
 
-    public GalleryModel(ImageModel imageModel, int month, int day){
+    public GalleryModel(ImageModel imageModel, int month, int day) {
         this.imageModel = imageModel;
         this.month = month;
         this.day = day;
     }
 
-    public GalleryModel(int resId, int month, int day){
+    public GalleryModel(int resId, int month, int day) {
         this.resId = resId;
         this.month = month;
         this.day = day;
     }
 
-    public void setImageModel(ImageModel imageModel){
+    public void setImageModel(ImageModel imageModel) {
         this.imageModel = imageModel;
     }
 
-    public void setMonth(int month){
+    public void setMonth(int month) {
         this.month = month;
     }
 
-    public void setDay(int day){
+    public void setDay(int day) {
         this.day = day;
     }
 
-    public ImageModel getImageModel(){
+    public ImageModel getImageModel() {
         return imageModel;
     }
 
-    public int getMonth(){
+    public int getMonth() {
         return month;
     }
 
-    public int getDay(){
+    public int getDay() {
         return day;
     }
 
-    public int getResId(){
+    public int getResId() {
         return resId;
     }
 }

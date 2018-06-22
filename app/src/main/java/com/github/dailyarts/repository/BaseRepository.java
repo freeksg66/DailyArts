@@ -16,10 +16,11 @@ public abstract class BaseRepository {
     }
 
     @Deprecated
-    public BaseRepository() {}
+    public BaseRepository() {
+    }
 
-    public <T> Observable.Transformer<T,T> defaultRxConfig() {
-        if (null == mLifecycleBinder){
+    public <T> Observable.Transformer<T, T> defaultRxConfig() {
+        if (null == mLifecycleBinder) {
             return tObservable -> tObservable
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io());

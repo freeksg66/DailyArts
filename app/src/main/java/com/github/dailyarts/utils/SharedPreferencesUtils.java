@@ -19,8 +19,8 @@ import java.util.List;
 public class SharedPreferencesUtils {
     public static boolean saveCollectImage(Context context, ImageModel model) {
         List<ImageModel> modelList = getCollectImages(context);
-        if(modelList == null) return false;
-        for (ImageModel item:modelList) {
+        if (modelList == null) return false;
+        for (ImageModel item : modelList) {
             if (item.getId().equals(model.getId())) {
                 return true;
             }
@@ -32,27 +32,28 @@ public class SharedPreferencesUtils {
     }
 
     public static boolean saveCollectImages(Context context, List<ImageModel> list) {
-        if(list == null || list.size() < 0) return false;
+        if (list == null || list.size() < 0) return false;
         SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
         Gson gson = new Gson();
         return preferences.edit().putString(Constant.SHAREPREFRENCE_COLLECTION_IMAGES, gson.toJson(list)).commit();
     }
 
-    public static List<ImageModel> getCollectImages(Context context){
+    public static List<ImageModel> getCollectImages(Context context) {
         List<ImageModel> list = new ArrayList<>();
         SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
         String strJson = preferences.getString(Constant.SHAREPREFRENCE_COLLECTION_IMAGES, null);
-        if(strJson == null){
-            return  list;
+        if (strJson == null) {
+            return list;
         }
         Gson gson = new Gson();
-        list = gson.fromJson(strJson, new TypeToken<List<ImageModel>>(){}.getType());
+        list = gson.fromJson(strJson, new TypeToken<List<ImageModel>>() {
+        }.getType());
         return list;
     }
 
-    public static boolean checkCollect(Context context, ImageModel imageModel){
+    public static boolean checkCollect(Context context, ImageModel imageModel) {
         List<ImageModel> list = getCollectImages(context);
-        for (ImageModel item:list) {
+        for (ImageModel item : list) {
             if (item.getId().equals(imageModel.getId())) {
                 return true;
             }
@@ -60,11 +61,11 @@ public class SharedPreferencesUtils {
         return false;
     }
 
-    public static boolean deleteCollectImage(Context context, ImageModel imageModel){
+    public static boolean deleteCollectImage(Context context, ImageModel imageModel) {
         List<ImageModel> list = getCollectImages(context);
-        if(list == null || list.size() <= 0) return false;
-        for (ImageModel item:list) {
-            if(item.getId().equals(imageModel.getId())){
+        if (list == null || list.size() <= 0) return false;
+        for (ImageModel item : list) {
+            if (item.getId().equals(imageModel.getId())) {
                 list.remove(item);
                 return saveCollectImages(context, list);
             }

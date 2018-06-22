@@ -16,11 +16,11 @@ import rx.Observable;
  */
 
 public class DailyArtsAPI {
-    private static class InstanceHolder{
+    private static class InstanceHolder {
         static Api INSTANCE = ServiceFactory.createService("http://dailyarts.sinaapp.com/api/", Api.class);
     }
 
-    public interface Api{
+    public interface Api {
         // 按日期获取图片
         @FormUrlEncoded
         @POST("info")
@@ -31,7 +31,7 @@ public class DailyArtsAPI {
         Observable<Response<ImageMessageListModel>> searchImageMessage(@Query("devicetype") String deviceType, @Query("key") String key, @Query("productid") int id, @Query("version") String version);
     }
 
-    public static Api getInstance(){
+    public static Api getInstance() {
         return InstanceHolder.INSTANCE;
     }
 }

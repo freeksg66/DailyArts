@@ -57,6 +57,7 @@ public class CommonUtils {
 
     /**
      * 断言
+     *
      * @param reference
      * @param <T>
      * @return

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * LoopViewPager的改进
  */
 
-public class GalleryViewPager extends ViewPager{
+public class GalleryViewPager extends ViewPager {
     public static final int RESUME = 0;
     public static final int PAUSE = 1;
     public static final int DESTROY = 2;

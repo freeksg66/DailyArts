@@ -11,6 +11,7 @@ import java.util.List;
 public interface FindArtsContract {
     interface IView {
         void showImageList(List<ImageModel> list);
+
         void showNothing();
     }
 

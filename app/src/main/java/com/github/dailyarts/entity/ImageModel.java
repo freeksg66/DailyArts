@@ -10,7 +10,7 @@ import java.util.Map;
  * Created by legao005426 on 2018/5/17.
  */
 
-public class ImageModel implements Parcelable{
+public class ImageModel implements Parcelable {
     private String id;
     private String name;
     private String author;

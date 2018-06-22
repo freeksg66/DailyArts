@@ -11,8 +11,8 @@ import rx.Observable;
  * Created by legao005426 on 2018/6/13.
  */
 
-public class FindArtsRepository extends BaseRepository implements FindArtsDataSource{
-    public FindArtsRepository(RxLifecycleBinder binder){
+public class FindArtsRepository extends BaseRepository implements FindArtsDataSource {
+    public FindArtsRepository(RxLifecycleBinder binder) {
         super(binder);
     }
 

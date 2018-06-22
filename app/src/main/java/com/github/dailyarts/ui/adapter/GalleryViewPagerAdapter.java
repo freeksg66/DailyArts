@@ -42,7 +42,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     private List<DateModel> mList;
     private LayoutInflater mInflater;
 
-    public GalleryViewPagerAdapter(Context context){
+    public GalleryViewPagerAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         Date date = new Date();
@@ -66,8 +66,8 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position){
-        Log.d(TAG, "position="+String.valueOf(position));
+    public Object instantiateItem(ViewGroup container, int position) {
+        Log.d(TAG, "position=" + String.valueOf(position));
         View rootView = mInflater.inflate(R.layout.gallery_item, null);
         ImageView ivGalleryImage = rootView.findViewById(R.id.iv_gallery_item_image);
         TextView tvMonth = rootView.findViewById(R.id.tv_gallery_item_month);
@@ -100,7 +100,7 @@ public class GalleryViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object){
+    public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
     }
 }

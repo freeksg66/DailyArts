@@ -10,12 +10,12 @@ public class CollectionEvent {
     public ImageModel imageModel;
     public boolean status;
 
-    public CollectionEvent(){
+    public CollectionEvent() {
         imageModel = null;
         status = false;
     }
 
-    public CollectionEvent(ImageModel model, boolean status){
+    public CollectionEvent(ImageModel model, boolean status) {
         imageModel = model;
         this.status = status;
     }

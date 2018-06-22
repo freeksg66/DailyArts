@@ -18,19 +18,19 @@ import java.lang.reflect.Method;
  */
 
 public class StatusBarUtils {
-    public static void setImmerseStatusBar(Activity activity){
+    public static void setImmerseStatusBar(Activity activity) {
 
-        Window window =  activity.getWindow();
+        Window window = activity.getWindow();
 
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
 
         //android版本大于7.0 状态栏蒙灰
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //需在setContentView之前调用
             //小米需要使用反射来改 否则会无法修改颜色以及会有淡灰色底色 原因不明(≧Д≦)ノ
-            if(OSUtils.isMIUI(activity)){
+            if (OSUtils.isMIUI(activity)) {
                 try {
                     Class decorViewClazz = Class.forName("com.android.internal.policy.DecorView");
                     Field field = decorViewClazz.getDeclaredField("mSemiTransparentStatusBarColor");
@@ -49,7 +49,7 @@ public class StatusBarUtils {
             }
         }
         //android版本大于6.0 字体颜色可翻转
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //android 5.x 提供setStatusBarColor方法 全透明不能设置FLAG_TRANSLUCENT_STATUS属性
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
@@ -58,11 +58,11 @@ public class StatusBarUtils {
             return;
         }
         //android版本大于5.0 字体颜色不可翻转 设置灰色半透明的头部
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //android 5.x 提供setStatusBarColor方法 全透明不能设置FLAG_TRANSLUCENT_STATUS属性
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.argb(150,41,36,33));
+            window.setStatusBarColor(Color.argb(150, 41, 36, 33));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             return;
         }
@@ -70,7 +70,7 @@ public class StatusBarUtils {
         //EditText adjustResize会有bug 使用fitSystemWindows解决
         //coolpad 需要手动先清除flag
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && (OSUtils.isMIUI(activity) || OSUtils.isFlyme())){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && (OSUtils.isMIUI(activity) || OSUtils.isFlyme())) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             return;
         }
@@ -80,14 +80,14 @@ public class StatusBarUtils {
      * 设置状态栏字体的颜色
      *
      * @param activity
-     * @param dark true: 设置字体为黑色 false: 设置字体为白色
+     * @param dark     true: 设置字体为黑色 false: 设置字体为白色
      */
     public static void setStatusBarDark(Activity activity, boolean dark) {
         if (OSUtils.isMIUI(activity)) {
             setMiuiStatusBarDarkMode(activity, dark);
         } else if (OSUtils.isFlyme()) {
             setFlymeStatusBarDarkMode(activity, dark);
-        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以上
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//android6.0以上
             setNativeStatusBarDarkMode(activity, dark);
         }
     }
@@ -96,13 +96,13 @@ public class StatusBarUtils {
     public static boolean setMiuiStatusBarDarkMode(Activity activity, boolean darkmode) {
         Class<? extends Window> clazz = activity.getWindow().getClass();
         try {
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                 //7.7.13开发版后 MIUI使用原生方法修改状态栏字体颜色
                 //setStatusBarDark(activity,darkmode); 这里使用此函数会造成ANR
                 Window window = activity.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.getDecorView().setSystemUiVisibility(darkmode ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_VISIBLE);
-            }else {
+            } else {
                 int darkModeFlag = 0;
                 Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
                 Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
@@ -123,10 +123,10 @@ public class StatusBarUtils {
     @TargetApi(23)
     public static boolean setNativeStatusBarDarkMode(Activity activity, boolean darkmode) {
         try {
-            int darkFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            int darkFlag = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             int whiteFlag = View.SYSTEM_UI_FLAG_VISIBLE;
 
-            if(darkmode)
+            if (darkmode)
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             else
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -134,7 +134,7 @@ public class StatusBarUtils {
             activity.getWindow().getDecorView().setSystemUiVisibility(
                     darkmode ? darkFlag : whiteFlag);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -354,12 +354,10 @@ public class StatusBarUtils {
      *
      * @param activity
      */
-    public static int getStatusBarHeight(Activity activity)
-    {
+    public static int getStatusBarHeight(Activity activity) {
         int result = 0;
         int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0)
-        {
+        if (resourceId > 0) {
             result = activity.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
@@ -371,8 +369,8 @@ public class StatusBarUtils {
      * @param activity
      */
     @TargetApi(23)
-    public static void changeStatusBarTranslucent(Activity activity){
-        changeStatusBarColor(activity,Color.argb(150,41,36,33));
+    public static void changeStatusBarTranslucent(Activity activity) {
+        changeStatusBarColor(activity, Color.argb(150, 41, 36, 33));
     }
 
 
@@ -383,10 +381,10 @@ public class StatusBarUtils {
      * @param color
      */
     @TargetApi(23)
-    public static void changeStatusBarColor(Activity activity,@ColorInt int color){
+    public static void changeStatusBarColor(Activity activity, @ColorInt int color) {
 
         //android 6.0 以下无法修改字体颜色 因此不用修改状态栏颜色(主色为白)
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return;
         }
 

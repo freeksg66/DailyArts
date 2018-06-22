@@ -13,7 +13,6 @@ import com.github.dailyarts.entity.ImageModel;
  * 注意：页面间参数传递，原则上支支持基本数据类型。
  * 实例{@link AboutActivityConst}
  * 如果复杂类型需要用json传递
- * 实例{@link mm}
  * <p>
  * <p>
  * Created by legao005426 on 2018/6/11.

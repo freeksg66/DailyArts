@@ -31,7 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by legao005426 on 2018/5/7.
  */
 
-public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView{
+public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView {
     private static String TAG = "GalleryItemFragment";
 
     private LinearLayout llItemTime;
@@ -65,12 +65,12 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         ivCollection.setOnClickListener(v -> collectImage());
 
         //获得ViewTreeObserver
-        ViewTreeObserver observer=ivGalleryImage.getViewTreeObserver();
+        ViewTreeObserver observer = ivGalleryImage.getViewTreeObserver();
         //注册观察者，监听变化
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                if(observer.isAlive()){
+                if (observer.isAlive()) {
                     observer.removeOnPreDrawListener(this);
                 }
                 //获得宽高
@@ -85,17 +85,16 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
             }
         });
 
-        if(null != mDateModel) {
-            if(mDateModel.offset == 1){
+        if (null != mDateModel) {
+            if (mDateModel.offset == 1) {
                 ivGalleryImage.setImageResource(R.drawable.tomorrow);
-            }else {
+            } else {
                 mPresenter.getImage(mDateModel.toInt());
             }
             ivGalleryImage.setOnClickListener(v -> toImageDetail());
             tvMonth.setText(String.valueOf(mDateModel.month) + "月");
             tvDay.setText(String.valueOf(mDateModel.day) + "日");
-        }
-        else if(mImageModel != null){
+        } else if (mImageModel != null) {
             llItemTime.setVisibility(View.GONE);
             ivCollection.setVisibility(View.VISIBLE);
             mLoadSuccess = false;
@@ -111,25 +110,24 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                         }
                     });
             ivGalleryImage.setOnClickListener(v -> toImageDetail());
-        }
-        else {
+        } else {
             ivGalleryImage.setImageResource(R.drawable.image_placeholder);
             tvMonth.setText("未知月");
             tvDay.setText("未知日");
         }
     }
 
-    public void setData(DateModel dateModel, int offset){
+    public void setData(DateModel dateModel, int offset) {
         mDateModel = dateModel;
         isTomorrow = offset == 1;
     }
 
-    public void setData(ImageModel imageModel){
+    public void setData(ImageModel imageModel) {
         mImageModel = imageModel;
     }
 
-    private void toImageDetail(){
-        if(mLoadSuccess){
+    private void toImageDetail() {
+        if (mLoadSuccess) {
             // 进入图片详情页
             RouterManager
                     .getInstance()
@@ -137,34 +135,32 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                             RouterConstant.ImageDetailsActivityConst.PATH,
                             RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
                             mImageModel);
-        }else {
-            if(isTomorrow){
+        } else {
+            if (isTomorrow) {
                 ToastUtils.show(getContext(), "敬请期待！");
-            }else {
+            } else {
                 ToastUtils.show(getContext(), "努力加载中...");
             }
         }
     }
 
-    private void collectImage(){
-        if(mImageModel == null) return;
-        if(hasCollected){
-            if(SharedPreferencesUtils.deleteCollectImage(getContext(), mImageModel)) {
+    private void collectImage() {
+        if (mImageModel == null) return;
+        if (hasCollected) {
+            if (SharedPreferencesUtils.deleteCollectImage(getContext(), mImageModel)) {
                 ToastUtils.ShowCenter(getContext(), "取消收藏成功√");
                 ivCollection.setImageResource(R.drawable.collection_false);
                 hasCollected = false;
-            }
-            else {
+            } else {
                 ToastUtils.ShowCenter(getContext(), "取消收藏失败×");
                 ivCollection.setImageResource(R.drawable.collection_true);
             }
-        }else {
-            if(SharedPreferencesUtils.saveCollectImage(getContext(), mImageModel)) {
+        } else {
+            if (SharedPreferencesUtils.saveCollectImage(getContext(), mImageModel)) {
                 ToastUtils.ShowCenter(getContext(), "收藏成功√");
                 ivCollection.setImageResource(R.drawable.collection_true);
                 hasCollected = true;
-            }
-            else {
+            } else {
                 ToastUtils.ShowCenter(getContext(), "收藏失败×");
                 ivCollection.setImageResource(R.drawable.collection_false);
             }
@@ -194,11 +190,11 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCollectionChange(CollectionEvent event){
-        if(event.imageModel.getId().equals(mImageModel.getId())){
-            if(event.status) {
+    public void onCollectionChange(CollectionEvent event) {
+        if (event.imageModel.getId().equals(mImageModel.getId())) {
+            if (event.status) {
                 ivCollection.setImageResource(R.drawable.collection_true);
-            }else {
+            } else {
                 ivCollection.setImageResource(R.drawable.collection_false);
             }
         }

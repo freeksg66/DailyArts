@@ -49,14 +49,14 @@ public class MyGalleryFragment extends BaseFragment {
         vpCollection.setCurrentItem(mFragments.size() - 1);
         int vrPaddingLeft = vpCollection.getPaddingLeft();
         int vrPageWidth = params.width - vrPaddingLeft * 2;
-        float excursion = -(float)vrPaddingLeft / (float)vrPageWidth;
+        float excursion = -(float) vrPaddingLeft / (float) vrPageWidth;
         vpCollection.setPageTransformer(true, new ScalePageTransformer(excursion));
     }
 
-    private void initFragments(){
+    private void initFragments() {
         mFragments = new ArrayList<>();
         mDataList = SharedPreferencesUtils.getCollectImages(getContext());
-        if(mDataList != null && mDataList.size() > 0) {
+        if (mDataList != null && mDataList.size() > 0) {
             for (ImageModel item : mDataList) {
                 GalleryItemFragment fragment = new GalleryItemFragment();
                 fragment.setData(item);
@@ -68,6 +68,7 @@ public class MyGalleryFragment extends BaseFragment {
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {
 
         private List<Fragment> mFragments;
+
         public IdiotGalleryAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             mFragments = fragments;

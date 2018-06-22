@@ -18,12 +18,12 @@ import java.util.List;
  * Created by legao005426 on 2018/6/13.
  */
 
-public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindArtsViewHolder>{
+public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindArtsViewHolder> {
     private Context mContext;
     private List<ImageModel> dataList;
     private OnItemClickListener mOnItemClickListener;
 
-    public FindArtsAdapter(Context context, List<ImageModel> list){
+    public FindArtsAdapter(Context context, List<ImageModel> list) {
         super();
         mContext = context;
         dataList = list;
@@ -43,7 +43,7 @@ public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindAr
         holder.tvAuthor.setText(model.getAuthor());
         holder.tvName.setText(model.getName());
         holder.rootView.setOnClickListener(v -> {
-            if(mOnItemClickListener != null){
+            if (mOnItemClickListener != null) {
                 mOnItemClickListener.onItemClick(model);
             }
         });
@@ -54,13 +54,13 @@ public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindAr
         return (dataList == null || dataList.size() <= 0) ? 0 : dataList.size();
     }
 
-    public void setData(List<ImageModel> list){
-        if(list == null || list.size() < 0) return;
+    public void setData(List<ImageModel> list) {
+        if (list == null || list.size() < 0) return;
         dataList = list;
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -72,7 +72,8 @@ public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindAr
         View rootView;
         ImageView ivImage;
         TextView tvName, tvAuthor;
-        FindArtsViewHolder(View v){
+
+        FindArtsViewHolder(View v) {
             super(v);
             rootView = v;
             ivImage = v.findViewById(R.id.iv_find_image);

@@ -45,7 +45,7 @@ public class AppActionBar extends FrameLayout {
         init(context);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         mContext = context;
 
         LayoutInflater.from(getContext()).inflate(R.layout.actionbar_pinned, this, true);
@@ -72,49 +72,49 @@ public class AppActionBar extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        if(mContext instanceof Activity) {
+        if (mContext instanceof Activity) {
             ivLeftBtn.setOnClickListener(v -> ((Activity) mContext).finish());
         }
     }
 
-    public void hideLeftBtn(){
-        if(ivLeftBtn != null){
+    public void hideLeftBtn() {
+        if (ivLeftBtn != null) {
             ivLeftBtn.setVisibility(GONE);
         }
     }
 
-    public void showUserSetting(){
+    public void showUserSetting() {
         ivLeftBtn.setVisibility(GONE);
-        if(ivUserSetting != null){
+        if (ivUserSetting != null) {
             ivUserSetting.setVisibility(VISIBLE);
         }
     }
 
-    public void showFindArts(){
-        if(ivFindImages != null){
+    public void showFindArts() {
+        if (ivFindImages != null) {
             ivFindImages.setVisibility(VISIBLE);
         }
     }
 
-    public void showDownload(){
-        if(tvDownload != null){
+    public void showDownload() {
+        if (tvDownload != null) {
             tvDownload.setVisibility(VISIBLE);
         }
     }
 
-    public void setTitle(String title){
-        if(tvTitle != null) {
+    public void setTitle(String title) {
+        if (tvTitle != null) {
             tvTitle.setText(title);
         }
     }
 
-    public void showSubmit(){
-        if(tvSubmit != null){
+    public void showSubmit() {
+        if (tvSubmit != null) {
             tvSubmit.setVisibility(VISIBLE);
         }
     }
 
-    public void setLeftBackBtnClickListener(OnClickListener listener){
+    public void setLeftBackBtnClickListener(OnClickListener listener) {
         ivLeftBtn.setOnClickListener(listener);
     }
 }

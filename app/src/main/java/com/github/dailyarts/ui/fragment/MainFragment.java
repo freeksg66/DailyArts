@@ -52,7 +52,7 @@ import java.util.List;
  * Created by legao005426 on 2018/6/11.
  */
 
-public class MainFragment extends BaseFragment implements FindArtsContract.IView{
+public class MainFragment extends BaseFragment implements FindArtsContract.IView {
     public static final String TAG = "MainFragment";
 
     private DrawerLayout mDrawer;
@@ -101,28 +101,33 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         mDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                Log.i(TAG,"onDrawerSlide slideOffset="+String.valueOf(slideOffset));
+                Log.i(TAG, "onDrawerSlide slideOffset=" + String.valueOf(slideOffset));
                 View content = mDrawer.getChildAt(0);
                 View menu = drawerView;
                 float slideLength = 0;
-                switch (swipeStatus){
-                    case LEFT_BTN: slideLength = menu.getWidth() * slideOffset; break;
-                    case RIGHT_BTN: slideLength = menu.getWidth() * slideOffset * -1; break;
-                    default: slideLength = 0;
+                switch (swipeStatus) {
+                    case LEFT_BTN:
+                        slideLength = menu.getWidth() * slideOffset;
+                        break;
+                    case RIGHT_BTN:
+                        slideLength = menu.getWidth() * slideOffset * -1;
+                        break;
+                    default:
+                        slideLength = 0;
                 }
                 content.setTranslationX(slideLength);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                Log.i(TAG,"onDrawerOpened");
+                Log.i(TAG, "onDrawerOpened");
                 //菜单打开后，打开手势滑动操作，使可以手势滑回菜单
                 mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Log.i(TAG,"onDrawerClosed");
+                Log.i(TAG, "onDrawerClosed");
                 //菜单关闭后，再次关闭手势滑动操作，使不能手势滑出
                 mDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 swipeStatus = MID_BTN;
@@ -130,7 +135,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                Log.i(TAG,"onDrawerStateChanged");
+                Log.i(TAG, "onDrawerStateChanged");
             }
         });
     }
@@ -139,7 +144,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private RelativeLayout mLeftContainer;
     private RelativeLayout mRightContainer;
 
-    private void initLeftLayout(@LayoutRes int layoutResID){
+    private void initLeftLayout(@LayoutRes int layoutResID) {
         mLeftContainer = rootView.findViewById(R.id.rl_left_drawer_layout);
         View leftView = getLayoutInflater().inflate(layoutResID, null);
         leftView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -175,7 +180,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
                     };
                     TipsDialog dialog = TipsDialog.getInstance("提示", content, "取消", "确定", listener);
                     dialog.show(getChildFragmentManager(), dialog.getClass().getName());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -203,7 +208,8 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
         mLeftContainer.addView(leftView);
     }
-    private void initRightLayout(@LayoutRes int layoutResID){
+
+    private void initRightLayout(@LayoutRes int layoutResID) {
         mRightContainer = rootView.findViewById(R.id.rl_right_drawer_layout);
         View rightView = getLayoutInflater().inflate(layoutResID, null);
         rightView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -214,21 +220,21 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         rvFindArts.setLayoutManager(new LinearLayoutManager(getContext()));
         mFindArtsAdapter = new FindArtsAdapter(getContext(), new ArrayList<>());
         mFindArtsAdapter.setOnItemClickListener(model -> {
-                if(model == null || model.getBigImg() == null || model.getBigImg().equals("")) return;
-                // 进入图片详情页
-                RouterManager
-                        .getInstance()
-                        .startActivity(
-                                RouterConstant.ImageDetailsActivityConst.PATH,
-                                RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
-                                model);
-            });
+            if (model == null || model.getBigImg() == null || model.getBigImg().equals("")) return;
+            // 进入图片详情页
+            RouterManager
+                    .getInstance()
+                    .startActivity(
+                            RouterConstant.ImageDetailsActivityConst.PATH,
+                            RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
+                            model);
+        });
         rvFindArts.setAdapter(mFindArtsAdapter);
         etName.setOnEditorActionListener((view, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH){
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideSoftKeyboard(getContext());
                 String key = etName.getText().toString();
-                if(key == null || key.equals("")) return false;
+                if (key == null || key.equals("")) return false;
                 mPresenter.searchImages(key);
                 return true;
             }
@@ -236,7 +242,8 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         });
         mRightContainer.addView(rightView);
     }
-    private void initContentLayout(@LayoutRes int layoutResID){
+
+    private void initContentLayout(@LayoutRes int layoutResID) {
         mFragments = new ArrayList<>();
         Date date = new Date();
         Calendar c = Calendar.getInstance();
@@ -244,11 +251,11 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         c.add(Calendar.DAY_OF_MONTH, 1 - mFragmentsLength);
         GalleryItemFragment item;
         int offset = 1 - mFragmentsLength; // 与今天日期的偏差，早于今天日期的offset<0，否则offset>=0
-        for(int i=0; i<mFragmentsLength; i++){
+        for (int i = 0; i < mFragmentsLength; i++) {
             item = new GalleryItemFragment();
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
-            item.setData(new DateModel(c.get(Calendar.YEAR)-2, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
+            item.setData(new DateModel(c.get(Calendar.YEAR) - 2, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
             mFragments.add(item);
         }
 
@@ -263,10 +270,10 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         ivHomeUserSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawer.isDrawerOpen(mLeftContainer)){
+                if (mDrawer.isDrawerOpen(mLeftContainer)) {
                     mDrawer.closeDrawer(mLeftContainer);
                     swipeStatus = MID_BTN;
-                }else {
+                } else {
                     swipeStatus = LEFT_BTN;
                     mDrawer.openDrawer(mLeftContainer);
                 }
@@ -276,10 +283,10 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         ivHomeFindArts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mDrawer.isDrawerOpen(mRightContainer)){
+                if (mDrawer.isDrawerOpen(mRightContainer)) {
                     mDrawer.closeDrawer(mRightContainer);
                     swipeStatus = MID_BTN;
-                }else {
+                } else {
                     mDrawer.openDrawer(mRightContainer);
                     swipeStatus = RIGHT_BTN;
                 }
@@ -295,7 +302,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         mGalleryViewPager.setCurrentItem(mFragmentsLength - 2);
         int vrPaddingLeft = mGalleryViewPager.getPaddingLeft();
         int vrPageWidth = params.width - vrPaddingLeft * 2;
-        float excursion = -(float)vrPaddingLeft / (float)vrPageWidth;
+        float excursion = -(float) vrPaddingLeft / (float) vrPageWidth;
         mGalleryViewPager.setPageTransformer(true, new ScalePageTransformer(excursion));
 
         appActionBar.hideLeftBtn();
@@ -303,21 +310,21 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         appActionBar.showFindArts();
     }
 
-    private void initDate(){
+    private void initDate() {
         Calendar c = Calendar.getInstance();
         String content = c.get(Calendar.YEAR) + "年" + (c.get(Calendar.MONTH) + 1) + "月" + c.get(Calendar.DATE) + "日";
         tvDate.setText(content);
     }
 
-    private void getUserProfile(){
+    private void getUserProfile() {
         //
     }
 
     private void hideSoftKeyboard(Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         // 获取软键盘的显示状态
-        boolean isOpen=imm.isActive();
-        if(isOpen){
+        boolean isOpen = imm.isActive();
+        if (isOpen) {
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
@@ -338,6 +345,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {
 
         private List<Fragment> mFragments;
+
         public IdiotGalleryAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             mFragments = fragments;

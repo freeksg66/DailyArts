@@ -11,12 +11,13 @@ import java.util.List;
  */
 
 public interface GalleryImagesContract {
-    interface IView{
+    interface IView {
         void loadPicture(ImageModel imageModel);
+
         void loadPictureFail(String errorMessage);
     }
 
-    interface IPresenter{
+    interface IPresenter {
         void getImage(int date);
     }
 }

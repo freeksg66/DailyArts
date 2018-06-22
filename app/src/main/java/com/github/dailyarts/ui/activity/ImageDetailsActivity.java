@@ -66,11 +66,12 @@ public class ImageDetailsActivity extends BaseActivity {
         mImageDetailsFragment = getStoredFragment(ImageDetailsFragment.class, bundle);
         addFragment(mImageDetailsFragment);
     }
+
     @Override
     public void onBackPressed() {
-        if(mImageDetailsFragment != null){
+        if (mImageDetailsFragment != null) {
             mImageDetailsFragment.backFunction();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }

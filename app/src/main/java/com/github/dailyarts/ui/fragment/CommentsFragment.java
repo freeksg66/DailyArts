@@ -40,7 +40,7 @@ public class CommentsFragment extends BaseFragment {
         appActionBar.setTitle("Comments");
     }
 
-    private void submitComment(){
+    private void submitComment() {
         //
     }
 }

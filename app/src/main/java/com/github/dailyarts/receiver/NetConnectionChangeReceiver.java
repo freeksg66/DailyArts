@@ -25,13 +25,13 @@ public class NetConnectionChangeReceiver extends BroadcastReceiver {
         NetConnectionChangeEvent event = new NetConnectionChangeEvent();
         event.isAvailable = isNetworkAvailable;
 
-        if (!isNetworkAvailable){
+        if (!isNetworkAvailable) {
             event.networkState = NetConnectionChangeEvent.DISABLED;
             EventBus.getDefault().post(event);
             return;
         }
 
-        switch (networkType){
+        switch (networkType) {
             case EasyNetworkMod.CELLULAR_UNKNOWN:
                 event.networkState = NetConnectionChangeEvent.NET_UNKNOWN;
                 break;

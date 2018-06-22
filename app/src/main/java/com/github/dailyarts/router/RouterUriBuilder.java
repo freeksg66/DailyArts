@@ -30,8 +30,9 @@ public class RouterUriBuilder {
      * 该处encode 是为了router内部decode 逆向解决%号编码问题
      * router 默认需要标准Uri 即？kry=value & kye= value 中的key value已经encode过
      * 因此 本地构造uri的时候禁止传入encode 过的key value
-     *
+     * <p>
      * dailyarts://dailyarts.github.com/web/simple?url=http://haochebang.auto.sohu.com&title=好车榜
+     *
      * @param key
      * @param value
      * @return

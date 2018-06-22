@@ -17,7 +17,7 @@ import com.github.dailyarts.ui.fragment.PaintingDemandFragment;
  */
 
 @Route(path = RouterConstant.PaintingDemandActivityConst.PATH)
-public class PaintingDemandActivity  extends BaseActivity {
+public class PaintingDemandActivity extends BaseActivity {
     PaintingDemandFragment mPaintingDemandFragment;
 
     @Override

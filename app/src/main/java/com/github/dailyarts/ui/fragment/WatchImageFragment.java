@@ -43,7 +43,7 @@ public class WatchImageFragment extends BaseFragment {
     private String bigImageUrl;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bigImageUrl = getArguments().getString("BigImageUrl");
     }
@@ -69,27 +69,16 @@ public class WatchImageFragment extends BaseFragment {
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        ViewTreeObserver observer =  ssivImage.getViewTreeObserver();
-                        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                if(observer.isAlive()){
-                                    observer.removeOnPreDrawListener(this);
-                                }
-                                ssivImage.setImage(ImageSource.bitmap(resource.copy(resource.getConfig(), true)), initImageViewState(resource.getWidth(), resource.getHeight(), ssivImage.getMeasuredWidth(), ssivImage.getMeasuredHeight()));
-                                return true;
-                            }
-                        });
+                        ssivImage.post(() -> ssivImage.setImage(ImageSource.bitmap(resource), initImageViewState(resource.getWidth(), resource.getHeight(), ssivImage.getMeasuredWidth(), ssivImage.getMeasuredHeight())));
                     }
                 });
         ssivImage.setOnClickListener(v -> {
-            Log.e(TAG, "SSIV click! showActionBar="+String.valueOf(showActionBar));
             startActionBarAnim();
         });
         tvDownload.setOnClickListener(v -> saveImage());
     }
 
-    private ImageViewState initImageViewState(int imgWidth, int imgHeight, int viewWidth, int viewHeight){
+    private ImageViewState initImageViewState(int imgWidth, int imgHeight, int viewWidth, int viewHeight) {
         PointF center = new PointF(imgWidth / 2, imgHeight / 2);
         int orientation = 0;
         float scale = 1.0F;
@@ -101,7 +90,7 @@ public class WatchImageFragment extends BaseFragment {
         return new ImageViewState(scale, center, orientation);
     }
 
-    private void saveImage(){
+    private void saveImage() {
         Glide.with(this)
                 .load(bigImageUrl)
                 .asBitmap()
@@ -114,16 +103,16 @@ public class WatchImageFragment extends BaseFragment {
                 });
     }
 
-    private void startActionBarAnim(){
+    private void startActionBarAnim() {
         showActionBar = !showActionBar;
-        if(showActionBar){
+        if (showActionBar) {
             alphaAnim(appActionBar, 0F, 1F);
-        }else {
+        } else {
             alphaAnim(appActionBar, 1F, 0F);
         }
     }
 
-    private void alphaAnim(View view, float start, float end){
+    private void alphaAnim(View view, float start, float end) {
         ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(view, "alpha", start, end);
         alphaAnimation.setDuration(500);
         alphaAnimation.setRepeatCount(0);

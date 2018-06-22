@@ -23,7 +23,7 @@ public class TipsDialog extends DialogFragment {
     private ButtonClickListener mListener;
     private String mTitle, mContent, mLeftBtnTxt, mRightBtnTxt;
 
-    public static TipsDialog getInstance(String title, String content, String leftBtnTxt, String rightBtnTxt, ButtonClickListener listener){
+    public static TipsDialog getInstance(String title, String content, String leftBtnTxt, String rightBtnTxt, ButtonClickListener listener) {
         TipsDialog dialog = new TipsDialog();
         dialog.mTitle = title;
         dialog.mContent = content;
@@ -46,7 +46,7 @@ public class TipsDialog extends DialogFragment {
         tvRight.setText(mRightBtnTxt);
         tvTitle.setText(mTitle);
         tvContent.setText(mContent);
-        if(mListener != null){
+        if (mListener != null) {
             tvLeft.setOnClickListener(v -> {
                 mListener.leftButtonClick();
                 dismiss();
@@ -55,7 +55,7 @@ public class TipsDialog extends DialogFragment {
                 mListener.rightButtonClick();
                 dismiss();
             });
-        }else {
+        } else {
             tvLeft.setOnClickListener(v -> dismiss());
             tvRight.setOnClickListener(v -> dismiss());
         }
@@ -67,18 +67,19 @@ public class TipsDialog extends DialogFragment {
         Window window = getDialog().getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
         super.onActivityCreated(savedInstanceState);
-        window.setBackgroundDrawable( new ColorDrawable(0x00000000));
+        window.setBackgroundDrawable(new ColorDrawable(0x00000000));
     }
 
-    private void initData(){
+    private void initData() {
         mTitle = mTitle == null ? "提示" : mTitle;
         mContent = mContent == null ? "" : mContent;
         mLeftBtnTxt = mLeftBtnTxt == null ? "取消" : mLeftBtnTxt;
         mRightBtnTxt = mRightBtnTxt == null ? "确定" : mRightBtnTxt;
     }
 
-    public interface ButtonClickListener{
+    public interface ButtonClickListener {
         void leftButtonClick();
+
         void rightButtonClick();
     }
 }

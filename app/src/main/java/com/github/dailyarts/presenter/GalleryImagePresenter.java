@@ -18,7 +18,7 @@ public class GalleryImagePresenter implements GalleryImagesContract.IPresenter {
     private GalleryImagesContract.IView mView;
     private GalleryImagesRepository mGalleryImagesRepository;
 
-    public GalleryImagePresenter(GalleryImagesContract.IView view, GalleryImagesRepository galleryImagesRepository){
+    public GalleryImagePresenter(GalleryImagesContract.IView view, GalleryImagesRepository galleryImagesRepository) {
         mView = view;
         mGalleryImagesRepository = galleryImagesRepository;
     }

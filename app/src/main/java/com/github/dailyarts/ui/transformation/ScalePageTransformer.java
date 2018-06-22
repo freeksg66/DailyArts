@@ -8,14 +8,14 @@ import android.view.View;
  * Created by legao005426 on 2018/5/18.
  */
 
-public class ScalePageTransformer implements ViewPager.PageTransformer{
+public class ScalePageTransformer implements ViewPager.PageTransformer {
     private static final String TAG = "ScalePageTransformer";
-    public static final float MAX_SCALE = 1.0f ;
-    public static final float MIN_SCALE = 0.9f ;
+    public static final float MAX_SCALE = 1.0f;
+    public static final float MIN_SCALE = 0.9f;
 
     private float excursion = 0;
 
-    public ScalePageTransformer(float excursion){
+    public ScalePageTransformer(float excursion) {
         this.excursion = excursion;
     }
 
@@ -26,9 +26,9 @@ public class ScalePageTransformer implements ViewPager.PageTransformer{
 
         position = position + excursion;
         //Log.e(TAG, "ViewId="+view.toString()+", position="+String.valueOf(position)+", offset="+String.valueOf(excursion));
-        if(position < -1){ // [-Infinity, -1)
+        if (position < -1) { // [-Infinity, -1)
             position = -1;
-        }else if(position > 1 ){  // (+1, Infinity]
+        } else if (position > 1) {  // (+1, Infinity]
             position = 1;
         }
 

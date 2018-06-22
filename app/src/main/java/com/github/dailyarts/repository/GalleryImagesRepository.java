@@ -17,7 +17,7 @@ import rx.Observable;
  */
 
 public class GalleryImagesRepository extends BaseRepository implements GalleryImagesDataSource {
-    public GalleryImagesRepository(RxLifecycleBinder binder){
+    public GalleryImagesRepository(RxLifecycleBinder binder) {
         super(binder);
     }
 

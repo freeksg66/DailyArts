@@ -18,7 +18,7 @@ public class FindArtsPresenter implements FindArtsContract.IPresenter {
     private FindArtsContract.IView mView;
     private FindArtsRepository mFindArtsRepository;
 
-    public FindArtsPresenter(FindArtsRepository repository, FindArtsContract.IView view){
+    public FindArtsPresenter(FindArtsRepository repository, FindArtsContract.IView view) {
         mFindArtsRepository = repository;
         mView = view;
     }
@@ -31,9 +31,9 @@ public class FindArtsPresenter implements FindArtsContract.IPresenter {
                 .subscribe(new NetSubscriber<ImageMessageListModel>() {
                     @Override
                     public void onSuccess(ImageMessageListModel imageMessageListModel) {
-                        if(imageMessageListModel == null || imageMessageListModel.getData() == null || imageMessageListModel.getData().size() <= 0){
+                        if (imageMessageListModel == null || imageMessageListModel.getData() == null || imageMessageListModel.getData().size() <= 0) {
                             mView.showNothing();
-                        }else {
+                        } else {
                             mView.showImageList(imageMessageListModel.getData());
                         }
                     }

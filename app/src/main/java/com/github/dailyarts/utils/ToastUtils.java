@@ -29,7 +29,7 @@ public class ToastUtils {
 
     private static Toast getToast(Context context, String text, int duration) {
         if (null == mInnerToast) {
-            mInnerToast = Toast.makeText(context,"",Toast.LENGTH_SHORT);
+            mInnerToast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
         }
         mInnerToast.setText(text);
         mInnerToast.setDuration(duration);

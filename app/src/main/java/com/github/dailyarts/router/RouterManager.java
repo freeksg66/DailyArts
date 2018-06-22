@@ -90,14 +90,14 @@ public class RouterManager {
     /**
      * 带Parcelable参数
      */
-    public void startActivity(String uri, String tag, Parcelable value){
+    public void startActivity(String uri, String tag, Parcelable value) {
         ARouter.getInstance().build(uri).withParcelable(tag, value).navigation();
     }
 
     /**
      * 带Parcelable参数
      */
-    public void startActivity(String uri, String tag, String value){
+    public void startActivity(String uri, String tag, String value) {
         ARouter.getInstance().build(uri).withString(tag, value).navigation();
     }
 
@@ -153,7 +153,7 @@ public class RouterManager {
         startWithFlag(builder.buildUri(), flags);
     }
 
-    public BaseFragment getFragment(String path){
+    public BaseFragment getFragment(String path) {
         return (BaseFragment) ARouter.getInstance().build(path).navigation();
     }
 }

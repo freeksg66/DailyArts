@@ -36,12 +36,12 @@ public abstract class NetSubscriber<T> extends Subscriber<Response<T>> {
         netError.throwable = error;
 
         try {
-            NetError tempError = new Gson().fromJson(error.getMessage(),NetError.class);
-            if (null != tempError.status && tempError.status>=500){
+            NetError tempError = new Gson().fromJson(error.getMessage(), NetError.class);
+            if (null != tempError.status && tempError.status >= 500) {
                 netError.code = NetErrorCode.SERVER_ERROR;
                 netError.message = "服务器异常";
                 netError.throwable = error;
-            }else {
+            } else {
                 netError.code = tempError.code;
                 netError.message = tempError.message;
             }
