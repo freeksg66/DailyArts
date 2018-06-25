@@ -1,5 +1,6 @@
 package com.github.dailyarts.ui.fragment;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -70,6 +71,10 @@ public class ImageDetailsFragment extends BaseFragment {
     private int mTextSlideHeight = 0; // 描述部分滑动距离
     private int mToolsHeight = 0; // 底部工具栏滑动距离
 
+    private int mImageWidth = 0;
+    private int mImageHeight = 0;
+    private float mScale = 1.0F;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -109,7 +114,12 @@ public class ImageDetailsFragment extends BaseFragment {
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        ssivBigImage.post(() -> ssivBigImage.setImage(ImageSource.bitmap(resource), initImageViewState(resource.getWidth(), resource.getHeight(), ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight())));
+                        mImageWidth = resource.getWidth();
+                        mImageHeight = resource.getHeight();
+                        ssivBigImage.post(() -> {
+                            mScale = initImageViewScale(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight());
+                            ssivBigImage.setImage(ImageSource.bitmap(resource), initImageViewState(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight()));
+                        });
                     }
                 });
         Glide.with(this)
@@ -122,6 +132,7 @@ public class ImageDetailsFragment extends BaseFragment {
 
         isZoomEnable = false;
         ssivBigImage.setZoomEnabled(false);
+        ssivBigImage.setPanEnabled(false);
 
         isFirstPage = true;
 
@@ -149,6 +160,13 @@ public class ImageDetailsFragment extends BaseFragment {
         ssivBigImage.setOnClickListener(v -> {
             isZoomEnable = !isZoomEnable;
             ssivBigImage.setZoomEnabled(isZoomEnable);
+            ssivBigImage.setPanEnabled(isZoomEnable);
+            if(!isZoomEnable){
+                SubsamplingScaleImageView.AnimationBuilder animationBuilder= ssivBigImage.animateScaleAndCenter(mScale, new PointF(mImageWidth / 2, mImageHeight / 2));
+                if(animationBuilder != null){
+                    animationBuilder.start();
+                }
+            }
             animZoomEnable(isZoomEnable);
         });
         rlCover.setOnClickListener(v -> {
@@ -219,8 +237,6 @@ public class ImageDetailsFragment extends BaseFragment {
         }
         alphaAnim(appActionBar, start, end);
         alphaAnim(rlCover, start, end);
-        appActionBar.setVisibility(visible);
-        rlCover.setVisibility(visible);
     }
 
     private void animJumpPage(boolean isFirstPage){
@@ -246,13 +262,18 @@ public class ImageDetailsFragment extends BaseFragment {
     private ImageViewState initImageViewState(int imgWidth, int imgHeight, int viewWidth, int viewHeight){
         PointF center = new PointF(imgWidth / 2, imgHeight / 2);
         int orientation = 0;
+        float scale = initImageViewScale(imgWidth, imgHeight, viewWidth, viewHeight);
+        return new ImageViewState(scale, center, orientation);
+    }
+
+    private float initImageViewScale(int imgWidth, int imgHeight, int viewWidth, int viewHeight){
         float scale = 1.0F;
         float scaleX = (float) viewWidth / imgWidth;
         float scaleY = (float) viewHeight / imgHeight;
         if (imgWidth > 0 && imgHeight > 0 && viewWidth > 0 && viewHeight > 0) {
             scale = scaleX > scaleY ? scaleX : scaleY;
         }
-        return new ImageViewState(scale, center, orientation);
+        return scale;
     }
 
     /**
@@ -265,6 +286,34 @@ public class ImageDetailsFragment extends BaseFragment {
         alphaAnimation.setRepeatMode(ValueAnimator.REVERSE);
         alphaAnimation.setStartDelay(0);
         alphaAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        alphaAnimation.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if(appActionBar.getVisibility() == View.GONE) {
+                    appActionBar.setVisibility(View.VISIBLE);
+                }
+                if(rlCover.getVisibility() == View.GONE) {
+                    rlCover.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                int visible = isZoomEnable ? View.GONE : View.VISIBLE;
+                appActionBar.setVisibility(visible);
+                rlCover.setVisibility(visible);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         alphaAnimation.start();
     }
 

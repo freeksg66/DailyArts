@@ -39,6 +39,7 @@ public class WatchImageFragment extends BaseFragment {
     private SubsamplingScaleImageView ssivImage;
 
     private boolean showActionBar = true;
+    private boolean isZoomEnabled = false;
 
     private String bigImageUrl;
 
@@ -72,7 +73,12 @@ public class WatchImageFragment extends BaseFragment {
                         ssivImage.post(() -> ssivImage.setImage(ImageSource.bitmap(resource), initImageViewState(resource.getWidth(), resource.getHeight(), ssivImage.getMeasuredWidth(), ssivImage.getMeasuredHeight())));
                     }
                 });
+        ssivImage.setZoomEnabled(false);
+        ssivImage.setPanEnabled(false);
         ssivImage.setOnClickListener(v -> {
+            isZoomEnabled = !isZoomEnabled;
+            ssivImage.setZoomEnabled(isZoomEnabled);
+            ssivImage.setPanEnabled(isZoomEnabled);
             startActionBarAnim();
         });
         tvDownload.setOnClickListener(v -> saveImage());
