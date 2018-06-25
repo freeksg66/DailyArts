@@ -1,8 +1,6 @@
 package com.github.dailyarts.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.dailyarts.R;
@@ -33,14 +30,11 @@ import com.github.dailyarts.presenter.FindArtsPresenter;
 import com.github.dailyarts.repository.FindArtsRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
-import com.github.dailyarts.ui.activity.MainActivity;
-import com.github.dailyarts.ui.activity.MyGalleryActivity;
-import com.github.dailyarts.ui.activity.PaintingDemandActivity;
 import com.github.dailyarts.ui.adapter.FindArtsAdapter;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
-import com.github.dailyarts.utils.DataCleanUtils;
+import com.github.dailyarts.utils.CacheUtils;
 import com.github.dailyarts.utils.DeviceInfo;
 
 import java.util.ArrayList;
@@ -166,7 +160,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             @Override
             public void onClick(View v) {
                 try {
-                    String content = "目前缓存" + DataCleanUtils.getCacheSize(getContext().getCacheDir().getAbsoluteFile()) + "，\n您确定要清除缓存吗？";
+                    String content = "目前缓存" + CacheUtils.getTotalCacheSize(getContext()) + "，\n您确定要清除缓存吗？";
                     TipsDialog.ButtonClickListener listener = new TipsDialog.ButtonClickListener() {
                         @Override
                         public void leftButtonClick() {
@@ -174,8 +168,9 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
                         @Override
                         public void rightButtonClick() {
-                            DataCleanUtils.cleanInternalCache(getContext());
-                            DataCleanUtils.cleanExternalCache(getContext());
+                            new Thread(() -> {
+                                CacheUtils.clearAllCache(getContext());
+                            }).start();
                         }
                     };
                     TipsDialog dialog = TipsDialog.getInstance("提示", content, "取消", "确定", listener);
