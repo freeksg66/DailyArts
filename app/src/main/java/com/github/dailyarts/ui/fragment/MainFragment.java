@@ -250,7 +250,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             item = new GalleryItemFragment();
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
-            item.setData(new DateModel(c.get(Calendar.YEAR) - 2, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
+            item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
             mFragments.add(item);
         }
 

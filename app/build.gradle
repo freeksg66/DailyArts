@@ -46,7 +46,6 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-
     api rootProject.ext.dependencies["appcompat-v7"]
     api rootProject.ext.dependencies["recyclerview-v7"]
     api rootProject.ext.dependencies["design"]
@@ -68,8 +67,8 @@ dependencies {
     api rootProject.ext.dependencies["subsampling-scale-image-view"]
     api rootProject.ext.dependencies["eventbus"]
     api rootProject.ext.dependencies["easydeviceinfo"]
-
     implementation rootProject.ext.dependencies["jsr250-api"]
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["parceler"]
+    implementation project(':arts-social')
 }
