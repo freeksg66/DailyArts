@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DailyArts</string>
+    <string name="toast_network_not_enable">网络未连接</string>
+    <string name="share_title">#每日名画#</string>
+    <string name="share_content">我很喜欢X的《X》，你也来看看吧！</string>
 </resources>

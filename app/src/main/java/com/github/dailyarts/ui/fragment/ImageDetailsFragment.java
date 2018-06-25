@@ -26,6 +26,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.github.arts_social.ShareContent;
+import com.github.arts_social.ShareDialog;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.ImageModel;
 import com.github.dailyarts.event.CollectionEvent;
@@ -181,6 +183,7 @@ public class ImageDetailsFragment extends BaseFragment {
         ivComment.setOnClickListener(v -> ToastUtils.show(getContext(), "评论功能暂未开放！"));
         ivCollection.setOnClickListener(v -> collectImage());
         ivDownload.setOnClickListener(v -> saveImage());
+        ivShare.setOnClickListener(v -> shareToOthers());
 
         appActionBar.setLeftBackBtnClickListener(v -> backFunction());
     }
@@ -221,6 +224,18 @@ public class ImageDetailsFragment extends BaseFragment {
                         ToastUtils.show(getContext(), "保存成功");
                     }
                 });
+    }
+
+    private void shareToOthers(){
+        if (!DeviceInfo.isNetworkAvailable(getContext())) {
+            ToastUtils.show(getContext(), getString(R.string.toast_network_not_enable));
+            return;
+        }
+        String content = "我很喜欢"+mImageModel.getAuthor()+"的《"+mImageModel.getName()+"》，你也来看看吧！";
+        ShareContent shareContent = new ShareContent(getString(R.string.share_title), mImageModel.getBigImg(), content, mImageModel.getBigImg());
+        ShareDialog.getInstance(getHoldingActivity())
+                .withShareContent(shareContent)
+                .show();
     }
 
     private void animZoomEnable(boolean enable){
