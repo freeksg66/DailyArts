@@ -67,6 +67,8 @@ dependencies {
     api rootProject.ext.dependencies["subsampling-scale-image-view"]
     api rootProject.ext.dependencies["eventbus"]
     api rootProject.ext.dependencies["easydeviceinfo"]
+    api rootProject.ext.dependencies["bugly"]
+    api rootProject.ext.dependencies["buglynative"]
     implementation rootProject.ext.dependencies["jsr250-api"]
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["parceler"]

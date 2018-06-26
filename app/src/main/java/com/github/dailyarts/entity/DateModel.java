@@ -8,30 +8,13 @@ import java.util.Calendar;
 
 public class DateModel {
     private Calendar mCalendar;
-    public int year, month, day, offset;
+    public int year, month, day;
 
-    public DateModel(int year, int month, int day, int offset) {
+    public DateModel(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
-        this.offset = offset;
         mCalendar = Calendar.getInstance();
-    }
-
-    public DateModel getYesterday() {
-        mCalendar.set(Calendar.YEAR, year);
-        mCalendar.set(Calendar.MONTH, month);
-        mCalendar.set(Calendar.DAY_OF_MONTH, day);
-        mCalendar.add(Calendar.DAY_OF_MONTH, -1);
-        return new DateModel(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), offset - 1);
-    }
-
-    public DateModel getTomorrow() {
-        mCalendar.set(Calendar.YEAR, year);
-        mCalendar.set(Calendar.MONTH, month);
-        mCalendar.set(Calendar.DAY_OF_MONTH, day);
-        mCalendar.add(Calendar.DAY_OF_MONTH, 1);
-        return new DateModel(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), offset + 1);
     }
 
     public int toInt() {

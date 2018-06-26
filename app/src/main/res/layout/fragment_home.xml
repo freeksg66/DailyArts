@@ -9,6 +9,13 @@
         android:id="@+id/mine_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_height"/>
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="更新"
+        android:gravity="center"
+        android:visibility="gone"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_home_gallery"

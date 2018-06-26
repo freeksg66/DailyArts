@@ -1,6 +1,7 @@
 package com.github.dailyarts.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -47,6 +48,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     private ImageModel mImageModel;
 
     private GalleryImagesContract.IPresenter mPresenter;
+    private int mOffset;
 
     @Override
     protected int getLayoutResource() {
@@ -85,8 +87,14 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
             }
         });
 
+        loadData();
+    }
+
+    public void loadData(){
+        if(rootView == null) return;
+        if(mPresenter == null) return;
         if (null != mDateModel) {
-            if (mDateModel.offset == 1) {
+            if (mOffset == 1) {
                 ivGalleryImage.setImageResource(R.drawable.tomorrow);
             } else {
                 mPresenter.getImage(mDateModel.toInt());
@@ -119,11 +127,27 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     public void setData(DateModel dateModel, int offset) {
         mDateModel = dateModel;
+        mOffset = offset;
         isTomorrow = offset == 1;
     }
 
     public void setData(ImageModel imageModel) {
         mImageModel = imageModel;
+    }
+
+    public void updateData(DateModel dateModel, int offset) {
+        mDateModel = dateModel;
+        mOffset = offset;
+        isTomorrow = offset == 1;
+        loadData();
+    }
+
+    public void updateData(ImageModel imageModel) {
+        mImageModel = imageModel;
+    }
+
+    public int getOffset(){
+        return mOffset;
     }
 
     private void toImageDetail() {
@@ -169,8 +193,10 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     @Override
     public void loadPicture(ImageModel imageModel) {
+        if(getContext() == null) return;
         mImageModel = imageModel;
         mLoadSuccess = false;
+        Log.e(TAG, "date = " + String.valueOf(mDateModel.toInt()));
         Glide.with(getContext())
                 .load(imageModel.getBigImg())
                 .asBitmap()
@@ -186,6 +212,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     @Override
     public void loadPictureFail(String errorMessage) {
+        if(getContext() == null) return;
         ToastUtils.show(getContext(), errorMessage);
     }
 

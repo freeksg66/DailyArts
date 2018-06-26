@@ -56,5 +56,7 @@ ext {
             "subsampling-scale-image-view":"com.davemorrissey.labs:subsampling-scale-image-view:3.10.0",
             "eventbus"                    : "org.greenrobot:eventbus:3.1.1",
             "easydeviceinfo"              : "com.github.nisrulz:easydeviceinfo:2.0.2",
+            "bugly"                       : "com.tencent.bugly:crashreport:latest.release",
+            "buglynative"                 : "com.tencent.bugly:nativecrashreport:latest.release",
     ]
 }

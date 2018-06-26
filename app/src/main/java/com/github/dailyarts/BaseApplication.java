@@ -2,10 +2,13 @@ package com.github.dailyarts;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.github.dailyarts.config.DebugConfig;
 import com.github.dailyarts.router.RouterManager;
+import com.github.dailyarts.service.UpdateInfoService;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.Serializable;
 
@@ -35,9 +38,12 @@ public abstract class BaseApplication extends Application implements Serializabl
     }
 
     protected void initInMainProcess() {
-        // 初始化用户登陆信息
-        // 获取Device ID传入Activity，方便动态权限管理
+        // 腾讯Bugly异常统计
+        CrashReport.initCrashReport(getApplicationContext(), "984810cb86", false);
         // 初始化路由
         RouterManager.init(DebugConfig.DEBUG, this);
+
+        Intent intent = new Intent(this, UpdateInfoService.class);
+        startService(intent);
     }
 }

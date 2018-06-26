@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.github.dailyarts.config.GlideCircleTransform;
 import com.github.dailyarts.contract.FindArtsContract;
 import com.github.dailyarts.entity.DateModel;
 import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.event.UpdateInfoEvent;
 import com.github.dailyarts.presenter.FindArtsPresenter;
 import com.github.dailyarts.repository.FindArtsRepository;
 import com.github.dailyarts.router.RouterConstant;
@@ -36,6 +38,9 @@ import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
 import com.github.dailyarts.utils.CacheUtils;
 import com.github.dailyarts.utils.DeviceInfo;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -250,7 +255,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             item = new GalleryItemFragment();
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
-            item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), 2 + i - mFragmentsLength), offset);
+            item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), offset);
             mFragments.add(item);
         }
 
@@ -303,6 +308,8 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         appActionBar.hideLeftBtn();
         appActionBar.showUserSetting();
         appActionBar.showFindArts();
+
+        contentView.findViewById(R.id.btn_update).setOnClickListener(v -> updateInfo());
     }
 
     private void initDate() {
@@ -339,21 +346,59 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {
 
-        private List<Fragment> mFragments;
+        private List<Fragment> mFragmentList;
 
         public IdiotGalleryAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
-            mFragments = fragments;
+            mFragmentList = fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return mFragments.get(position);
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            return null == mFragments ? 0 : mFragments.size();
+            return null == mFragmentList ? 0 : mFragmentList.size();
         }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
+
+        public void setData(int pos, Fragment fragment){
+            if(pos < mFragmentList.size()){
+                mFragmentList.set(pos, fragment);
+            }else {
+                mFragmentList.add(fragment);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateInfo(UpdateInfoEvent event){
+        updateInfo();
+    }
+
+    private void updateInfo() {
+        // 更新左边界面的时间
+        initDate();
+        // 更新主界面的图像
+        Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        GalleryItemFragment item = new GalleryItemFragment();
+        item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), 1);
+        for(int i = mAdapter.getCount() - 1; i >= 0; i--) {
+            GalleryItemFragment fragment = (GalleryItemFragment) mAdapter.getItem(i);
+            c.add(Calendar.DAY_OF_MONTH, -1);
+            fragment.updateData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), fragment.getOffset() - 1);
+            mAdapter.setData(i, fragment);
+        }
+        mAdapter.setData(mAdapter.getCount(), item);
+        mAdapter.notifyDataSetChanged();
     }
 }
