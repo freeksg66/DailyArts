@@ -80,6 +80,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private static final int MID_BTN = 0;
 
     private int swipeStatus = MID_BTN;
+    private boolean isFirstOpen = true;
 
     private FindArtsContract.IPresenter mPresenter;
 
@@ -379,7 +380,11 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateInfo(UpdateInfoEvent event){
-        updateInfo();
+        if(isFirstOpen){
+            isFirstOpen = false;
+        }else {
+            updateInfo();
+        }
     }
 
     private void updateInfo() {
