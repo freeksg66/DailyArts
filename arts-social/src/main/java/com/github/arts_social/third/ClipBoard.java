@@ -7,16 +7,14 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.github.arts_social.IShare;
 import com.github.arts_social.R;
 import com.github.arts_social.ShareContent;
-import com.github.arts_social.SocialType;
 
 /**
  * Created by legao005426 on 2018/6/25.
  */
 
-public class ClipBoard implements IShare {
+public class ClipBoard { //implements IShare {
 
     private Activity mActivity;
     private ClipboardManager mManager;
@@ -30,18 +28,18 @@ public class ClipBoard implements IShare {
         return new ClipBoard(activity);
     }
 
-    @Override
-    public void share(SocialType type, ShareContent content) {
-        if (SocialType.CLIPBOARD.equals(type) && null != content.url) {
-            StringBuffer sb = new StringBuffer();
-            sb.append(content.title).append(" ");
-            if (!TextUtils.isEmpty(content.description)){
-                sb.append(content.description).append(" ");
-            }
-            sb.append(content.url);
-            ClipData data = ClipData.newPlainText("text",sb);
-            mManager.setPrimaryClip(data);
-            Toast.makeText(mActivity, mActivity.getText(R.string.toast_share_copy_to_clipboard), Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    public void share(SocialType type, ShareContent content) {
+//        if (SocialType.CLIPBOARD.equals(type) && null != content.url) {
+//            StringBuffer sb = new StringBuffer();
+//            sb.append(content.title).append(" ");
+//            if (!TextUtils.isEmpty(content.description)){
+//                sb.append(content.description).append(" ");
+//            }
+//            sb.append(content.url);
+//            ClipData data = ClipData.newPlainText("text",sb);
+//            mManager.setPrimaryClip(data);
+//            Toast.makeText(mActivity, mActivity.getText(R.string.toast_share_copy_to_clipboard), Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }

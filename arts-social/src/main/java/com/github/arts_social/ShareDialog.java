@@ -94,31 +94,6 @@ public class ShareDialog extends Dialog {
             platformViewHolder.rlPlatform.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (position) {
-                        case 0:
-                            ThirdParty.with((Activity) mContext, SocialType.WECHAT).share(mShareContent);
-                            break;
-
-                        case 1:
-                            ThirdParty.with((Activity) mContext, SocialType.MOMENT).share(mShareContent);
-                            break;
-
-                        case 2:
-                            ThirdParty.with((Activity) mContext, SocialType.QQ).share(mShareContent);
-                            break;
-
-                        case 3:
-                            ThirdParty.with((Activity) mContext, SocialType.QZONE).share(mShareContent);
-                            break;
-
-                        case 4:
-                            ThirdParty.with((Activity) mContext, SocialType.SINA).share(mShareContent);
-                            break;
-
-                        case 5:
-                            ThirdParty.with((Activity) mContext, SocialType.CLIPBOARD).share(mShareContent);
-                            break;
-                    }
                     dismiss();
                 }
             });
