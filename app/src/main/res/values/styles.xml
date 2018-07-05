@@ -21,4 +21,10 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="shareDialogAnim" parent="android:Animation">
+        <item name="android:windowNoTitle">true</item>//无标题
+        <item name="@android:windowEnterAnimation">@anim/bottom_enter</item>
+        <item name="@android:windowExitAnimation">@anim/bottom_exit</item>
+    </style>
+
 </resources>

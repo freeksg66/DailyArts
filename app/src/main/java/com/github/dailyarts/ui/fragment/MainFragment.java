@@ -342,8 +342,6 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
                 .titleBgColor(getContext().getResources().getColor(R.color.white))
                 .titleSubmitTextColor(getContext().getResources().getColor(R.color.black))
                 .titleTextColor(getContext().getResources().getColor(R.color.black))
-                // 裁剪 (只有单选可裁剪)
-                //.crop()
                 // 开启拍照功能 （默认关闭）
                 .pathList(mDatas)
                 .requestCode(MainFragment.REQUEST_CODE)

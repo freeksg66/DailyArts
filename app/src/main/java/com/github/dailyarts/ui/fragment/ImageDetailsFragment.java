@@ -33,6 +33,7 @@ import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.activity.WatchImageActivity;
 import com.github.dailyarts.ui.widget.AppActionBar;
+import com.github.dailyarts.ui.widget.ShareDialog;
 import com.github.dailyarts.utils.DeviceInfo;
 import com.github.dailyarts.utils.ImageLoadUtils;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
@@ -230,6 +231,8 @@ public class ImageDetailsFragment extends BaseFragment {
             return;
         }
         String content = "我很喜欢"+mImageModel.getAuthor()+"的《"+mImageModel.getName()+"》，你也来看看吧！";
+        ShareDialog shareDialog = ShareDialog.getInstance(getContext(), mImageModel.getPic());
+        shareDialog.show(getFragmentManager(), ShareDialog.class.getSimpleName());
     }
 
     private void animZoomEnable(boolean enable){
