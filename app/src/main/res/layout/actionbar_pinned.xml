@@ -86,6 +86,18 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_right_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"/>
     </RelativeLayout>
     <View
         android:id="@+id/title_line"

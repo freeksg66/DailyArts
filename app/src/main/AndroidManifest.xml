@@ -42,6 +42,7 @@
         <activity android:name=".ui.activity.CommentsActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.ImageDetailsActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.WatchImageActivity" android:theme="@style/AppTheme.NoBar"/>
+        <activity android:name=".ui.widget.imagespickers.ImageSelectorActivity" android:theme="@style/AppTheme.NoBar"/>
 
         <receiver android:name=".receiver.NetConnectionChangeReceiver">
             <intent-filter>

@@ -3,4 +3,14 @@
     <string name="toast_network_not_enable">网络未连接</string>
     <string name="share_title">#每日名画#</string>
     <string name="share_content">我很喜欢X的《X》，你也来看看吧！</string>
+
+    <!--图片选择器-->
+    <string name="all_folder">所有图片</string>
+    <string name="sheet">张</string>
+    <string name="shoot">拍摄照片</string>
+    <string name="open_camera_fail">相册初始化失败!</string>
+    <string name="empty_sdcard">没有SD卡</string>
+    <string name="finish">完成</string>
+    <string name="msg_no_camera">没有系统相机</string>
+    <string name="msg_amount_limit">已经达到最高选择数量</string>
 </resources>

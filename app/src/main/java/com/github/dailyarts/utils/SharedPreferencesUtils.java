@@ -72,4 +72,14 @@ public class SharedPreferencesUtils {
         }
         return false;
     }
+
+    public static void saveUserProfile(Context context, String uri) {
+        SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
+        preferences.edit().putString(Constant.SHAREPREFRENCE_USER_PROFILE, uri).apply();
+    }
+
+    public static String getUserProfile(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(Constant.SHAREPREFRENCE, Context.MODE_PRIVATE);
+        return preferences.getString(Constant.SHAREPREFRENCE_USER_PROFILE, null);
+    }
 }

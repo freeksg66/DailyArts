@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.dailyarts.R;
+import com.github.dailyarts.utils.StringUtils;
 
 /**
  * Created by legao005426 on 2018/6/12.
@@ -27,8 +28,11 @@ public class AppActionBar extends FrameLayout {
     private TextView tvDownload;
     private ImageView ivFindImages;
     private TextView tvSubmit;
+    private TextView mRightTv;
 
     private boolean mInterruptBackEvent;
+
+    private ActionBarListener mListener;
 
     public AppActionBar(@NonNull Context context) {
         super(context);
@@ -56,6 +60,7 @@ public class AppActionBar extends FrameLayout {
         tvDownload = (TextView) findViewById(R.id.tv_download_image);
         ivFindImages = (ImageView) findViewById(R.id.iv_find_arts);
         tvSubmit = (TextView) findViewById(R.id.tv_submit);
+        mRightTv = (TextView) findViewById(R.id.tv_right_btn);
 
         mInterruptBackEvent = false;
     }
@@ -75,6 +80,38 @@ public class AppActionBar extends FrameLayout {
         if (mContext instanceof Activity) {
             ivLeftBtn.setOnClickListener(v -> ((Activity) mContext).finish());
         }
+    }
+
+    public interface ActionBarListener {
+        /**
+         * 布局点击回调接口
+         *
+         * @param event 使用ActionBarEvent枚举分类，客户端通过event进行相应回调事件调用
+         */
+        void onEvent(final ActionBarEvent event);
+    }
+
+    public enum ActionBarEvent {
+        LEFT_TEXT_CLICK,
+        LEFT_IMG_CLICK,
+        RIGHT_TEXT_CLICK,
+        RIGHT_IMG_CLICK,
+        RIGHT_IMG_CLICK1,
+        CLOSE_CLICK
+    }
+
+    public void setListener(final ActionBarListener listener) {
+        if (listener == null) {
+            return;
+        }
+        mListener = listener;
+
+        mRightTv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onEvent(ActionBarEvent.RIGHT_TEXT_CLICK);
+            }
+        });
     }
 
     public void hideLeftBtn() {
@@ -116,5 +153,12 @@ public class AppActionBar extends FrameLayout {
 
     public void setLeftBackBtnClickListener(OnClickListener listener) {
         ivLeftBtn.setOnClickListener(listener);
+    }
+
+    public void setRightTx(CharSequence text) {
+        if (!StringUtils.isEmpty(text) && mRightTv != null) {
+            mRightTv.setVisibility(View.VISIBLE);
+            mRightTv.setText(text);
+        }
     }
 }

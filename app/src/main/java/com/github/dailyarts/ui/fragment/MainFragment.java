@@ -1,6 +1,11 @@
 package com.github.dailyarts.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,8 +41,13 @@ import com.github.dailyarts.ui.adapter.FindArtsAdapter;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
+import com.github.dailyarts.ui.widget.imagespickers.ImageConfig;
+import com.github.dailyarts.ui.widget.imagespickers.ImageLoader;
+import com.github.dailyarts.ui.widget.imagespickers.ImageSelector;
+import com.github.dailyarts.ui.widget.imagespickers.ImageSelectorActivity;
 import com.github.dailyarts.utils.CacheUtils;
 import com.github.dailyarts.utils.DeviceInfo;
+import com.github.dailyarts.utils.SharedPreferencesUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -46,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by legao005426 on 2018/6/11.
@@ -84,6 +96,9 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
     private FindArtsContract.IPresenter mPresenter;
 
+    public static final int REQUEST_CODE = 1001;
+    private ArrayList<String> mDatas;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_main;
@@ -91,6 +106,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
     @Override
     protected void onInitView() {
+        mDatas = new ArrayList<>();
         mPresenter = new FindArtsPresenter(new FindArtsRepository(getHoldingActivity()), this);
 
         mDrawer = rootView.findViewById(R.id.dl_main_drawer);
@@ -198,14 +214,15 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
                 RouterManager.getInstance().startActivity(RouterConstant.AboutActivityConst.PATH);
             }
         });
-        ivUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserProfile();
-            }
-        });
-
-        //Glide.with(this).load(R.drawable.v_account_head_picture).bitmapTransform(new GlideCircleTransform(getContext())).into(ivUserProfile);
+        ivUserProfile.setOnClickListener(v ->getUserProfile());
+        String profilePath = SharedPreferencesUtils.getUserProfile(getContext());
+        if(profilePath != null) {
+            Glide.with(this)
+                    .load(profilePath)
+                    .placeholder(R.drawable.v_account_head_picture)
+                    .bitmapTransform(new GlideCircleTransform(getContext()))
+                    .into(ivUserProfile);
+        }
 
         mLeftContainer.addView(leftView);
     }
@@ -320,7 +337,21 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     }
 
     private void getUserProfile() {
-        //
+        ImageConfig imageConfig = new ImageConfig.Builder()
+                .steepToolBarColor(getContext().getResources().getColor(R.color.transparent))
+                .titleBgColor(getContext().getResources().getColor(R.color.white))
+                .titleSubmitTextColor(getContext().getResources().getColor(R.color.black))
+                .titleTextColor(getContext().getResources().getColor(R.color.black))
+                // 裁剪 (只有单选可裁剪)
+                //.crop()
+                // 开启拍照功能 （默认关闭）
+                .pathList(mDatas)
+                .requestCode(MainFragment.REQUEST_CODE)
+                .mutiSelectMaxSize(1)
+                .showCamera()
+                //设置显示容器
+                .build();
+        ImageSelector.open(this, imageConfig);
     }
 
     private void hideSoftKeyboard(Context context) {
@@ -343,6 +374,22 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     public void showNothing() {
         rlFindNothing.setVisibility(View.VISIBLE);
         rvFindArts.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+            if(pathList != null && pathList.size() == 1) {
+                Glide.with(this)
+                        .load(pathList.get(0))
+                        .placeholder(R.drawable.v_account_head_picture)
+                        .bitmapTransform(new GlideCircleTransform(getContext()))
+                        .into(ivUserProfile);
+                SharedPreferencesUtils.saveUserProfile(getContext(), pathList.get(0));
+            }
+        }
     }
 
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {

@@ -10,6 +10,7 @@ public interface Constant {
 
     String SHAREPREFRENCE = "daily_arts_info";
     String SHAREPREFRENCE_COLLECTION_IMAGES = "collection_images";
+    String SHAREPREFRENCE_USER_PROFILE = "user_profile_path";
     String HTTP = "http";
     String HTTPS = "https";
 }

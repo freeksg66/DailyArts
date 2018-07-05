@@ -2,4 +2,7 @@
 <resources>
     <dimen name="action_bar_height">50dp</dimen>
     <dimen name="action_bar_padding">0dp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
+    <dimen name="image_selector_image_size">120dp</dimen>
+    <dimen name="image_selector_space_size">2dp</dimen>
 </resources>
