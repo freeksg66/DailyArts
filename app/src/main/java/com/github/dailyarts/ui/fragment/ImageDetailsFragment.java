@@ -129,7 +129,7 @@ public class ImageDetailsFragment extends BaseFragment {
                 .into(ivCover);
         tvImageName.setText(mImageModel.getName());
         tvImageAuthor.setText(mImageModel.getAuthor());
-        tvImageIntro.setText(mImageModel.getDetail());
+        tvImageIntro.setText("作品介绍：\n" + mImageModel.getDetail());
 
         isZoomEnable = false;
         ssivBigImage.setZoomEnabled(false);
