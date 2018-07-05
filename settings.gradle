@@ -1,1 +1,1 @@
-include ':app', ':arts-social', ':arts-email'
+include ':app', ':arts-email'

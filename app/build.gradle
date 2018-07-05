@@ -72,6 +72,5 @@ dependencies {
     implementation rootProject.ext.dependencies["jsr250-api"]
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["parceler"]
-    implementation project(':arts-social')
     implementation project(':arts-email')
 }

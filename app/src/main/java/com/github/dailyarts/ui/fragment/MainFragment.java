@@ -205,7 +205,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             }
         });
 
-        Glide.with(this).load(R.drawable.profile_placeholder).bitmapTransform(new GlideCircleTransform(getContext())).into(ivUserProfile);
+        //Glide.with(this).load(R.drawable.v_account_head_picture).bitmapTransform(new GlideCircleTransform(getContext())).into(ivUserProfile);
 
         mLeftContainer.addView(leftView);
     }
