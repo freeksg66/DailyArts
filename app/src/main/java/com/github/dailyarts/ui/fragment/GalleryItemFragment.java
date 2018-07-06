@@ -69,9 +69,12 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         /*
         * 字体
         * 楷体 simkai.ttf
-        * 华文行楷 STXINGKA.ttf
+        * 华文行楷 stxingka.ttf
+        * 华文隶书 stiliti.ttf
+        * 华文楷体 stkaiti.ttf
+        * 华文琥珀 sthupo.ttf
         * */
-        tvMonth.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "font/simkai.ttf"));
+        tvMonth.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "font/stiliti.ttf"));
         loadData();
     }
 
