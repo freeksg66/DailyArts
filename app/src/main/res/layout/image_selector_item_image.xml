@@ -21,8 +21,8 @@
 
     <ImageView
         android:id="@+id/photo_check"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/margin_35dp"
+        android:layout_height="@dimen/margin_35dp"
         android:layout_gravity="top|right"
         android:contentDescription="@null"
         android:src="@mipmap/image_selector_select_uncheck" />

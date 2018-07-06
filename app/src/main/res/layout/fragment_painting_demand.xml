@@ -13,27 +13,27 @@
     <EditText
         android:id="@+id/et_demand_message"
         android:layout_width="match_parent"
-        android:layout_height="257dp"
+        android:layout_height="@dimen/margin_257dp"
         android:hint="请输入您推荐的画家或名画名称，我们将会代为分享。感谢您！"
         android:gravity="top|left"
         android:textColorHint="@android:color/darker_gray"
         android:textColor="@color/white"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/margin_25dp"
         android:background="@color/colorEdit"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="5dp"/>
+        android:layout_marginLeft="@dimen/margin_10dp"
+        android:layout_marginRight="@dimen/margin_10dp"
+        android:padding="@dimen/margin_5dp"/>
     <EditText
         android:id="@+id/et_demand_contract_info"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="@dimen/margin_52dp"
         android:hint="请留下您的联系方式 如：QQ 电邮"
         android:textColorHint="@android:color/darker_gray"
         android:textColor="@color/white"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/margin_3dp"
         android:background="@color/colorEdit"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="5dp"/>
+        android:layout_marginLeft="@dimen/margin_10dp"
+        android:layout_marginRight="@dimen/margin_10dp"
+        android:padding="@dimen/margin_5dp"/>
 
 </LinearLayout>

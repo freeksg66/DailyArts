@@ -11,19 +11,19 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="@dimen/margin_10dp">
 
         <ImageView
             android:id="@+id/folder_image"
-            android:layout_width="86dp"
-            android:layout_height="86dp"
+            android:layout_width="@dimen/margin_86dp"
+            android:layout_height="@dimen/margin_86dp"
             android:contentDescription="@null"
             android:src="@mipmap/image_selector_default_img" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
             android:orientation="vertical">
 
             <TextView
@@ -31,16 +31,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="@dimen/font_16" />
 
 
             <TextView
                 android:id="@+id/image_num_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/margin_10dp"
                 android:textColor="@color/cG2"
-                android:textSize="16sp" />
+                android:textSize="@dimen/font_16" />
 
         </LinearLayout>
 
@@ -51,9 +51,9 @@
 
             <ImageView
                 android:id="@+id/indicator"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="@dimen/margin_20dp"
+                android:layout_height="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_5dp"
                 android:layout_gravity="center_vertical"
                 android:src="@mipmap/image_selector_camera_choosed" />
 
@@ -64,7 +64,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="@dimen/margin_0.5dp"
         android:background="@color/cG5" />
 
 </LinearLayout>

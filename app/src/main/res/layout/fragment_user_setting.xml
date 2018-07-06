@@ -7,14 +7,14 @@
     android:background="@color/colorHomeBg">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="184dp"
+        android:layout_height="@dimen/margin_184dp"
         android:background="@drawable/profile_bg">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginTop="6dp">
+            android:layout_height="@dimen/margin_18dp"
+            android:layout_marginTop="@dimen/margin_6dp">
             <View
-                android:layout_width="3dp"
+                android:layout_width="@dimen/margin_3dp"
                 android:layout_height="match_parent"
                 android:background="@color/orange"/>
             <TextView
@@ -23,72 +23,72 @@
                 android:layout_height="match_parent"
                 android:text="2018年5月4日"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="@dimen/font_15"
                 android:gravity="center"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="@dimen/margin_5dp"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_profile"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="@dimen/margin_65dp"
+            android:layout_height="@dimen/margin_65dp"
             android:layout_centerInParent="true"
             app:srcCompat="@drawable/v_account_head_picture" />
     </RelativeLayout>
     <TextView
         android:id="@+id/tv_my_gallery"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/margin_60dp"
         android:text="我的画廊"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/font_18"
         android:gravity="center_vertical"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="@dimen/margin_68dp"
         android:layout_gravity="center_vertical"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/margin_1dp"
         android:background="@android:color/black"/>
     <TextView
         android:id="@+id/tv_offline_cache"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/margin_60dp"
         android:text="离线缓存"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/font_18"
         android:gravity="center_vertical"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="@dimen/margin_68dp"
         android:layout_gravity="center_vertical"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/margin_1dp"
         android:background="@android:color/black"/>
     <TextView
         android:id="@+id/tv_painting_demand"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/margin_60dp"
         android:text="名画点播"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/font_18"
         android:gravity="center_vertical"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="@dimen/margin_68dp"
         android:layout_gravity="center_vertical"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/margin_1dp"
         android:background="@android:color/black"/>
     <TextView
         android:id="@+id/tv_about"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/margin_60dp"
         android:text="关于我们"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="@dimen/font_18"
         android:gravity="center_vertical"
-        android:layout_marginLeft="68dp"
+        android:layout_marginLeft="@dimen/margin_68dp"
         android:layout_gravity="center_vertical"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/margin_1dp"
         android:background="@android:color/black"/>
 </LinearLayout>

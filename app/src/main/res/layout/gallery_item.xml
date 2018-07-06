@@ -6,12 +6,12 @@
     android:background="@color/colorHomeBg">
     <ImageView
         android:id="@+id/iv_gallery_item_image"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/margin_250dp"
         android:layout_height="432dp"
         android:src="@drawable/image_placeholder"
         android:scaleType="centerCrop"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="@dimen/margin_36dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
         android:transitionName="sharedView"/>
     <LinearLayout
         android:id="@+id/ll_item_time"
@@ -23,14 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="22sp"
+            android:textSize="@dimen/font_22"
             android:gravity="center"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/tv_gallery_item_month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="@dimen/font_18"
             android:textColor="@color/cG5"
             android:gravity="center"
             android:textStyle="bold"/>
@@ -38,8 +38,8 @@
 
     <ImageView
         android:id="@+id/iv_my_collection"
-        android:layout_width="60dp"
-        android:layout_height="72dp"
+        android:layout_width="@dimen/margin_60dp"
+        android:layout_height="@dimen/margin_72dp"
         android:src="@drawable/collection_true"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"/>

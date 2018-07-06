@@ -10,23 +10,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingLeft="@dimen/margin_12dp"
+        android:paddingRight="@dimen/margin_12dp">
         <ImageView
             android:id="@+id/iv_left_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="@dimen/margin_10dp"
+            android:paddingRight="@dimen/margin_10dp"
+            android:paddingTop="@dimen/margin_10dp"
             android:visibility="visible"
             app:srcCompat="@drawable/v_system_back" />
 
         <ImageView
             android:id="@+id/iv_user_setting"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/margin_25dp"
+            android:layout_height="@dimen/margin_25dp"
             android:src="@drawable/menu"
             android:layout_centerVertical="true"
             android:visibility="gone" />
@@ -37,10 +37,10 @@
             android:orientation="horizontal"
             android:layout_centerHorizontal="true">
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="@dimen/margin_25dp"
+                android:layout_height="@dimen/margin_25dp"
                 android:src="@drawable/action_bar"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/margin_5dp"
                 android:layout_gravity="center_vertical"/>
             <TextView
                 android:id="@+id/tv_title"
@@ -49,13 +49,13 @@
                 android:gravity="center_vertical"
                 android:text="Daily arts"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/font_16"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_find_arts"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/margin_25dp"
+            android:layout_height="@dimen/margin_25dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/magnifier_white"
@@ -68,10 +68,10 @@
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingLeft="@dimen/margin_5dp"
+            android:paddingRight="@dimen/margin_5dp"
+            android:paddingTop="@dimen/margin_2dp"
+            android:paddingBottom="@dimen/margin_2dp"
             android:background="@drawable/shape_corner_white"
             android:visibility="gone"/>
         <TextView
@@ -82,9 +82,9 @@
             android:layout_centerVertical="true"
             android:text="提交"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:textSize="@dimen/font_15"
+            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
             android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_right_btn"
@@ -94,15 +94,15 @@
             android:layout_centerVertical="true"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="15sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:textSize="@dimen/font_15"
+            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginBottom="@dimen/margin_12dp"
             android:visibility="gone"/>
     </RelativeLayout>
     <View
         android:id="@+id/title_line"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="@dimen/margin_0.5dp"
         android:layout_alignParentBottom="true"
         android:background="#FF000000"/>
 

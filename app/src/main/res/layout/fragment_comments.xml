@@ -13,7 +13,7 @@
     <!--Bottom-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/margin_50dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@android:color/black">
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@drawable/bg_edittext"
-            android:layout_margin="5dp"/>
+            android:layout_margin="@dimen/margin_5dp"/>
         <TextView
             android:id="@+id/tv_comments_publish"
             android:layout_width="0dp"
@@ -32,10 +32,11 @@
             android:text="发表"
             android:gravity="center"
             android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
+            android:textSize="@dimen/font_15"
             android:background="@drawable/bg_edittext"
-            android:layout_marginVertical="5dp"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginTop="@dimen/margin_5dp"
+            android:layout_marginBottom="@dimen/margin_5dp"
+            android:layout_marginRight="@dimen/margin_5dp"/>
     </LinearLayout>
 
 </RelativeLayout>

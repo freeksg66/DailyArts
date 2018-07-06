@@ -7,16 +7,16 @@
         android:id="@+id/activity_item_ivImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@mipmap/image_selector_default_img" />
 
     <ImageView
         android:id="@+id/activity_item_ivDelete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/margin_20dp"
+        android:layout_height="@dimen/margin_20dp"
         android:layout_gravity="right"
         android:contentDescription="@null"
         android:scaleType="fitXY"

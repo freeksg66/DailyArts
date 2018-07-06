@@ -40,7 +40,7 @@ public class MyGalleryFragment extends BaseFragment {
         vpCollection = rootView.findViewById(R.id.vp_my_gallery);
         ViewGroup.LayoutParams params = vpCollection.getLayoutParams();
         params.width = DeviceInfo.getDisplayMetrics(getContext()).widthPixels;
-        params.height = DeviceInfo.getDisplayMetrics(getContext()).heightPixels * 9 / 10;
+        params.height = DeviceInfo.getDisplayMetrics(getContext()).heightPixels;
         vpCollection.setLayoutParams(params);
         initFragments();
         mAdapter = new IdiotGalleryAdapter(getChildFragmentManager(), mFragments);

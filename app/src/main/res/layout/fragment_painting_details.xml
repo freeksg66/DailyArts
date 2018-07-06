@@ -18,34 +18,34 @@
     <RelativeLayout
         android:id="@+id/rl_details_cover"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginBottom="50dp"
+        android:layout_height="@dimen/margin_70dp"
+        android:layout_marginBottom="@dimen/margin_50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/colorActionBarTrans">
         <ImageView
             android:id="@+id/iv_details_cover_image"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/margin_70dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginLeft="@dimen/margin_10dp"
+            android:layout_marginRight="@dimen/margin_10dp"/>
         <TextView
             android:id="@+id/tv_details_image_name"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/margin_35dp"
             android:layout_toRightOf="@+id/iv_details_cover_image"
             android:text="油画标题"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/font_20"
             android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/tv_details_image_author"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="@dimen/margin_35dp"
             android:layout_toRightOf="@+id/iv_details_cover_image"
             android:layout_alignParentBottom="true"
             android:text="油画作者"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="@dimen/font_12"
             android:gravity="center_vertical"/>
     </RelativeLayout>
 
@@ -54,26 +54,26 @@
         android:id="@+id/sv_details_introduction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp">
+        android:layout_marginTop="@dimen/margin_120dp">
         <TextView
             android:id="@+id/tv_details_image_introduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="作品简介"
-            android:textSize="15sp"
+            android:textSize="@dimen/font_15"
             android:textColor="@color/white"
-            android:lineSpacingExtra="5dp"
-            android:paddingTop="20dp"
-            android:paddingLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:paddingBottom="52dp"/>
+            android:lineSpacingExtra="@dimen/margin_5dp"
+            android:paddingTop="@dimen/margin_20dp"
+            android:paddingLeft="@dimen/margin_20dp"
+            android:layout_marginRight="@dimen/margin_20dp"
+            android:paddingBottom="@dimen/margin_52dp"/>
     </ScrollView>
     <LinearLayout
         android:id="@+id/ll_details_tools"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/margin_50dp"
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:padding="@dimen/margin_5dp"
         android:background="@color/colorActionBarTrans"
         android:layout_alignParentBottom="true">
         <ImageView

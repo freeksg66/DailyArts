@@ -9,22 +9,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:horizontalSpacing="2dp"
+        android:horizontalSpacing="@dimen/margin_2dp"
         android:listSelector="@android:color/transparent"
         android:numColumns="3"
         android:paddingBottom="?android:attr/actionBarSize"
-        android:verticalSpacing="2dp" />
+        android:verticalSpacing="@dimen/margin_2dp" />
 
     <TextView
         android:id="@+id/time_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#CC000000"
-        android:paddingBottom="5dp"
-        android:paddingLeft="10sp"
-        android:paddingTop="5dp"
+        android:paddingBottom="@dimen/margin_5dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:paddingTop="@dimen/margin_5dp"
         android:textColor="@color/image_selector_text_gray"
-        android:textSize="14sp" />
+        android:textSize="@dimen/font_14" />
 
     <RelativeLayout
         android:id="@+id/footer_layout"
@@ -40,16 +40,16 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@null"
-            android:drawablePadding="5dp"
+            android:drawablePadding="@dimen/margin_5dp"
             android:drawableRight="@mipmap/image_selector_select_album"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/margin_16dp"
+            android:paddingRight="@dimen/margin_16dp"
             android:singleLine="true"
             android:text="@string/all_folder"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/font_16" />
 
 
     </RelativeLayout>

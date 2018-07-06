@@ -3,12 +3,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
+    android:layout_marginLeft="@dimen/margin_24dp"
+    android:layout_marginRight="@dimen/margin_24dp"
     android:background="@drawable/toast_daily_arts_bg"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="@dimen/margin_20dp">
 
     <TextView
         android:id="@+id/message"
@@ -18,6 +18,6 @@
         android:gravity="center"
         tools:text="12"
         android:textColor="@color/cW1"
-        android:textSize="15sp" />
+        android:textSize="@dimen/font_15" />
 
 </RelativeLayout>

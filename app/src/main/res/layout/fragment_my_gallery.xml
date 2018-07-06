@@ -13,8 +13,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_my_gallery"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:paddingLeft="60dp"
-        android:paddingRight="60dp"
+        android:layout_height="@dimen/margin_400dp"
+        android:paddingLeft="@dimen/margin_60dp"
+        android:paddingRight="@dimen/margin_60dp"
         android:clipToPadding="false"/>
 </LinearLayout>

@@ -6,26 +6,26 @@
     android:background="@color/colorHomeBg">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/margin_50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="@dimen/margin_30dp"
+        android:layout_marginLeft="@dimen/margin_10dp"
+        android:layout_marginRight="@dimen/margin_10dp"
         android:background="@drawable/bg_edittext">
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="@dimen/margin_25dp"
+            android:layout_height="@dimen/margin_25dp"
             android:src="@drawable/magnifier_black"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:layout_gravity="center"/>
         <EditText
             android:id="@+id/et_find_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/margin_5dp"
             android:hint="请输入画作名或画家"
             android:textColorHint="@color/white"
-            android:textSize="15sp"
+            android:textSize="@dimen/font_15"
             android:imeOptions="actionSearch"
             android:singleLine="true"/>
     </LinearLayout>
@@ -37,7 +37,7 @@
             android:id="@+id/rl_find_nothing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/margin_30dp"
             android:layout_gravity="center"
             android:visibility="gone">
             <ImageView
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="没有找到相关名画"
-                android:textSize="15sp"
+                android:textSize="@dimen/font_15"
                 android:textColor="@color/white"
                 android:layout_below="@id/iv_nothing"
                 android:gravity="center"/>
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="建议您在个人中心里点播"
-                android:textSize="12sp"
+                android:textSize="@dimen/font_12"
                 android:textColor="@color/white"
                 android:layout_below="@id/tv_nothing_1"
                 android:gravity="center"/>
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="我们会尽快为您寻找它"
-                android:textSize="12sp"
+                android:textSize="@dimen/font_12"
                 android:textColor="@color/white"
                 android:layout_below="@id/tv_nothing_2"
                 android:gravity="center"/>
@@ -76,8 +76,8 @@
             android:id="@+id/rv_find_arts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_marginLeft="@dimen/margin_20dp"/>
     </FrameLayout>
 
 </LinearLayout>
