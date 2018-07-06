@@ -16,6 +16,7 @@
     <color name="toast_background">#70000000</color>
     <color name="cW1">#ffffff</color>
     <color name="cB1">#397efd</color>
+    <color name="cG1">#222222</color>
     <color name="cG2">#777777</color>
     <color name="cG5">#ebebeb</color>
     <color name="image_selector_dark_gray">#FF343535</color>

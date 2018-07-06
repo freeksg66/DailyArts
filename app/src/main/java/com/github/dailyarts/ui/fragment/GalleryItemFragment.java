@@ -1,10 +1,9 @@
 package com.github.dailyarts.ui.fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,7 +36,8 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     private LinearLayout llItemTime;
     private ImageView ivGalleryImage, ivCollection;
-    private TextView tvMonth, tvDay;
+    private TextView tvMonth;
+    private TextView tvDay;
 
     private DateModel mDateModel;
 
@@ -66,27 +66,12 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         ivCollection = rootView.findViewById(R.id.iv_my_collection);
         ivCollection.setOnClickListener(v -> collectImage());
 
-        //获得ViewTreeObserver
-        ViewTreeObserver observer = ivGalleryImage.getViewTreeObserver();
-        //注册观察者，监听变化
-        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                if (observer.isAlive()) {
-                    observer.removeOnPreDrawListener(this);
-                }
-                //获得宽高
-                int viewWidth = ivGalleryImage.getMeasuredWidth();
-                int viewHeight = viewWidth * 16 / 9;
-                ViewGroup.LayoutParams params = ivGalleryImage.getLayoutParams();
-                params.width = viewWidth;
-                params.height = viewHeight;
-                ivGalleryImage.setLayoutParams(params);
-                ivGalleryImage.requestLayout();
-                return true;
-            }
-        });
-
+        /*
+        * 字体
+        * 楷体 simkai.ttf
+        * 华文行楷 STXINGKA.ttf
+        * */
+        tvMonth.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "font/simkai.ttf"));
         loadData();
     }
 
@@ -100,8 +85,8 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                 mPresenter.getImage(mDateModel.toInt());
             }
             ivGalleryImage.setOnClickListener(v -> toImageDetail());
-            tvMonth.setText(String.valueOf(mDateModel.month) + "月");
-            tvDay.setText(String.valueOf(mDateModel.day) + "日");
+            tvMonth.setText(convert2Hanzi(mDateModel.month) + "月");
+            tvDay.setText(String.valueOf(mDateModel.day));
         } else if (mImageModel != null) {
             llItemTime.setVisibility(View.GONE);
             ivCollection.setVisibility(View.VISIBLE);
@@ -208,6 +193,26 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                         ivGalleryImage.setImageBitmap(resource);
                     }
                 });
+    }
+
+    private String convert2Hanzi(int num) {
+        if(num <= 0 || num > 12) return "未知";
+        switch (num) {
+            case 1: return "一";
+            case 2: return "二";
+            case 3: return "三";
+            case 4: return "四";
+            case 5: return "五";
+            case 6: return "六";
+            case 7: return "七";
+            case 8: return "八";
+            case 9: return "九";
+            case 10: return "十";
+            case 11: return "十一";
+            case 12: return "十二";
+            default:
+        }
+        return "未知";
     }
 
     @Override

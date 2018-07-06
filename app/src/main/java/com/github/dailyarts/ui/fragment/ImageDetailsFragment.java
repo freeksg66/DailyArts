@@ -76,6 +76,9 @@ public class ImageDetailsFragment extends BaseFragment {
     private int mImageHeight = 0;
     private float mScale = 1.0F;
 
+    private final String APP_ACTION_BAR_TAG = "AppActionBar";
+    private final String CORVER_TAG = "Corver";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -92,6 +95,7 @@ public class ImageDetailsFragment extends BaseFragment {
     @Override
     protected void onInitView() {
         appActionBar = rootView.findViewById(R.id.mine_toolbar);
+        appActionBar.setTag(APP_ACTION_BAR_TAG);
         ssivBigImage = rootView.findViewById(R.id.ssiv_details_big_image);
         ivCover = rootView.findViewById(R.id.iv_details_cover_image);
         tvImageName = rootView.findViewById(R.id.tv_details_image_name);
@@ -103,6 +107,7 @@ public class ImageDetailsFragment extends BaseFragment {
         ivDownload = rootView.findViewById(R.id.iv_details_download);
         ivShare = rootView.findViewById(R.id.iv_details_share);
         rlCover = rootView.findViewById(R.id.rl_details_cover);
+        rlCover.setTag(CORVER_TAG);
         svIntro = rootView.findViewById(R.id.sv_details_introduction);
         llTools = rootView.findViewById(R.id.ll_details_tools);
 
@@ -159,6 +164,7 @@ public class ImageDetailsFragment extends BaseFragment {
 
     private void initListener(){
         ssivBigImage.setOnClickListener(v -> {
+            rlCover.setEnabled(false);
             isZoomEnable = !isZoomEnable;
             ssivBigImage.setZoomEnabled(isZoomEnable);
             ssivBigImage.setPanEnabled(isZoomEnable);
@@ -293,7 +299,7 @@ public class ImageDetailsFragment extends BaseFragment {
      */
     private void alphaAnim(View view, float start, float end){
         ObjectAnimator alphaAnimation = ObjectAnimator.ofFloat(view, "alpha", start, end);
-        alphaAnimation.setDuration(500);
+        alphaAnimation.setDuration(300);
         alphaAnimation.setRepeatCount(0);
         alphaAnimation.setRepeatMode(ValueAnimator.REVERSE);
         alphaAnimation.setStartDelay(0);
@@ -301,6 +307,9 @@ public class ImageDetailsFragment extends BaseFragment {
         alphaAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                String tag = (String)view.getTag();
+                if(tag.equals(CORVER_TAG))
+                    rlCover.setEnabled(false);
                 if(appActionBar.getVisibility() == View.GONE) {
                     appActionBar.setVisibility(View.VISIBLE);
                 }
@@ -311,6 +320,9 @@ public class ImageDetailsFragment extends BaseFragment {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                String tag = (String)view.getTag();
+                if(tag.equals(CORVER_TAG))
+                    rlCover.setEnabled(true);
                 int visible = isZoomEnable ? View.GONE : View.VISIBLE;
                 appActionBar.setVisibility(visible);
                 rlCover.setVisibility(visible);

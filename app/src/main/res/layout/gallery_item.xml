@@ -6,32 +6,34 @@
     android:background="@color/colorHomeBg">
     <ImageView
         android:id="@+id/iv_gallery_item_image"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="250dp"
+        android:layout_height="432dp"
         android:src="@drawable/image_placeholder"
         android:scaleType="centerCrop"
         android:layout_marginTop="36dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="12dp"
         android:transitionName="sharedView"/>
     <LinearLayout
         android:id="@+id/ll_item_time"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_gallery_item_day"
             android:layout_width="match_parent"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:gravity="center"/>
+            android:textSize="22sp"
+            android:gravity="center"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/tv_gallery_item_month"
             android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:gravity="center"/>
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/cG5"
+            android:gravity="center"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ImageView

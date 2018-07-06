@@ -3,9 +3,6 @@ package com.github.dailyarts.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -269,11 +266,12 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         c.add(Calendar.DAY_OF_MONTH, 1 - mFragmentsLength);
         GalleryItemFragment item;
         int offset = 1 - mFragmentsLength; // 与今天日期的偏差，早于今天日期的offset<0，否则offset>=0
+        int yearOffset = getYearOffset(c.get(Calendar.YEAR));
         for (int i = 0; i < mFragmentsLength; i++) {
             item = new GalleryItemFragment();
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
-            item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), offset);
+            item.setData(new DateModel(c.get(Calendar.YEAR) - yearOffset, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), offset);
             mFragments.add(item);
         }
 
@@ -312,7 +310,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         });
         ViewGroup.LayoutParams params = mGalleryViewPager.getLayoutParams();
         params.width = DeviceInfo.getDisplayMetrics(getContext()).widthPixels;
-        params.height = DeviceInfo.getDisplayMetrics(getContext()).heightPixels * 9 / 10;
+        params.height = DeviceInfo.getDisplayMetrics(getContext()).heightPixels - (int) getContext().getResources().getDimension(R.dimen.action_bar_height);
         mGalleryViewPager.setLayoutParams(params);
         mAdapter = new IdiotGalleryAdapter(getChildFragmentManager(), mFragments);
         mGalleryViewPager.setAdapter(mAdapter);
@@ -441,14 +439,24 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, 1);
         GalleryItemFragment item = new GalleryItemFragment();
-        item.setData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), 1);
+        int yearOffset = getYearOffset(c.get(Calendar.YEAR));
+        item.setData(new DateModel(c.get(Calendar.YEAR) - yearOffset, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), 1);
         for(int i = mAdapter.getCount() - 1; i >= 0; i--) {
             GalleryItemFragment fragment = (GalleryItemFragment) mAdapter.getItem(i);
             c.add(Calendar.DAY_OF_MONTH, -1);
-            fragment.updateData(new DateModel(c.get(Calendar.YEAR) - 4, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), fragment.getOffset() - 1);
+            fragment.updateData(new DateModel(c.get(Calendar.YEAR) - yearOffset, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), fragment.getOffset() - 1);
             mAdapter.setData(i, fragment);
         }
         mAdapter.setData(mAdapter.getCount(), item);
         mAdapter.notifyDataSetChanged();
+    }
+
+    private int getYearOffset(int year) {
+        int offset = 0;
+        while(year < 2018) {
+            year -= 5;
+            offset += 5;
+        }
+        return offset;
     }
 }

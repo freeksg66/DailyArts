@@ -103,29 +103,39 @@ public class ShareDialog extends DialogFragment {
         int logoHeight = 80; // Android logo尺寸
         int qrCodeHeight = 150; // 二维码尺寸
         int margin = 20; // 边距
-        Canvas canvas = new Canvas(resource);
+        // 画背景
+        Bitmap newBitmap = Bitmap.createBitmap(resource.getWidth(), resource.getHeight() + brandHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(newBitmap);
+        canvas = drawBitmap(canvas, resource, 0, 0, resource.getWidth(), resource.getHeight());
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
-        // 画背景
-        canvas.drawRect(0, height - brandHeight, width, height, paint);
+        canvas.drawRect(0, height + brandHeight, width, height, paint);
 
         // 放置Android logo
-        canvas = drawBitmap(canvas, R.drawable.android_logo, margin, height - brandHeight + margin, logoHeight, logoHeight);
+        canvas = drawBitmap(canvas, R.drawable.android_logo, margin, height + margin, logoHeight, logoHeight);
 
 
         // 写App名字
-        canvas = drawText(canvas, "每日名画", margin + logoHeight + margin, height - brandHeight + margin + logoHeight / 2, ContextCompat.getColor(mContext, R.color.black), 18);
+        canvas = drawTitleText(canvas, "每日名画(Android版)", "（每天为您推荐一幅世界名画）", margin + logoHeight + margin, height + margin / 2 + logoHeight / 3, ContextCompat.getColor(mContext, R.color.black), 12, ContextCompat.getColor(mContext, R.color.cG1), 8, margin / 4);
         // 防止二维码
-        canvas = drawBitmap(canvas, R.drawable.qr_code, width - qrCodeHeight - margin, height - brandHeight + margin / 2, qrCodeHeight, qrCodeHeight);
+        canvas = drawBitmap(canvas, R.drawable.qr_code, width - qrCodeHeight - margin, height + margin / 2, qrCodeHeight, qrCodeHeight);
         // 写第二种下载方式
-        drawText(canvas, "扫描二维码下载", margin, height - brandHeight + margin + logoHeight + margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 7);
-        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/ej2d", margin, height - 30, ContextCompat.getColor(mContext, R.color.cG2), 7);
-        return resource;
+        drawText(canvas, "扫描二维码下载", margin, height + margin + logoHeight + margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 7);
+        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/ej2d", margin, height + brandHeight - 30, ContextCompat.getColor(mContext, R.color.cG2), 7);
+        return newBitmap;
     }
 
     private Canvas drawBitmap(Canvas canvas, int drawable, int leftX, int leftY, int layoutWidth, int layoutHeight){
         Bitmap fg = BitmapFactory.decodeResource(mContext.getResources(), drawable);
+        Matrix matrix = new Matrix();
+        matrix.postScale(((float) layoutWidth) / fg.getWidth(), ((float) layoutHeight) / fg.getHeight());
+        fg = Bitmap.createBitmap(fg, 0, 0, fg.getWidth(), fg.getHeight(), matrix, true);
+        canvas.drawBitmap(fg, leftX, leftY, null);
+        return canvas;
+    }
+
+    private Canvas drawBitmap(Canvas canvas, Bitmap fg, int leftX, int leftY, int layoutWidth, int layoutHeight){
         Matrix matrix = new Matrix();
         matrix.postScale(((float) layoutWidth) / fg.getWidth(), ((float) layoutHeight) / fg.getHeight());
         fg = Bitmap.createBitmap(fg, 0, 0, fg.getWidth(), fg.getHeight(), matrix, true);
@@ -143,6 +153,27 @@ public class ShareDialog extends DialogFragment {
         paint.getTextBounds(text, 0, text.length(), bounds);
 
         canvas.drawText(text, leftX, leftY + bounds.height() / 3, paint);
+        return canvas;
+    }
+
+    private Canvas drawTitleText(Canvas canvas, String text, String subText, int leftX, int leftY, int textColor, int textSize, int subTextColor, int subTextSize, int margin) {
+        float scale = mContext.getResources().getDisplayMetrics().density;
+        // 写主标题
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(textColor);
+        paint.setTextSize((int)(textSize * scale));
+
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+
+        canvas.drawText(text, leftX, leftY + bounds.height() / 3, paint);
+
+        // 写副标题
+        paint.setColor(subTextColor);
+        paint.setTextSize((int) (subTextSize * scale));
+        Rect subBounds = new Rect();
+        paint.getTextBounds(subText, 0, subText.length(), subBounds);
+        canvas.drawText(subText, leftX - margin, leftY + bounds.height() + margin + subBounds.height() / 2, paint);
         return canvas;
     }
 

@@ -25,6 +25,7 @@
             android:layout_margin="5dp"
             android:hint="请输入画作名或画家"
             android:textColorHint="@color/white"
+            android:textSize="15sp"
             android:imeOptions="actionSearch"
             android:singleLine="true"/>
     </LinearLayout>

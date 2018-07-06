@@ -5,8 +5,8 @@
     android:background="@color/transparent">
     <ImageView
         android:id="@+id/iv_share"
-        android:layout_width="225dp"
-        android:layout_height="402dp"
+        android:layout_width="240dp"
+        android:layout_height="432dp"
         android:src="@drawable/tomorrow"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="tips"
+        android:textSize="15sp"
         android:layout_above="@+id/v_share_divider1"
         android:gravity="center"
         android:background="@color/white"/>
@@ -32,6 +33,7 @@
         android:text="保存"
         android:gravity="center"
         android:textColor="@color/black"
+        android:textSize="15dp"
         android:layout_above="@+id/v_share_divider"
         android:background="@color/white"/>
     <View
@@ -45,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:text="取消"
+        android:textSize="15sp"
         android:gravity="center"
         android:textColor="@color/black"
         android:layout_alignParentBottom="true"
