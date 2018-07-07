@@ -10,12 +10,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.DateModel;
 import com.github.dailyarts.entity.ImageModel;
 import com.github.dailyarts.event.CollectionEvent;
+import com.github.dailyarts.event.NetConnectionChangeEvent;
 import com.github.dailyarts.presenter.GalleryImagePresenter;
 import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.repository.GalleryImagesRepository;
@@ -41,6 +45,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     private DateModel mDateModel;
 
+    private int mLoadState; // 图片加载状态
     private boolean mLoadSuccess = false; // 是否加载成功
     private boolean hasCollected = true; // 是否已经收藏
     private boolean isTomorrow = false; // 是否是明天
@@ -50,6 +55,10 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     private GalleryImagesContract.IPresenter mPresenter;
     private int mOffset;
 
+    private static final int DEFAULT = 1;
+    private static final int LOADING = 2;
+    private static final int LOAD_COMPLETE = 3;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.gallery_item;
@@ -58,6 +67,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     @Override
     protected void onInitView() {
         mPresenter = new GalleryImagePresenter(this, new GalleryImagesRepository(getHoldingActivity()));
+        mLoadState = DEFAULT;
 
         llItemTime = rootView.findViewById(R.id.ll_item_time);
         ivGalleryImage = rootView.findViewById(R.id.iv_gallery_item_image);
@@ -93,19 +103,8 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         } else if (mImageModel != null) {
             llItemTime.setVisibility(View.GONE);
             ivCollection.setVisibility(View.VISIBLE);
-            mLoadSuccess = false;
-            Glide.with(getContext())
-                    .load(mImageModel.getBigImg())
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            mLoadSuccess = true;
-                            ivGalleryImage.setImageBitmap(resource);
-                        }
-                    });
             ivGalleryImage.setOnClickListener(v -> toImageDetail());
+            loadingImages();
         } else {
             ivGalleryImage.setImageResource(R.drawable.image_placeholder);
             tvMonth.setText("未知月");
@@ -139,7 +138,9 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     }
 
     private void toImageDetail() {
-        if (mLoadSuccess) {
+        if (isTomorrow) {
+            ToastUtils.show(getContext(), "敬请期待！");
+        } else if (mLoadSuccess) {
             // 进入图片详情页
             RouterManager
                     .getInstance()
@@ -147,11 +148,13 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                             RouterConstant.ImageDetailsActivityConst.PATH,
                             RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
                             mImageModel);
-        } else {
-            if (isTomorrow) {
-                ToastUtils.show(getContext(), "敬请期待！");
+        } else if(mLoadState == LOADING){
+            ToastUtils.show(getContext(), "努力加载中...");
+        } else if(mLoadState == DEFAULT) {
+            if(mImageModel != null) {
+                loadingImages();
             } else {
-                ToastUtils.show(getContext(), "努力加载中...");
+                mPresenter.getImage(mDateModel.toInt());
             }
         }
     }
@@ -183,19 +186,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     public void loadPicture(ImageModel imageModel) {
         if(getContext() == null) return;
         mImageModel = imageModel;
-        mLoadSuccess = false;
-        Log.e(TAG, "date = " + String.valueOf(mDateModel.toInt()));
-        Glide.with(getContext())
-                .load(imageModel.getBigImg())
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        mLoadSuccess = true;
-                        ivGalleryImage.setImageBitmap(resource);
-                    }
-                });
+        loadingImages();
     }
 
     private String convert2Hanzi(int num) {
@@ -218,6 +209,30 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         return "未知";
     }
 
+    private void loadingImages() {
+        mLoadSuccess = false;
+        mLoadState = LOADING;
+        Glide.with(getContext())
+                .load(mImageModel.getBigImg())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        mLoadSuccess = false;
+                        mLoadState = DEFAULT;
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        mLoadSuccess = true;
+                        mLoadState = LOAD_COMPLETE;
+                        return false;
+                    }
+                })
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(ivGalleryImage);
+    }
+
     @Override
     public void loadPictureFail(String errorMessage) {
         if(getContext() == null) return;
@@ -231,6 +246,23 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                 ivCollection.setImageResource(R.drawable.collection_true);
             } else {
                 ivCollection.setImageResource(R.drawable.collection_false);
+            }
+        }
+    }
+
+    /**
+     * 网络连接状态变化时调用
+     *
+     * @param event 包含网络连接状态和当前网络类型
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkChange(NetConnectionChangeEvent event) {
+        if(isTomorrow) return;
+        if(mLoadState == DEFAULT) {
+            if(mImageModel != null) {
+                loadingImages();
+            } else {
+                mPresenter.getImage(mDateModel.toInt());
             }
         }
     }

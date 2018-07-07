@@ -36,7 +36,9 @@
             android:text="油画标题"
             android:textColor="@color/white"
             android:textSize="@dimen/font_20"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"/>
         <TextView
             android:id="@+id/tv_details_image_author"
             android:layout_width="wrap_content"
@@ -46,7 +48,9 @@
             android:text="油画作者"
             android:textColor="@color/white"
             android:textSize="@dimen/font_12"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:ellipsize="end"/>
     </RelativeLayout>
 
     <!--下一页-->
