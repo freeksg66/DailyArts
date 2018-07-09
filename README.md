@@ -1,7 +1,7 @@
 # DailyArts
 　　本项目仿IOS端的一款叫DailyArts的APP，目的是在Android端实现尽量多的功能和近似的效果。
 
-<h3>项目简介：</h3>
+<h3>项目简介</h3>
 
 　　每日名画是一款每天向您推送世界著名绘画作品的应用,并且可以将伟大作品瞬间囊入手中,甚至作为壁纸。还在使用形形色色的花纹当壁纸吗,跟我一起去享受梵高的星空吧!
 
@@ -152,15 +152,15 @@
 </table>
 
 <h3>MVP各层编写规范</h3>
-本小节主要介绍每日名画App各模块、逻辑层级以及相关类的书写开发规范
+　　本小节主要介绍每日名画App各模块、逻辑层级以及相关类的书写开发规范
 <h4>1.M层</h4>
-M层主要业务逻辑为数据操作部分，包括数据的网络获取、数据库操作、文件操作（SharedPreference操作待定），仅包含数据的CURD操作，不包含逻辑处理。
+　　M层主要业务逻辑为数据操作部分，包括数据的网络获取、数据库操作、文件操作（SharedPreference操作待定），仅包含数据的CURD操作，不包含逻辑处理。
 
-操作类需要的Context从BaseApplication中获取。
+　　操作类需要的Context从BaseApplication中获取。
 
-M层返回对象统一封装为Observable，线程切换，生命周期管理同意在M层处理。<b>实施过程：</b>M层Repository对象继承BaseRepository后，构造方法传入RxLifecycleBinder引用，并确保调用其super方法，之后可调用基类中的defaultRxConfig()方法，来处理线程切换（默认为io线程和主线程的切换）以及生命周期内Observable资源处理。其中RxLifecycleBinder接口在BaseActivity中实现，只需在构造Repository的时候传入Activity引用即可。
+　　M层返回对象统一封装为Observable，线程切换，生命周期管理同意在M层处理。<b>实施过程：</b>M层Repository对象继承BaseRepository后，构造方法传入RxLifecycleBinder引用，并确保调用其super方法，之后可调用基类中的defaultRxConfig()方法，来处理线程切换（默认为io线程和主线程的切换）以及生命周期内Observable资源处理。其中RxLifecycleBinder接口在BaseActivity中实现，只需在构造Repository的时候传入Activity引用即可。
 
-数据操作需要注意线程切换问题，耗时操作需注意在子线程中进行，开启子线程及数据类转换通过RxUtil实现。
+　　数据操作需要注意线程切换问题，耗时操作需注意在子线程中进行，开启子线程及数据类转换通过RxUtil实现。
 
 M层Repository对象编写实例：
 
@@ -198,9 +198,9 @@ BaseRepository实现细节：
         }
     }
 <h4>2.P层</h4>
-P层主要完成数据输入输出过程中的逻辑加工过程。其中主要包括数据输入阶段的有效性验证，请求对象的封装，和输出阶段数据加工，展示逻辑输出展示数据。
+　　P层主要完成数据输入输出过程中的逻辑加工过程。其中主要包括数据输入阶段的有效性验证，请求对象的封装，和输出阶段数据加工，展示逻辑输出展示数据。
 
-P层逻辑上应该为普通Java类，其中不应该出现Android相关类，其中包括Context类，这样设计的好处是，以后Presenter层对象可脱离Android生产环境独立编写，独立测试。
+　　P层逻辑上应该为普通Java类，其中不应该出现Android相关类，其中包括Context类，这样设计的好处是，以后Presenter层对象可脱离Android生产环境独立编写，独立测试。
 
 contract中定义P层和V层的接口
 
@@ -247,6 +247,7 @@ P层的Presenter对象编写实例
         }
     }
 <h4>3.V层</h4>
+    
     public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView {
         private GalleryImagesContract.IPresenter mPresenter;
         private ImageModel mImageModel; // 每日图片信息类
@@ -281,7 +282,7 @@ P层的Presenter对象编写实例
         }
     }
 <h4>MVP各层分割及对应关系</h4>
-VP层为一对一关系，数据的展示和相应加工过程对应。复杂的页面，Fragment和VP层关系可为一对一，也可为一对多。VP层和M层为多对一关系。Net层API类和Repository类为一对一关系。
+　　VP层为一对一关系，数据的展示和相应加工过程对应。复杂的页面，Fragment和VP层关系可为一对一，也可为一对多。VP层和M层为多对一关系。Net层API类和Repository类为一对一关系。
 <h3>项目细节目录</h3>
 <ol>
 	<li><a href="https://freeksg66.github.io/">仿ios中Drawer的实现</a></li>
