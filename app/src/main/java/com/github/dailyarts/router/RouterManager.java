@@ -5,6 +5,7 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -93,6 +94,10 @@ public class RouterManager {
     public void startActivity(String uri, String tag, Parcelable value) {
         ARouter.getInstance().build(uri).withParcelable(tag, value).navigation();
     }
+    public void startActivity(String uri, String tag, Parcelable value, ActivityOptionsCompat optionsCompat) {
+        ARouter.getInstance().build(uri).withParcelable(tag, value).withOptionsCompat(optionsCompat).navigation();
+    }
+
 
     /**
      * 带Parcelable参数

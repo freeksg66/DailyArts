@@ -17,30 +17,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!-- 外部路由跳转入口 -->
-        <!--<activity android:name=".router.SchemeFilterActivity">-->
-            <!--<intent-filter>-->
-                <!--<data-->
-                    <!--android:host="dailyarts.github.com"-->
-                    <!--android:scheme="${scheme}" />-->
-
-                <!--<action android:name="android.intent.action.VIEW" />-->
-
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-        <activity android:name=".ui.activity.MainActivity" android:theme="@style/AppTheme.NoBar">
+        <activity android:name=".ui.activity.SplashActivity" android:theme="@style/AppThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.MainActivity" android:theme="@style/AppTheme.NoBar">
+        </activity>
         <activity android:name=".ui.activity.MyGalleryActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.PaintingDemandActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.AboutActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.CommentsActivity" android:theme="@style/AppTheme.NoBar"/>
-        <activity android:name=".ui.activity.ImageDetailsActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.WatchImageActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.widget.imagespickers.ImageSelectorActivity" android:theme="@style/AppTheme.NoBar"/>
 

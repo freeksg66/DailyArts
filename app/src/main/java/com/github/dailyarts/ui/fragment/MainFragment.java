@@ -3,6 +3,8 @@ package com.github.dailyarts.ui.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +39,7 @@ import com.github.dailyarts.repository.FindArtsRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.adapter.FindArtsAdapter;
+import com.github.dailyarts.ui.transformation.DetailTransition;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
@@ -237,12 +242,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         mFindArtsAdapter.setOnItemClickListener(model -> {
             if (model == null || model.getBigImg() == null || model.getBigImg().equals("")) return;
             // 进入图片详情页
-            RouterManager
-                    .getInstance()
-                    .startActivity(
-                            RouterConstant.ImageDetailsActivityConst.PATH,
-                            RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
-                            model);
+            toImageDetailFragment(model);
         });
         rvFindArts.setAdapter(mFindArtsAdapter);
         etName.setOnEditorActionListener((view, actionId, event) -> {
@@ -359,6 +359,26 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         }
     }
 
+    private void toImageDetailFragment(ImageModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("BigImage", model);
+        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
+        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        imageDetailsFragment.setArguments(bundle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
+            Transition transition = new Fade().setDuration(500);
+            setExitTransition(transition);
+            imageDetailsFragment.setEnterTransition(transition);
+            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
+        }
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fl_content_drawer_layout, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
+                .addToBackStack(imageDetailsFragment.getClass().getSimpleName())
+                .commitAllowingStateLoss();
+    }
+
     @Override
     public void showImageList(List<ImageModel> list) {
         rlFindNothing.setVisibility(View.GONE);
@@ -453,7 +473,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
 
     private int getYearOffset(int year) {
         int offset = 0;
-        while(year < 2018) {
+        while(year >= 2019) {
             year -= 5;
             offset += 5;
         }

@@ -359,7 +359,7 @@ public class ImageDetailsFragment extends BaseFragment {
 
     public void backFunction(){
         if(isFirstPage){
-            getActivity().finish();
+            getActivity().getSupportFragmentManager().popBackStack();
         }else {
             isFirstPage = true;
             animJumpPage(true);

@@ -37,11 +37,6 @@ public interface RouterConstant {
         String PATH = "/main/CommentsActivity";
     }
 
-    interface ImageDetailsActivityConst {
-        String PATH = "/main/ImageDetailsActivity";
-        String IMAGE_MODEL = "imageModel";
-    }
-
     interface PaintingDemandActivityConst {
         String PATH = "/main/PaintingDemandActivity";
     }

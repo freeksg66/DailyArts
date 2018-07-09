@@ -2,6 +2,11 @@ package com.github.dailyarts.ui.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +30,7 @@ import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.repository.GalleryImagesRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
+import com.github.dailyarts.ui.transformation.DetailTransition;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
 
@@ -51,6 +57,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     private boolean isTomorrow = false; // 是否是明天
 
     private ImageModel mImageModel;
+    private ActivityOptionsCompat mOptionsCompat;
 
     private GalleryImagesContract.IPresenter mPresenter;
     private int mOffset;
@@ -85,6 +92,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         * 华文琥珀 sthupo.ttf
         * */
         tvMonth.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "font/stiliti.ttf"));
+        mOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), ivGalleryImage, "sharedView");
         loadData();
     }
 
@@ -97,13 +105,13 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
             } else {
                 mPresenter.getImage(mDateModel.toInt());
             }
-            ivGalleryImage.setOnClickListener(v -> toImageDetail());
+            ivGalleryImage.setOnClickListener(v -> toImageDetail(R.id.fl_main_activity_content));
             tvMonth.setText(convert2Hanzi(mDateModel.month) + "月");
             tvDay.setText(String.valueOf(mDateModel.day));
         } else if (mImageModel != null) {
             llItemTime.setVisibility(View.GONE);
             ivCollection.setVisibility(View.VISIBLE);
-            ivGalleryImage.setOnClickListener(v -> toImageDetail());
+            ivGalleryImage.setOnClickListener(v -> toImageDetail(R.id.fl_my_gallery_activity_content));
             loadingImages();
         } else {
             ivGalleryImage.setImageResource(R.drawable.image_placeholder);
@@ -137,17 +145,12 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         return mOffset;
     }
 
-    private void toImageDetail() {
+    private void toImageDetail(int container) {
         if (isTomorrow) {
             ToastUtils.show(getContext(), "敬请期待！");
         } else if (mLoadSuccess) {
             // 进入图片详情页
-            RouterManager
-                    .getInstance()
-                    .startActivity(
-                            RouterConstant.ImageDetailsActivityConst.PATH,
-                            RouterConstant.ImageDetailsActivityConst.IMAGE_MODEL,
-                            mImageModel);
+            toImageDetailFragment(mImageModel, container);
         } else if(mLoadState == LOADING){
             ToastUtils.show(getContext(), "努力加载中...");
         } else if(mLoadState == DEFAULT) {
@@ -237,6 +240,27 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     public void loadPictureFail(String errorMessage) {
         if(getContext() == null) return;
         ToastUtils.show(getContext(), errorMessage);
+    }
+
+    private void toImageDetailFragment(ImageModel model, int container) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("BigImage", model);
+        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
+        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        imageDetailsFragment.setArguments(bundle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
+            Transition transition = new Fade().setDuration(500);
+            setExitTransition(new Fade().setDuration(500));
+            imageDetailsFragment.setEnterTransition(new Fade().setDuration(500));
+            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
+        }
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addSharedElement(ivGalleryImage, getResources().getString(R.string.image_transition))
+                .replace(container, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
+                .addToBackStack(null)
+                .commitAllowingStateLoss();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

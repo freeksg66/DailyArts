@@ -1,6 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorHomeBg</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:windowAnimationStyle">@style/ActivityTransitionAnimationRightIn</item>
+    </style>
+
+    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -11,6 +20,7 @@
     <style name="AppTheme.NoBar">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="NLoadingDialog">
@@ -25,6 +35,19 @@
         <item name="android:windowNoTitle">true</item>//无标题
         <item name="@android:windowEnterAnimation">@anim/bottom_enter</item>
         <item name="@android:windowExitAnimation">@anim/bottom_exit</item>
+    </style>
+
+    <!--Theme for Splash Screen(shorten the waiting time when cold start)-->
+    <style name="AppThemeSplash" parent="Base.AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="ActivityTransitionAnimationRightIn" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_right_in_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_hold_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_hold_anim</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_right_out_anim</item>
     </style>
 
 </resources>
