@@ -1,7 +1,7 @@
 # DailyArts
 　　本项目仿IOS端的一款叫DailyArts的APP，目的是在Android端实现尽量多的功能和近似的效果。
 
-<h3>项目简介：</h3>
+<h3>项目简介</h3>
 
 　　每日名画是一款每天向您推送世界著名绘画作品的应用,并且可以将伟大作品瞬间囊入手中,甚至作为壁纸。还在使用形形色色的花纹当壁纸吗,跟我一起去享受梵高的星空吧!
 
@@ -247,6 +247,7 @@ P层的Presenter对象编写实例
         }
     }
 <h4>3.V层</h4>
+
     public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView {
         private GalleryImagesContract.IPresenter mPresenter;
         private ImageModel mImageModel; // 每日图片信息类
