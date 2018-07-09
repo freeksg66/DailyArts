@@ -1,7 +1,7 @@
 # DailyArts
 　　本项目仿IOS端的一款叫DailyArts的APP，目的是在Android端实现尽量多的功能和近似的效果。
 
-###项目简介：
+<h3>项目简介：</h3>
 
 　　每日名画是一款每天向您推送世界著名绘画作品的应用,并且可以将伟大作品瞬间囊入手中,甚至作为壁纸。还在使用形形色色的花纹当壁纸吗,跟我一起去享受梵高的星空吧!
 
@@ -11,7 +11,7 @@
 
 　　每日名画将坚持在未来的日子里一直为您更新,成为您一天在城市中疲惫的度过喧嚣后一个心灵上的美术星空。
 
-###项目截图
+<h3>项目截图</h3>
 <table>
   <tr>
     <td align="center">首页</td>
@@ -35,7 +35,7 @@
   </tr>
 </table>
 
-###项目分包
+<h3>项目分包</h3>
 <table>
   <tr>
     <th>包名</th>
@@ -151,9 +151,9 @@
   </tr>
 </table>
 
-###MVP各层编写规范
+<h3>MVP各层编写规范</h3>
 本小节主要介绍每日名画App各模块、逻辑层级以及相关类的书写开发规范
-####1.M层
+<h4>1.M层</h4>
 M层主要业务逻辑为数据操作部分，包括数据的网络获取、数据库操作、文件操作（SharedPreference操作待定），仅包含数据的CURD操作，不包含逻辑处理。
 
 操作类需要的Context从BaseApplication中获取。
@@ -197,7 +197,7 @@ BaseRepository实现细节：
                 .compose(mLifecycleBinder.bindLifecycle());
         }
     }
-####2.P层
+<h4>2.P层</h4>
 P层主要完成数据输入输出过程中的逻辑加工过程。其中主要包括数据输入阶段的有效性验证，请求对象的封装，和输出阶段数据加工，展示逻辑输出展示数据。
 
 P层逻辑上应该为普通Java类，其中不应该出现Android相关类，其中包括Context类，这样设计的好处是，以后Presenter层对象可脱离Android生产环境独立编写，独立测试。
@@ -246,7 +246,7 @@ P层的Presenter对象编写实例
                 });
         }
     }
-####3.V层
+<h4>3.V层</h4>
     public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView {
         private GalleryImagesContract.IPresenter mPresenter;
         private ImageModel mImageModel; // 每日图片信息类
@@ -280,18 +280,19 @@ P层的Presenter对象编写实例
             ToastUtils.show(getContext(), errorMessage); // 打印错误信息
         }
     }
-####MVP各层分割及对应关系
+<h4>MVP各层分割及对应关系</h4>
 VP层为一对一关系，数据的展示和相应加工过程对应。复杂的页面，Fragment和VP层关系可为一对一，也可为一对多。VP层和M层为多对一关系。Net层API类和Repository类为一对一关系。
-
-###项目细节目录
-<li>1.<a href="https://freeksg66.github.io/">仿ios中Drawer的实现</a></li>
-<li>2.<a href="https://freeksg66.github.io/">圆形图像加载的实现</a></li>
-<li>3.<a href="https://freeksg66.github.io/">清空缓存的实现</a></li>
-<li>4.<a href="https://freeksg66.github.io/">在App内发送邮件的功能</a></li>
-<li>5.<a href="https://freeksg66.github.io/">自定义ViewPager的切换动画</a></li>
-<li>6.<a href="https://freeksg66.github.io/">属性动画的学习——图片详情页动画逻辑的实现</a></li>
-<li>7.<a href="https://freeksg66.github.io/">画一个分享页面</a></li>
-<li>8.<a href="https://freeksg66.github.io/">App异常捕获（Bugly + 本地收集）</a></li>
-<li>9.<a href="https://freeksg66.github.io/">组件化初试——简单封装一个ActionBar</a></li>
-<li>10.<a href="https://freeksg66.github.io/">异步之EventBus vs RxJava——收藏图像状态的更新</a></li>
+<h3>项目细节目录</h3>
+<ol>
+	<li><a href="https://freeksg66.github.io/">仿ios中Drawer的实现</a></li>
+	<li><a href="https://freeksg66.github.io/">圆形图像加载的实现</a></li>
+	<li><a href="https://freeksg66.github.io/">清空缓存的实现</a></li>
+	<li><a href="https://freeksg66.github.io/">在App内发送邮件的功能</a></li>
+	<li><a href="https://freeksg66.github.io/">自定义ViewPager的切换动画</a></li>
+	<li><a href="https://freeksg66.github.io/">属性动画的学习——图片详情页动画逻辑的实现</a></li>
+	<li><a href="https://freeksg66.github.io/">画一个分享页面</a></li>
+	<li><a href="https://freeksg66.github.io/">App异常捕获（Bugly + 本地收集）</a></li>
+	<li><a href="https://freeksg66.github.io/">组件化初试——简单封装一个ActionBar</a></li>
+	<li><a href="https://freeksg66.github.io/">异步之EventBus vs RxJava——收藏图像状态的更新</a></li>
+</ol>
 详情请见<a href="https://freeksg66.github.io/">高乐的博客</a>（陆续更新中）
