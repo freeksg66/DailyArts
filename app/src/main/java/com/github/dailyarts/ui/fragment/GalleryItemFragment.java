@@ -258,7 +258,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .addSharedElement(ivGalleryImage, getResources().getString(R.string.image_transition))
-                .replace(container, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
+                .replace(container, imageDetailsFragment)
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
     }

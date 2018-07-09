@@ -1,7 +1,6 @@
 package com.github.dailyarts.utils;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.dailyarts.config.Constant;
-import com.github.dailyarts.config.GlideCircleTransform;
+import com.github.dailyarts.ui.transformation.GlideCircleTransform;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package com.github.dailyarts.config;
+package com.github.dailyarts.ui.transformation;
 
 import android.content.Context;
 import android.graphics.Bitmap;

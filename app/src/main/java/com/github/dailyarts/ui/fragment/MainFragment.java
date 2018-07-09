@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.dailyarts.R;
-import com.github.dailyarts.config.GlideCircleTransform;
+import com.github.dailyarts.ui.transformation.GlideCircleTransform;
 import com.github.dailyarts.contract.FindArtsContract;
 import com.github.dailyarts.entity.DateModel;
 import com.github.dailyarts.entity.ImageModel;
@@ -44,7 +44,6 @@ import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
 import com.github.dailyarts.ui.widget.imagespickers.ImageConfig;
-import com.github.dailyarts.ui.widget.imagespickers.ImageLoader;
 import com.github.dailyarts.ui.widget.imagespickers.ImageSelector;
 import com.github.dailyarts.ui.widget.imagespickers.ImageSelectorActivity;
 import com.github.dailyarts.utils.CacheUtils;
@@ -58,8 +57,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by legao005426 on 2018/6/11.

@@ -23,7 +23,7 @@
     <td><img src="./images/home_left.png" width="180" height="320" /></td>
     <td><img src="./images/home_right.png" width="180" height="320" /></td>
   </tr>
-<tr>
+  <tr>
     <td align="center">我的收藏页</td>
     <td align="center">图片详情页</td>
     <td align="center">图片描述页</td>
@@ -35,6 +35,263 @@
   </tr>
 </table>
 
+###项目分包
+<table>
+  <tr>
+    <th>包名</th>
+    <th>描述</th>
+  </tr>
+  <tr>
+    <td>config</td>
+    <td>存在SharedPreference中的配置参数，以及全局常数类</td>
+  </tr>
+  <tr>
+    <td>contract</td>
+    <td>VP层协议接口</td>
+  </tr>
+  <tr>
+    <td>entity</td>
+    <td>实体模型</td>
+  </tr>
+  <tr>
+    <td>event</td>
+    <td>EventBus中的Event对象类</td>
+  </tr>
+  <tr>
+    <td>net</td>
+    <td>网络相关</td>
+  </tr>
+  <tr>
+    <td> </td>
+    <td>api:网络请求接口</td>
+  </tr>
+  <tr>
+    <td>presenter</td>
+    <td>MVP中P实现类</td>
+  </tr>
+  <tr>
+    <td>receiver</td>
+    <td>四大组件中的receiver</td>
+  </tr>
+  <tr>
+    <td>repository</td>
+    <td>MVP中M层接口及实现类，主要包括数据操作部分逻辑，包括网络数据、文件、SP存取</td>
+  </tr>
+  <tr>
+    <td>router</td>
+    <td>ARouter的简单封装</td>
+  </tr>
+  <tr>
+    <td>service</td>
+    <td>四大组件中的service</td>
+  </tr>
+  <tr>
+    <td>ui</td>
+    <td>UI相关类</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>activity</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>adapter</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>fragment</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>transformation：图像变换、动画变换类</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>widget：自定义控件、对话框等</td>
+  </tr>
+  <tr>
+    <td>utils</td>
+    <td>各种工具类</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>CacheUtils：app缓存管理</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>CommomUtils：常规工具类（获取进程名、判断程序是否显示在前端等）</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>DeviceInfo：设备信息以及硬件信息</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>ImageLoadUtils：图片加载Glide封装类</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>OSUtils：系统类型判断</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>SharedPreferencesUtils：sp存储相关</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>StatusBarUtils：状态栏相关</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>StringUtils：字符串</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>ToastUtils：弹窗类</td>
+  </tr>
+</table>
 
+###MVP各层编写规范
+本小节主要介绍每日名画App各模块、逻辑层级以及相关类的书写开发规范
+####1.M层
+M层主要业务逻辑为数据操作部分，包括数据的网络获取、数据库操作、文件操作（SharedPreference操作待定），仅包含数据的CURD操作，不包含逻辑处理。
 
+操作类需要的Context从BaseApplication中获取。
 
+M层返回对象统一封装为Observable，线程切换，生命周期管理同意在M层处理。<b>实施过程：</b>M层Repository对象继承BaseRepository后，构造方法传入RxLifecycleBinder引用，并确保调用其super方法，之后可调用基类中的defaultRxConfig()方法，来处理线程切换（默认为io线程和主线程的切换）以及生命周期内Observable资源处理。其中RxLifecycleBinder接口在BaseActivity中实现，只需在构造Repository的时候传入Activity引用即可。
+
+数据操作需要注意线程切换问题，耗时操作需注意在子线程中进行，开启子线程及数据类转换通过RxUtil实现。
+
+M层Repository对象编写实例：
+
+    // 获取主页中每一天的图片
+    public class GalleryImagesRepository extends BaseRepository implements GalleryImagesDataSource {
+        // 构造函数传入RxLifecycleBinder应用，调用super方法    
+        public GalleryImagesRepository(RxLifecycleBinder binder) {
+            super(binder);
+        }
+
+        // 网络数据操作
+        @Override
+        public Observable<Response<ImageMessageModel>> getGalleryImage(int date) {
+            return DailyArtsAPI.getInstance().getImageMessage(date);
+        }
+    }
+BaseRepository实现细节：
+    
+    public abstract class BaseRepository {
+
+        protected RxLifecycleBinder mLifecycleBinder;
+
+        public BaseRepository(RxLifecycleBinder binder) {
+            mLifecycleBinder = binder;
+        }
+
+        public BaseRepository() {}
+
+        public <T> Observable.Transformer<T,T> defaultRxConfig() {
+            if (null == mLifecycleBinder) throw new IllegalArgumentException("RxLifecycleBinder is null.");
+            return tObservable -> tObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .compose(mLifecycleBinder.bindLifecycle());
+        }
+    }
+####2.P层
+P层主要完成数据输入输出过程中的逻辑加工过程。其中主要包括数据输入阶段的有效性验证，请求对象的封装，和输出阶段数据加工，展示逻辑输出展示数据。
+
+P层逻辑上应该为普通Java类，其中不应该出现Android相关类，其中包括Context类，这样设计的好处是，以后Presenter层对象可脱离Android生产环境独立编写，独立测试。
+
+contract中定义P层和V层的接口
+
+    public interface GalleryImagesContract {
+        // view接口
+        interface IView {
+            void loadPicture(ImageModel imageModel);
+
+            void loadPictureFail(String errorMessage);
+        }
+        // presenter接口
+        interface IPresenter {
+            void getImage(int date);
+        }
+    }
+P层的Presenter对象编写实例
+
+    public class GalleryImagePresenter implements GalleryImagesContract.IPresenter {
+
+        private GalleryImagesContract.IView mView;
+        private GalleryImagesRepository mGalleryImagesRepository;
+
+        public GalleryImagePresenter(GalleryImagesContract.IView view, GalleryImagesRepository galleryImagesRepository) {
+            mView = view;
+            mGalleryImagesRepository = galleryImagesRepository;
+        }
+
+        @Override
+        public void getImage(int date) {
+            mGalleryImagesRepository.getGalleryImage(date)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new NetSubscriber<ImageMessageModel>() {
+                    @Override
+                    public void onSuccess(ImageMessageModel imageMessageModel) {
+                        mView.loadPicture(imageMessageModel.getData());
+                    }
+
+                    @Override
+                    public void onFailure(NetError error) {
+                        mView.loadPictureFail(error.message);
+                    }
+                });
+        }
+    }
+####3.V层
+    public class GalleryItemFragment extends BaseFragment implements GalleryImagesContract.IView {
+        private GalleryImagesContract.IPresenter mPresenter;
+        private ImageModel mImageModel; // 每日图片信息类
+        ...省略布局文件的控件变量和其余状态变量...
+        // fragment布局文件
+        @Override
+        protected int getLayoutResource() {
+            return R.layout.gallery_item;
+        }
+
+        // view初始化
+        @Override
+        protected void onInitView() {
+            // 初始化Presenter
+            mPresenter = new GalleryImagePresenter(this, new GalleryImagesRepository(getHoldingActivity()));
+            ...省略控件初始化和监听事件绑定...
+            mPresenter.getImage(mDateModel.toInt()); // 获取每日图片信息
+        }
+
+        // 获取每日图片信息成功
+        @Override
+        public void loadPicture(ImageModel imageModel) {
+            if(getContext() == null) return;
+            mImageModel = imageModel;
+            loadingImages(); // 加载图片的具体函数
+        }
+        // 获取每日图片信息失败
+        @Override
+        public void loadPictureFail(String errorMessage) {
+            if(getContext() == null) return;
+            ToastUtils.show(getContext(), errorMessage); // 打印错误信息
+        }
+    }
+####MVP各层分割及对应关系
+VP层为一对一关系，数据的展示和相应加工过程对应。复杂的页面，Fragment和VP层关系可为一对一，也可为一对多。VP层和M层为多对一关系。Net层API类和Repository类为一对一关系。
+
+###项目细节目录
+<li>1.<a href="https://freeksg66.github.io/">仿ios中Drawer的实现</a></li>
+<li>2.<a href="https://freeksg66.github.io/">圆形图像加载的实现</a></li>
+<li>3.<a href="https://freeksg66.github.io/">清空缓存的实现</a></li>
+<li>4.<a href="https://freeksg66.github.io/">在App内发送邮件的功能</a></li>
+<li>5.<a href="https://freeksg66.github.io/">自定义ViewPager的切换动画</a></li>
+<li>6.<a href="https://freeksg66.github.io/">属性动画的学习——图片详情页动画逻辑的实现</a></li>
+<li>7.<a href="https://freeksg66.github.io/">画一个分享页面</a></li>
+<li>8.<a href="https://freeksg66.github.io/">App异常捕获（Bugly + 本地收集）</a></li>
+<li>9.<a href="https://freeksg66.github.io/">组件化初试——简单封装一个ActionBar</a></li>
+<li>10.<a href="https://freeksg66.github.io/">异步之EventBus vs RxJava——收藏图像状态的更新</a></li>
+详情请见<a href="https://freeksg66.github.io/">高乐的博客</a>（陆续更新中）
