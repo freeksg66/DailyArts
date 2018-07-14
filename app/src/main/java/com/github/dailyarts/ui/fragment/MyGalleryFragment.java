@@ -1,14 +1,19 @@
 package com.github.dailyarts.ui.fragment;
 
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.ui.transformation.DetailTransition;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.utils.DeviceInfo;
@@ -28,6 +33,8 @@ public class MyGalleryFragment extends BaseFragment {
     private IdiotGalleryAdapter mAdapter;
     private List<Fragment> mFragments;
     private List<ImageModel> mDataList;
+
+    public ImageDetailsFragment imageDetailsFragment;
 
     @Override
     protected int getLayoutResource() {
@@ -59,10 +66,31 @@ public class MyGalleryFragment extends BaseFragment {
         if (mDataList != null && mDataList.size() > 0) {
             for (ImageModel item : mDataList) {
                 GalleryItemFragment fragment = new GalleryItemFragment();
+                fragment.setOnImageItemClick(imageModel -> toImageDetailFragment(imageModel));
                 fragment.setData(item);
                 mFragments.add(fragment);
             }
         }
+    }
+
+    private void toImageDetailFragment(ImageModel model) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("BigImage", model);
+        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
+        imageDetailsFragment = new ImageDetailsFragment();
+        imageDetailsFragment.setArguments(bundle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
+            Transition transition = new Fade().setDuration(500);
+            setExitTransition(transition);
+            imageDetailsFragment.setEnterTransition(transition);
+            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
+        }
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fl_my_gallery_activity_content, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
+                .addToBackStack(imageDetailsFragment.getClass().getSimpleName())
+                .commitAllowingStateLoss();
     }
 
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {

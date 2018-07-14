@@ -71,6 +71,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private AppActionBar appActionBar;
     private ImageView ivHomeUserSetting, ivHomeFindArts;
     private ViewPager mGalleryViewPager;
+    public ImageDetailsFragment imageDetailsFragment;
 
     private IdiotGalleryAdapter mAdapter;
     private List<Fragment> mFragments;
@@ -266,6 +267,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         int yearOffset = getYearOffset(c.get(Calendar.YEAR));
         for (int i = 0; i < mFragmentsLength; i++) {
             item = new GalleryItemFragment();
+            item.setOnImageItemClick(imageModel -> toImageDetailFragment(imageModel));
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
             item.setData(new DateModel(c.get(Calendar.YEAR) - yearOffset, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), offset);
@@ -357,10 +359,18 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     }
 
     private void toImageDetailFragment(ImageModel model) {
+        if (mDrawer.isDrawerOpen(mRightContainer)) {
+            mDrawer.closeDrawer(mRightContainer);
+            swipeStatus = MID_BTN;
+        }
+        if(mDrawer.isDrawerOpen(mLeftContainer)) {
+            mDrawer.closeDrawer(mLeftContainer);
+            swipeStatus = MID_BTN;
+        }
         Bundle bundle = new Bundle();
         bundle.putParcelable("BigImage", model);
         bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
-        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
+        imageDetailsFragment = new ImageDetailsFragment();
         imageDetailsFragment.setArguments(bundle);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());

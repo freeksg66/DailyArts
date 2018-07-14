@@ -58,6 +58,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
     private ImageModel mImageModel;
     private ActivityOptionsCompat mOptionsCompat;
+    private OnImageItemClick mImageItemClick;
 
     private GalleryImagesContract.IPresenter mPresenter;
     private int mOffset;
@@ -105,13 +106,13 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
             } else {
                 mPresenter.getImage(mDateModel.toInt());
             }
-            ivGalleryImage.setOnClickListener(v -> toImageDetail(R.id.fl_main_activity_content));
+            ivGalleryImage.setOnClickListener(v -> toImageDetail());
             tvMonth.setText(convert2Hanzi(mDateModel.month) + "月");
             tvDay.setText(String.valueOf(mDateModel.day));
         } else if (mImageModel != null) {
             llItemTime.setVisibility(View.GONE);
             ivCollection.setVisibility(View.VISIBLE);
-            ivGalleryImage.setOnClickListener(v -> toImageDetail(R.id.fl_my_gallery_activity_content));
+            ivGalleryImage.setOnClickListener(v -> toImageDetail());
             loadingImages();
         } else {
             ivGalleryImage.setImageResource(R.drawable.image_placeholder);
@@ -145,12 +146,14 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         return mOffset;
     }
 
-    private void toImageDetail(int container) {
+    private void toImageDetail() {
         if (isTomorrow) {
             ToastUtils.show(getContext(), "敬请期待！");
         } else if (mLoadSuccess) {
             // 进入图片详情页
-            toImageDetailFragment(mImageModel, container);
+            if(mImageItemClick != null) {
+                mImageItemClick.onClick(mImageModel);
+            }
         } else if(mLoadState == LOADING){
             ToastUtils.show(getContext(), "努力加载中...");
         } else if(mLoadState == DEFAULT) {
@@ -242,27 +245,6 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         ToastUtils.show(getContext(), errorMessage);
     }
 
-    private void toImageDetailFragment(ImageModel model, int container) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("BigImage", model);
-        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
-        ImageDetailsFragment imageDetailsFragment = new ImageDetailsFragment();
-        imageDetailsFragment.setArguments(bundle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
-            Transition transition = new Fade().setDuration(500);
-            setExitTransition(new Fade().setDuration(500));
-            imageDetailsFragment.setEnterTransition(new Fade().setDuration(500));
-            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
-        }
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addSharedElement(ivGalleryImage, getResources().getString(R.string.image_transition))
-                .replace(container, imageDetailsFragment)
-                .addToBackStack(null)
-                .commitAllowingStateLoss();
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCollectionChange(CollectionEvent event) {
         if (event.imageModel.getId().equals(mImageModel.getId())) {
@@ -289,5 +271,13 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
                 mPresenter.getImage(mDateModel.toInt());
             }
         }
+    }
+
+    public void setOnImageItemClick(OnImageItemClick imageItemClick) {
+        mImageItemClick = imageItemClick;
+    }
+
+    public interface OnImageItemClick {
+        void onClick(ImageModel imageModel);
     }
 }

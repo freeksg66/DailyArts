@@ -3,15 +3,11 @@ package com.github.dailyarts.ui.fragment;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +27,6 @@ import com.github.dailyarts.entity.ImageModel;
 import com.github.dailyarts.event.CollectionEvent;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
-import com.github.dailyarts.ui.activity.WatchImageActivity;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.ShareDialog;
 import com.github.dailyarts.utils.DeviceInfo;
@@ -40,8 +35,6 @@ import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 
 /**
  * Created by legao005426 on 2018/6/11.
@@ -78,6 +71,8 @@ public class ImageDetailsFragment extends BaseFragment {
 
     private final String APP_ACTION_BAR_TAG = "AppActionBar";
     private final String CORVER_TAG = "Corver";
+
+    public boolean isActivity = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
@@ -160,6 +155,18 @@ public class ImageDetailsFragment extends BaseFragment {
         });
 
         initListener();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isActivity = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isActivity = false;
     }
 
     private void initListener(){
