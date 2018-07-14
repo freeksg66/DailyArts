@@ -1,14 +1,9 @@
 package com.github.dailyarts.ui.fragment;
 
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,8 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.DateModel;
@@ -28,9 +21,7 @@ import com.github.dailyarts.event.NetConnectionChangeEvent;
 import com.github.dailyarts.presenter.GalleryImagePresenter;
 import com.github.dailyarts.contract.GalleryImagesContract;
 import com.github.dailyarts.repository.GalleryImagesRepository;
-import com.github.dailyarts.router.RouterConstant;
-import com.github.dailyarts.router.RouterManager;
-import com.github.dailyarts.ui.transformation.DetailTransition;
+import com.github.dailyarts.utils.DeviceInfo;
 import com.github.dailyarts.utils.SharedPreferencesUtils;
 import com.github.dailyarts.utils.ToastUtils;
 
@@ -79,6 +70,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
 
         llItemTime = rootView.findViewById(R.id.ll_item_time);
         ivGalleryImage = rootView.findViewById(R.id.iv_gallery_item_image);
+        initGalleryImageView();
         tvMonth = rootView.findViewById(R.id.tv_gallery_item_month);
         tvDay = rootView.findViewById(R.id.tv_gallery_item_day);
         ivCollection = rootView.findViewById(R.id.iv_my_collection);
@@ -95,6 +87,17 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         tvMonth.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "font/stiliti.ttf"));
         mOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), ivGalleryImage, "sharedView");
         loadData();
+    }
+
+    private void initGalleryImageView() {
+        int screenWidth = DeviceInfo.getScreenWidth(getActivity());
+        int screenHight = DeviceInfo.getScreenHeight(getActivity());
+        int ivWidth = screenWidth * 73 / 100;
+        int ivHeight = screenHight * 73 / 100;
+        ViewGroup.LayoutParams params = ivGalleryImage.getLayoutParams();
+        params.width = ivWidth;
+        params.height = ivHeight;
+        ivGalleryImage.setLayoutParams(params);
     }
 
     public void loadData(){
@@ -152,7 +155,7 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
         } else if (mLoadSuccess) {
             // 进入图片详情页
             if(mImageItemClick != null) {
-                mImageItemClick.onClick(mImageModel);
+                mImageItemClick.onClick(mImageModel, ivGalleryImage);
             }
         } else if(mLoadState == LOADING){
             ToastUtils.show(getContext(), "努力加载中...");
@@ -278,6 +281,6 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     }
 
     public interface OnImageItemClick {
-        void onClick(ImageModel imageModel);
+        void onClick(ImageModel imageModel, ImageView shareView);
     }
 }

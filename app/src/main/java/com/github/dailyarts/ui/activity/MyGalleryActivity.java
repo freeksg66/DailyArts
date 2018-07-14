@@ -35,13 +35,4 @@ public class MyGalleryActivity extends BaseActivity {
         mMyGalleryFragment = getStoredFragment(MyGalleryFragment.class);
         addFragment(mMyGalleryFragment);
     }
-
-    @Override
-    public void onBackPressed() {
-        if(mMyGalleryFragment != null && mMyGalleryFragment.imageDetailsFragment != null && mMyGalleryFragment.imageDetailsFragment.isActivity) {
-            mMyGalleryFragment.imageDetailsFragment.backFunction();
-        }else {
-            super.onBackPressed();
-        }
-    }
 }

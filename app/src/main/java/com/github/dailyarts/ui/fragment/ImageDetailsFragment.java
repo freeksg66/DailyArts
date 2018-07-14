@@ -72,8 +72,6 @@ public class ImageDetailsFragment extends BaseFragment {
     private final String APP_ACTION_BAR_TAG = "AppActionBar";
     private final String CORVER_TAG = "Corver";
 
-    public boolean isActivity = false;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -155,18 +153,6 @@ public class ImageDetailsFragment extends BaseFragment {
         });
 
         initListener();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        isActivity = true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        isActivity = false;
     }
 
     private void initListener(){
@@ -366,7 +352,7 @@ public class ImageDetailsFragment extends BaseFragment {
 
     public void backFunction(){
         if(isFirstPage){
-            getActivity().getSupportFragmentManager().popBackStack();
+            getActivity().finishAfterTransition();
         }else {
             isFirstPage = true;
             animJumpPage(true);

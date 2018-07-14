@@ -26,7 +26,6 @@
         android:layout_width="@dimen/margin_240dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:fitsSystemWindows="true"
-        android:paddingTop="@dimen/action_bar_height" />
+        android:fitsSystemWindows="true"/>
 
 </android.support.v4.widget.DrawerLayout>

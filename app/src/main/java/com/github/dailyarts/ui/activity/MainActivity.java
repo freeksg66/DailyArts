@@ -38,13 +38,4 @@ public class MainActivity extends BaseActivity {
         mainFragment = getStoredFragment(MainFragment.class);
         addFragment(mainFragment);
     }
-
-    @Override
-    public void onBackPressed() {
-        if(mainFragment != null && mainFragment.imageDetailsFragment != null && mainFragment.imageDetailsFragment.isActivity) {
-            mainFragment.imageDetailsFragment.backFunction();
-        }else {
-            super.onBackPressed();
-        }
-    }
 }

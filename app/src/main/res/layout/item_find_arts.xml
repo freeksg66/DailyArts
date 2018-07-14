@@ -10,7 +10,8 @@
         android:layout_width="@dimen/margin_70dp"
         android:layout_height="@dimen/margin_70dp"
         android:src="@drawable/image_placeholder"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:transitionName="@string/image_transition"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

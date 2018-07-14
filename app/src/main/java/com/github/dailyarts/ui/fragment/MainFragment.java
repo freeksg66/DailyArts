@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -21,14 +22,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.dailyarts.R;
+import com.github.dailyarts.ui.activity.ImageDetailsActivity;
 import com.github.dailyarts.ui.transformation.GlideCircleTransform;
 import com.github.dailyarts.contract.FindArtsContract;
 import com.github.dailyarts.entity.DateModel;
@@ -62,7 +67,7 @@ import java.util.List;
  * Created by legao005426 on 2018/6/11.
  */
 
-public class MainFragment extends BaseFragment implements FindArtsContract.IView {
+public class MainFragment extends BaseFragment implements FindArtsContract.IView, CompoundButton.OnCheckedChangeListener {
     public static final String TAG = "MainFragment";
 
     private DrawerLayout mDrawer;
@@ -82,6 +87,19 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private ImageView ivBack, ivUserProfile;
 
     // rightRightView
+    private RadioGroup rg1;
+    private RadioGroup rg2;
+    private RadioGroup rg3;
+    private RadioButton rb11;
+    private RadioButton rb12;
+    private RadioButton rb13;
+    private RadioButton rb14;
+    private RadioButton rb21;
+    private RadioButton rb22;
+    private RadioButton rb23;
+    private RadioButton rb31;
+    private RadioButton rb32;
+    private RadioButton rb33;
     private EditText etName;
     private RelativeLayout rlFindNothing;
     private RecyclerView rvFindArts;
@@ -231,16 +249,49 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         mRightContainer = rootView.findViewById(R.id.rl_right_drawer_layout);
         View rightView = getLayoutInflater().inflate(layoutResID, null);
         rightView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        rg1 = rightView.findViewById(R.id.rg_find_arts_r1);
+        rg2 = rightView.findViewById(R.id.rg_find_arts_r2);
+        rg3 = rightView.findViewById(R.id.rg_find_arts_r3);
+        rb11 = rightView.findViewById(R.id.rb_find_arts_r1_c1);
+        rb12 = rightView.findViewById(R.id.rb_find_arts_r1_c2);
+        rb13 = rightView.findViewById(R.id.rb_find_arts_r1_c3);
+        rb14 = rightView.findViewById(R.id.rb_find_arts_r1_c4);
+        rb21 = rightView.findViewById(R.id.rb_find_arts_r2_c1);
+        rb22 = rightView.findViewById(R.id.rb_find_arts_r2_c2);
+        rb23 = rightView.findViewById(R.id.rb_find_arts_r2_c3);
+        rb31 = rightView.findViewById(R.id.rb_find_arts_r3_c1);
+        rb32 = rightView.findViewById(R.id.rb_find_arts_r3_c2);
+        rb33 = rightView.findViewById(R.id.rb_find_arts_r3_c3);
+        rb11.setText("梵高");
+        rb12.setText("毕加索");
+        rb13.setText("莫奈");
+        rb14.setText("杜尚");
+        rb21.setText("达芬奇");
+        rb22.setText("米开朗基罗");
+        rb23.setText("陈丹青");
+        rb31.setText("张大千");
+        rb32.setText("齐白石");
+        rb33.setText("徐悲鸿");
+        rb11.setOnCheckedChangeListener(this);
+        rb12.setOnCheckedChangeListener(this);
+        rb13.setOnCheckedChangeListener(this);
+        rb14.setOnCheckedChangeListener(this);
+        rb21.setOnCheckedChangeListener(this);
+        rb22.setOnCheckedChangeListener(this);
+        rb23.setOnCheckedChangeListener(this);
+        rb31.setOnCheckedChangeListener(this);
+        rb32.setOnCheckedChangeListener(this);
+        rb33.setOnCheckedChangeListener(this);
         etName = rightView.findViewById(R.id.et_find_name);
         rlFindNothing = rightView.findViewById(R.id.rl_find_nothing);
         rvFindArts = rightView.findViewById(R.id.rv_find_arts);
 
         rvFindArts.setLayoutManager(new LinearLayoutManager(getContext()));
         mFindArtsAdapter = new FindArtsAdapter(getContext(), new ArrayList<>());
-        mFindArtsAdapter.setOnItemClickListener(model -> {
+        mFindArtsAdapter.setOnItemClickListener((model, shareView) -> {
             if (model == null || model.getBigImg() == null || model.getBigImg().equals("")) return;
             // 进入图片详情页
-            toImageDetailFragment(model);
+            toImageDetailFragment(model, shareView);
         });
         rvFindArts.setAdapter(mFindArtsAdapter);
         etName.setOnEditorActionListener((view, actionId, event) -> {
@@ -267,7 +318,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         int yearOffset = getYearOffset(c.get(Calendar.YEAR));
         for (int i = 0; i < mFragmentsLength; i++) {
             item = new GalleryItemFragment();
-            item.setOnImageItemClick(imageModel -> toImageDetailFragment(imageModel));
+            item.setOnImageItemClick((imageModel, shareView) -> toImageDetailFragment(imageModel, shareView));
             c.add(Calendar.DAY_OF_MONTH, 1);
             offset += 1;
             item.setData(new DateModel(c.get(Calendar.YEAR) - yearOffset, c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH)), offset);
@@ -358,32 +409,23 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         }
     }
 
-    private void toImageDetailFragment(ImageModel model) {
+    private void toImageDetailFragment(ImageModel model, ImageView shareView) {
         if (mDrawer.isDrawerOpen(mRightContainer)) {
-            mDrawer.closeDrawer(mRightContainer);
-            swipeStatus = MID_BTN;
+            //mDrawer.closeDrawer(mRightContainer);
+            swipeStatus = RIGHT_BTN;
         }
         if(mDrawer.isDrawerOpen(mLeftContainer)) {
             mDrawer.closeDrawer(mLeftContainer);
             swipeStatus = MID_BTN;
         }
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("BigImage", model);
-        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
-        imageDetailsFragment = new ImageDetailsFragment();
-        imageDetailsFragment.setArguments(bundle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
-            Transition transition = new Fade().setDuration(500);
-            setExitTransition(transition);
-            imageDetailsFragment.setEnterTransition(transition);
-            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
+
+        Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
+        intent.putExtra("BigImage", model);
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), shareView, getContext().getResources().getString(R.string.image_transition));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setExitTransition(new Fade().setDuration(500));
         }
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_content_drawer_layout, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
-                .addToBackStack(imageDetailsFragment.getClass().getSimpleName())
-                .commitAllowingStateLoss();
+        startActivity(intent, transitionActivityOptions.toBundle());
     }
 
     @Override
@@ -412,6 +454,60 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
                         .into(ivUserProfile);
                 SharedPreferencesUtils.saveUserProfile(getContext(), pathList.get(0));
             }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked) {
+            String text = buttonView.getText().toString();
+            etName.setText(text);
+            etName.setSelection(text.length());
+            mPresenter.searchImages(text);
+        }
+        switch (buttonView.getId()) {
+            case R.id.rb_find_arts_r1_c1:
+                rg2.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r1_c2:
+                rg2.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r1_c3:
+                rg2.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r1_c4:
+                rg2.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r2_c1:
+                rg1.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r2_c2:
+                rg1.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r2_c3:
+                rg1.clearCheck();
+                rg3.clearCheck();
+                break;
+            case R.id.rb_find_arts_r3_c1:
+                rg1.clearCheck();
+                rg2.clearCheck();
+                break;
+            case R.id.rb_find_arts_r3_c2:
+                rg1.clearCheck();
+                rg2.clearCheck();
+                break;
+            case R.id.rb_find_arts_r3_c3:
+                rg1.clearCheck();
+                rg2.clearCheck();
+                break;
+            default:
+                break;
         }
     }
 

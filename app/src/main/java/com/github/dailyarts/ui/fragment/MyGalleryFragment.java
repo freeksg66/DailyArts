@@ -1,7 +1,9 @@
 package com.github.dailyarts.ui.fragment;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.ImageModel;
+import com.github.dailyarts.ui.activity.ImageDetailsActivity;
 import com.github.dailyarts.ui.transformation.DetailTransition;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
@@ -66,31 +69,21 @@ public class MyGalleryFragment extends BaseFragment {
         if (mDataList != null && mDataList.size() > 0) {
             for (ImageModel item : mDataList) {
                 GalleryItemFragment fragment = new GalleryItemFragment();
-                fragment.setOnImageItemClick(imageModel -> toImageDetailFragment(imageModel));
+                fragment.setOnImageItemClick((imageModel, shareView) -> toImageDetailFragment(imageModel, shareView));
                 fragment.setData(item);
                 mFragments.add(fragment);
             }
         }
     }
 
-    private void toImageDetailFragment(ImageModel model) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("BigImage", model);
-        bundle.putBoolean("HasCollected", SharedPreferencesUtils.checkCollect(getContext(), model));
-        imageDetailsFragment = new ImageDetailsFragment();
-        imageDetailsFragment.setArguments(bundle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
-            Transition transition = new Fade().setDuration(500);
-            setExitTransition(transition);
-            imageDetailsFragment.setEnterTransition(transition);
-            imageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
+    private void toImageDetailFragment(ImageModel model, ImageView shareView) {
+        Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
+        intent.putExtra("BigImage", model);
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), shareView, getContext().getResources().getString(R.string.image_transition));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setExitTransition(new Fade().setDuration(500));
         }
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_my_gallery_activity_content, imageDetailsFragment, imageDetailsFragment.getClass().getSimpleName())
-                .addToBackStack(imageDetailsFragment.getClass().getSimpleName())
-                .commitAllowingStateLoss();
+        startActivity(intent, transitionActivityOptions.toBundle());
     }
 
     class IdiotGalleryAdapter extends FragmentStatePagerAdapter {

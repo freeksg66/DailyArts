@@ -4,6 +4,154 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorHomeBg">
+    <!--推荐作者按钮组-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推荐搜索："
+            android:textSize="@dimen/font_15"
+            android:textColor="@color/white"/>
+        <RadioGroup
+            android:id="@+id/rg_find_arts_r1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <RadioButton
+                android:id="@+id/rb_find_arts_r1_c1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r1_c2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r1_c3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r1_c4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/rg_find_arts_r2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <RadioButton
+                android:id="@+id/rb_find_arts_r2_c1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r2_c2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r2_c3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/rg_find_arts_r3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+            <RadioButton
+                android:id="@+id/rb_find_arts_r3_c1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r3_c2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+            <RadioButton
+                android:id="@+id/rb_find_arts_r3_c3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/bg_radio"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <!--编辑框-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_50dp"
@@ -25,6 +173,7 @@
             android:layout_margin="@dimen/margin_5dp"
             android:hint="请输入画作名或画家"
             android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:textSize="@dimen/font_15"
             android:imeOptions="actionSearch"
             android:singleLine="true"/>

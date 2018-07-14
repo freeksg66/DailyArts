@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity" android:theme="@style/AppTheme.NoBar">
+        <activity android:name=".ui.activity.MainActivity" android:theme="@style/AppTheme.NoBar" android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activity.MyGalleryActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.PaintingDemandActivity" android:theme="@style/AppTheme.NoBar"/>
@@ -31,6 +31,7 @@
         <activity android:name=".ui.activity.CommentsActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.activity.WatchImageActivity" android:theme="@style/AppTheme.NoBar"/>
         <activity android:name=".ui.widget.imagespickers.ImageSelectorActivity" android:theme="@style/AppTheme.NoBar"/>
+        <activity android:name=".ui.activity.ImageDetailsActivity" android:theme="@style/AppTheme.NoBar"/>
 
         <receiver android:name=".receiver.NetConnectionChangeReceiver">
             <intent-filter>

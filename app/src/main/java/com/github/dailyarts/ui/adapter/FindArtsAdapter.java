@@ -44,7 +44,7 @@ public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindAr
         holder.tvName.setText(model.getName());
         holder.rootView.setOnClickListener(v -> {
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(model);
+                mOnItemClickListener.onItemClick(model, holder.ivImage);
             }
         });
     }
@@ -60,12 +60,17 @@ public class FindArtsAdapter extends RecyclerView.Adapter<FindArtsAdapter.FindAr
         notifyDataSetChanged();
     }
 
+    public void clearData() {
+        dataList.clear();
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ImageModel model);
+        void onItemClick(ImageModel model, ImageView shareView);
     }
 
     class FindArtsViewHolder extends RecyclerView.ViewHolder {
