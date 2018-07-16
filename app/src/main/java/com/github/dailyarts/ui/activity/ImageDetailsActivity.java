@@ -50,6 +50,7 @@ public class ImageDetailsActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mImageDetailsFragment.setSharedElementEnterTransition(new DetailTransition());
             mImageDetailsFragment.setEnterTransition(new Fade().setDuration(500));
+            mImageDetailsFragment.setExitTransition(new Fade().setDuration(500));
             mImageDetailsFragment.setSharedElementReturnTransition(new DetailTransition());
         }
         addFragment(mImageDetailsFragment);

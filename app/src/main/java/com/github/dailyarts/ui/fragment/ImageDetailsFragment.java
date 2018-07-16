@@ -104,8 +104,9 @@ public class ImageDetailsFragment extends BaseFragment {
         svIntro = rootView.findViewById(R.id.sv_details_introduction);
         llTools = rootView.findViewById(R.id.ll_details_tools);
 
-        ssivBigImage.setMinScale(0.5F);
-        ssivBigImage.setMaxScale(10F);
+
+
+
         Glide.with(this)
                 .load(mImageModel.getBigImg())
                 .asBitmap()
@@ -117,7 +118,15 @@ public class ImageDetailsFragment extends BaseFragment {
                         mImageHeight = resource.getHeight();
                         ssivBigImage.post(() -> {
                             mScale = initImageViewScale(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight());
-                            ssivBigImage.setImage(ImageSource.bitmap(resource), initImageViewState(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight()));
+                            dynamicSettingImageViewScale(ssivBigImage, mScale);
+                            if(mScale < 1) {
+                                ssivBigImage.setMinScale(mScale / 2);
+                                ssivBigImage.setMaxScale(2F);
+                            }else {
+                                ssivBigImage.setMinScale(0.5F);
+                                ssivBigImage.setMaxScale(mScale * 2);
+                            }
+                            ssivBigImage.setImage(ImageSource.bitmap(resource), new ImageViewState(mScale, getShowPoint(), 0));
                         });
                     }
                 });
@@ -162,7 +171,7 @@ public class ImageDetailsFragment extends BaseFragment {
             ssivBigImage.setZoomEnabled(isZoomEnable);
             ssivBigImage.setPanEnabled(isZoomEnable);
             if(!isZoomEnable){
-                SubsamplingScaleImageView.AnimationBuilder animationBuilder= ssivBigImage.animateScaleAndCenter(mScale, new PointF(mImageWidth / 2, mImageHeight / 2));
+                SubsamplingScaleImageView.AnimationBuilder animationBuilder= ssivBigImage.animateScaleAndCenter(mScale, getShowPoint());
                 if(animationBuilder != null){
                     animationBuilder.start();
                 }
@@ -270,14 +279,13 @@ public class ImageDetailsFragment extends BaseFragment {
         }
     }
 
-    private ImageViewState initImageViewState(int imgWidth, int imgHeight, int viewWidth, int viewHeight){
-        PointF center = new PointF(imgWidth / 2, imgHeight / 2);
-        int orientation = 0;
-        float scale = initImageViewScale(imgWidth, imgHeight, viewWidth, viewHeight);
-        return new ImageViewState(scale, center, orientation);
+    private PointF getShowPoint() {
+        return new PointF(mImageWidth / 2, mImageHeight / 2);
     }
 
     private float initImageViewScale(int imgWidth, int imgHeight, int viewWidth, int viewHeight){
+        mImageWidth = imgWidth;
+        mImageHeight = imgHeight;
         float scale = 1.0F;
         float scaleX = (float) viewWidth / imgWidth;
         float scaleY = (float) viewHeight / imgHeight;
@@ -285,6 +293,19 @@ public class ImageDetailsFragment extends BaseFragment {
             scale = scaleX > scaleY ? scaleX : scaleY;
         }
         return scale;
+    }
+
+    private void dynamicSettingImageViewScale(SubsamplingScaleImageView imageView, float initScale) {
+        if(initScale < 0){ // 异常值，该值应始终大于0
+            imageView.setMinScale(0.5F);
+            imageView.setMaxScale(5F);
+        } else if(initScale < 1) {
+            imageView.setMinScale(initScale / 2);
+            imageView.setMaxScale(5F);
+        } else {
+            imageView.setMinScale(0.5F);
+            imageView.setMaxScale(initScale * 2);
+        }
     }
 
     /**
@@ -357,6 +378,13 @@ public class ImageDetailsFragment extends BaseFragment {
             isFirstPage = true;
             animJumpPage(true);
         }
+    }
+
+    private class PicDetail {
+        public Bitmap bitmap;
+        public String cacheFilePath;
+        public int originalWidth;
+        public int originalHeight;
     }
 
 }
