@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -15,8 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Fade;
-import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +44,6 @@ import com.github.dailyarts.repository.FindArtsRepository;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.adapter.FindArtsAdapter;
-import com.github.dailyarts.ui.transformation.DetailTransition;
 import com.github.dailyarts.ui.transformation.ScalePageTransformer;
 import com.github.dailyarts.ui.widget.AppActionBar;
 import com.github.dailyarts.ui.widget.TipsDialog;
@@ -100,6 +99,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
     private RadioButton rb31;
     private RadioButton rb32;
     private RadioButton rb33;
+    private ImageView ivClear;
     private EditText etName;
     private RelativeLayout rlFindNothing;
     private RecyclerView rvFindArts;
@@ -283,6 +283,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         rb32.setOnCheckedChangeListener(this);
         rb33.setOnCheckedChangeListener(this);
         etName = rightView.findViewById(R.id.et_find_name);
+        ivClear = rightView.findViewById(R.id.iv_find_arts_clear);
         rlFindNothing = rightView.findViewById(R.id.rl_find_nothing);
         rvFindArts = rightView.findViewById(R.id.rv_find_arts);
 
@@ -304,6 +305,28 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             }
             return false;
         });
+        etName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s == null || s.length() == 0) {
+                    ivClear.setVisibility(View.GONE);
+                    clearFindArtsItem();
+                }else {
+                    ivClear.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        ivClear.setOnClickListener(v -> etName.setText(""));
         mRightContainer.addView(rightView);
     }
 
@@ -581,5 +604,17 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
             offset += 5;
         }
         return offset;
+    }
+
+    private void clearFindArtsItem() {
+        if(rlFindNothing.getVisibility() == View.VISIBLE){
+            rlFindNothing.setVisibility(View.GONE);
+            return;
+        }
+        if(mFindArtsAdapter == null || mFindArtsAdapter.getItemCount() == 0) return;
+        mFindArtsAdapter.clearData();
+        rg1.clearCheck();
+        rg2.clearCheck();
+        rg3.clearCheck();
     }
 }
