@@ -1,5 +1,6 @@
 package com.github.dailyarts.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -23,9 +25,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.github.dailyarts.R;
+import com.github.dailyarts.utils.DeviceInfo;
 import com.github.dailyarts.utils.ImageLoadUtils;
 import com.github.dailyarts.utils.ToastUtils;
 
@@ -38,6 +42,11 @@ public class ShareDialog extends DialogFragment {
     private String mImageUrl;
     private ImageView ivShare;
     private TextView tvTitle, tvTopBtn, tvBottomBtn;
+    private int brandHeight; // 背景高度
+    private int logoHeight; // Android logo尺寸
+    private int qrCodeHeight; // 二维码尺寸
+    private int margin; // 边距
+    private int mShareImageWidth, mShareImageHeight;
 
     private Bitmap mResource;
 
@@ -55,6 +64,12 @@ public class ShareDialog extends DialogFragment {
         tvTitle = view.findViewById(R.id.tv_share_title);
         tvTopBtn = view.findViewById(R.id.tv_share_save);
         tvBottomBtn = view.findViewById(R.id.tv_share_cancel);
+
+        brandHeight = getDimenValue(R.dimen.margin_70dp);
+        logoHeight = getDimenValue(R.dimen.margin_25dp);
+        qrCodeHeight = getDimenValue(R.dimen.margin_50dp);
+        margin = getDimenValue(R.dimen.margin_6dp);
+        fitShareImage();
 
         Glide.with(mContext)
                 .load(mImageUrl)
@@ -97,12 +112,9 @@ public class ShareDialog extends DialogFragment {
     }
 
     private Bitmap drawShareImage(Bitmap resource) {
+        resource = TransformationUtils.centerCrop(null, resource, mShareImageWidth, mShareImageHeight);
         int width = resource.getWidth();
         int height = resource.getHeight();
-        int brandHeight = 200; // 背景高度
-        int logoHeight = 80; // Android logo尺寸
-        int qrCodeHeight = 150; // 二维码尺寸
-        int margin = 20; // 边距
         // 画背景
         Bitmap newBitmap = Bitmap.createBitmap(resource.getWidth(), resource.getHeight() + brandHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
@@ -117,12 +129,12 @@ public class ShareDialog extends DialogFragment {
 
 
         // 写App名字
-        canvas = drawTitleText(canvas, "每日名画(Android版)", "（每天为您推荐一幅世界名画）", margin + logoHeight + margin, height + margin / 2 + logoHeight / 3, ContextCompat.getColor(mContext, R.color.black), 12, ContextCompat.getColor(mContext, R.color.cG1), 8, margin / 4);
-        // 防止二维码
-        canvas = drawBitmap(canvas, R.drawable.qr_code, width - qrCodeHeight - margin, height + margin / 2, qrCodeHeight, qrCodeHeight);
+        canvas = drawTitleText(canvas, "每日名画(Android版)", "（每天为您推荐一幅世界名画）", margin + logoHeight + margin, height + margin / 2 + logoHeight / 3, ContextCompat.getColor(mContext, R.color.black), 11, ContextCompat.getColor(mContext, R.color.cG1), 7, margin / 4);
+        // 放置二维码
+        canvas = drawBitmap(canvas, R.drawable.qr_code, width - qrCodeHeight - margin / 2, height + margin / 2, qrCodeHeight, qrCodeHeight);
         // 写第二种下载方式
-        drawText(canvas, "扫描二维码下载", margin, height + margin + logoHeight + margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 7);
-        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/ej2d", margin, height + brandHeight - 30, ContextCompat.getColor(mContext, R.color.cG2), 7);
+        drawText(canvas, "扫描二维码下载", margin, height + margin + logoHeight + margin * 2, ContextCompat.getColor(mContext, R.color.cG2), 8);
+        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/ej2d", margin, height + brandHeight - margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 8);
         return newBitmap;
     }
 
@@ -181,6 +193,23 @@ public class ShareDialog extends DialogFragment {
         void topButtonClick();
 
         void bottomButtonClick();
+    }
+
+    private void fitShareImage() {
+        int screenWidth = DeviceInfo.getScreenWidth(getActivity());
+        int screenHeight = DeviceInfo.getScreenHeight(getActivity());
+        int imgHeight = screenHeight - getDimenValue(R.dimen.margin_150dp) - getDimenValue(R.dimen.margin_60dp) - getDimenValue(R.dimen.margin_0_5dp) - brandHeight;
+        int imgWidth = screenWidth * imgHeight / screenHeight;
+        mShareImageWidth = imgWidth;
+        mShareImageHeight = imgHeight;
+        ViewGroup.LayoutParams param = ivShare.getLayoutParams();
+        param.width = imgWidth;
+        param.height = imgHeight + brandHeight;
+        ivShare.setLayoutParams(param);
+    }
+
+    private int getDimenValue(@DimenRes int id){
+        return (int) getContext().getResources().getDimension(id);
     }
 
 }

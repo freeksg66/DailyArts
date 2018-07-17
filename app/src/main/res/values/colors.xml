@@ -19,6 +19,7 @@
     <color name="cG1">#222222</color>
     <color name="cG2">#777777</color>
     <color name="cG5">#ebebeb</color>
+    <color name="cR1">#fd745d</color>
     <color name="image_selector_dark_gray">#FF343535</color>
     <color name="image_selector_text_gray">#FF999999</color>
     <color name="image_selector_photo_mask">#88000000</color>

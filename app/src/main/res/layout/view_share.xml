@@ -10,13 +10,14 @@
         android:src="@drawable/tomorrow"
         android:layout_marginTop="@dimen/margin_10dp"
         android:layout_marginBottom="@dimen/margin_10dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"/>
     <TextView
         android:id="@+id/tv_share_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_60dp"
         android:text="tips"
-        android:textSize="@dimen/font_15"
+        android:textSize="@dimen/font_16"
         android:layout_above="@+id/v_share_divider1"
         android:gravity="center"
         android:background="@color/white"/>
@@ -32,8 +33,9 @@
         android:layout_height="@dimen/margin_40dp"
         android:text="保存"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_15"
+        android:textColor="@color/cR1"
+        android:textSize="@dimen/font_16"
+        android:textStyle="bold"
         android:layout_above="@+id/v_share_divider"
         android:background="@color/white"/>
     <View
@@ -47,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_40dp"
         android:text="取消"
-        android:textSize="@dimen/font_15"
+        android:textSize="@dimen/font_16"
         android:gravity="center"
         android:textColor="@color/black"
         android:layout_alignParentBottom="true"
