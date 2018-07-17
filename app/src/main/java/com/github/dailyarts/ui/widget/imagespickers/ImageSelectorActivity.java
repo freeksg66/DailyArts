@@ -39,7 +39,7 @@ public class ImageSelectorActivity extends FragmentActivity implements ImageSele
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.image_grid, Fragment.instantiate(this, ImageSelectorFragment.class.getName(), null))
-                .commit();
+                .commitAllowingStateLoss();
         mActionbar = (AppActionBar) findViewById(R.id.action_bar);
         init();
     }

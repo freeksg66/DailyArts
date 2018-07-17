@@ -92,8 +92,8 @@ public class GalleryItemFragment extends BaseFragment implements GalleryImagesCo
     private void initGalleryImageView() {
         int screenWidth = DeviceInfo.getScreenWidth(getActivity());
         int screenHight = DeviceInfo.getScreenHeight(getActivity());
-        int ivWidth = screenWidth * 73 / 100;
-        int ivHeight = screenHight * 73 / 100;
+        int ivWidth = screenWidth * 75 / 100;
+        int ivHeight = screenHight * 75 / 100;
         ViewGroup.LayoutParams params = ivGalleryImage.getLayoutParams();
         params.width = ivWidth;
         params.height = ivHeight;

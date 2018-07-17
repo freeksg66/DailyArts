@@ -21,8 +21,8 @@
         android:id="@+id/vp_home_gallery"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_400dp"
-        android:paddingLeft="@dimen/margin_60dp"
-        android:paddingRight="@dimen/margin_60dp"
+        android:paddingLeft="@dimen/margin_40dp"
+        android:paddingRight="@dimen/margin_40dp"
         android:clipToPadding="false"/>
 
 </LinearLayout>
