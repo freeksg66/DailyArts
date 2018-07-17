@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/colorHomeBg">
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+    <com.github.dailyarts.ui.widget.MySubsamplingScaleImageView
         android:id="@+id/ssiv_details_big_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,7 +54,7 @@
     </RelativeLayout>
 
     <!--下一页-->
-    <ScrollView
+    <com.github.dailyarts.ui.widget.MyScrollView
         android:id="@+id/sv_details_introduction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,7 +71,7 @@
             android:paddingLeft="@dimen/margin_20dp"
             android:layout_marginRight="@dimen/margin_20dp"
             android:paddingBottom="@dimen/margin_52dp"/>
-    </ScrollView>
+    </com.github.dailyarts.ui.widget.MyScrollView>
     <LinearLayout
         android:id="@+id/ll_details_tools"
         android:layout_width="match_parent"

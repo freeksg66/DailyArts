@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
@@ -28,6 +29,8 @@ import com.github.dailyarts.event.CollectionEvent;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.widget.AppActionBar;
+import com.github.dailyarts.ui.widget.MyScrollView;
+import com.github.dailyarts.ui.widget.MySubsamplingScaleImageView;
 import com.github.dailyarts.ui.widget.ShareDialog;
 import com.github.dailyarts.utils.DeviceInfo;
 import com.github.dailyarts.utils.ImageLoadUtils;
@@ -44,13 +47,13 @@ public class ImageDetailsFragment extends BaseFragment {
     private static final String TAG = "ImageDetailsFragment";
 
     private AppActionBar appActionBar;
-    private SubsamplingScaleImageView ssivBigImage;
+    private MySubsamplingScaleImageView ssivBigImage;
     private ImageView ivCover;
     private TextView tvImageName, tvImageAuthor;
     private TextView tvImageIntro;
     private ImageView ivZoom, ivComment, ivCollection, ivDownload, ivShare;
     private RelativeLayout rlCover;
-    private ScrollView svIntro;
+    private MyScrollView svIntro;
     private LinearLayout llTools;
 
     private ImageModel mImageModel;
@@ -103,9 +106,6 @@ public class ImageDetailsFragment extends BaseFragment {
         rlCover.setTag(CORVER_TAG);
         svIntro = rootView.findViewById(R.id.sv_details_introduction);
         llTools = rootView.findViewById(R.id.ll_details_tools);
-
-
-
 
         Glide.with(this)
                 .load(mImageModel.getBigImg())
@@ -165,11 +165,17 @@ public class ImageDetailsFragment extends BaseFragment {
     }
 
     private void initListener(){
+        ssivBigImage.setUpLoadEnable(true);
+        ssivBigImage.setUpLoadListener(() -> {
+            isFirstPage = !isFirstPage;
+            animJumpPage(isFirstPage);
+        });
         ssivBigImage.setOnClickListener(v -> {
             rlCover.setEnabled(false);
             isZoomEnable = !isZoomEnable;
             ssivBigImage.setZoomEnabled(isZoomEnable);
             ssivBigImage.setPanEnabled(isZoomEnable);
+            ssivBigImage.setUpLoadEnable(!isZoomEnable);
             if(!isZoomEnable){
                 SubsamplingScaleImageView.AnimationBuilder animationBuilder= ssivBigImage.animateScaleAndCenter(mScale, getShowPoint());
                 if(animationBuilder != null){
@@ -193,6 +199,12 @@ public class ImageDetailsFragment extends BaseFragment {
         ivShare.setOnClickListener(v -> shareToOthers());
 
         appActionBar.setLeftBackBtnClickListener(v -> backFunction());
+
+        svIntro.setUpLoadEnable(true);
+        svIntro.setUpLoadListener(() -> {
+            isFirstPage = !isFirstPage;
+            animJumpPage(isFirstPage);
+        });
     }
 
     private void collectImage(){
