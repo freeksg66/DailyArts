@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -212,4 +214,9 @@ public class ShareDialog extends DialogFragment {
         return (int) getContext().getResources().getDimension(id);
     }
 
+    public void show(FragmentManager manager, String tag){
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
+    }
 }

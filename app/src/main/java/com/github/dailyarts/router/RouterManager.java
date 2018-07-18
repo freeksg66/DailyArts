@@ -5,6 +5,7 @@ import android.app.Application;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.AnimRes;
 import android.support.v4.app.ActivityOptionsCompat;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -77,6 +78,10 @@ public class RouterManager {
         ARouter.getInstance().build(path).navigation();
     }
 
+    public void startActivity(String path, @AnimRes int enterAnim, @AnimRes int exitAnim) {
+        ARouter.getInstance().build(path).withTransition(enterAnim, exitAnim).navigation();
+    }
+
 
     /**
      * 外部uri
@@ -104,6 +109,10 @@ public class RouterManager {
      */
     public void startActivity(String uri, String tag, String value) {
         ARouter.getInstance().build(uri).withString(tag, value).navigation();
+    }
+
+    public void startActivity(String uri, String tag, String value, @AnimRes int enterAnim, @AnimRes int exitAnim) {
+        ARouter.getInstance().build(uri).withString(tag, value).withTransition(enterAnim, exitAnim).navigation();
     }
 
     /**

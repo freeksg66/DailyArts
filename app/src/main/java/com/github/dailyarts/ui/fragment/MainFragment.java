@@ -193,7 +193,7 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         tvMyGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RouterManager.getInstance().startActivity(RouterConstant.MyGalleryActivityConst.PATH);
+                RouterManager.getInstance().startActivity(RouterConstant.MyGalleryActivityConst.PATH, R.anim.activity_right_in_anim, R.anim.activity_right_out_anim);
             }
         });
         tvOfflineCache.setOnClickListener(new View.OnClickListener() {
@@ -223,13 +223,13 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         tvPaintingDemand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RouterManager.getInstance().startActivity(RouterConstant.PaintingDemandActivityConst.PATH);
+                RouterManager.getInstance().startActivity(RouterConstant.PaintingDemandActivityConst.PATH, R.anim.activity_right_in_anim, R.anim.activity_right_out_anim);
             }
         });
         tvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RouterManager.getInstance().startActivity(RouterConstant.AboutActivityConst.PATH);
+                RouterManager.getInstance().startActivity(RouterConstant.AboutActivityConst.PATH, R.anim.activity_right_in_anim, R.anim.activity_right_out_anim);
             }
         });
         ivUserProfile.setOnClickListener(v ->getUserProfile());
@@ -616,5 +616,13 @@ public class MainFragment extends BaseFragment implements FindArtsContract.IView
         rg1.clearCheck();
         rg2.clearCheck();
         rg3.clearCheck();
+    }
+
+    public boolean rightFragmentClose() {
+        if (mDrawer.isDrawerOpen(mRightContainer)) {
+            mDrawer.closeDrawer(mRightContainer);
+            return true;
+        }
+        return false;
     }
 }

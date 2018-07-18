@@ -9,11 +9,14 @@ import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.fragment.MainFragment;
 import com.github.dailyarts.utils.StatusBarUtils;
+import com.github.dailyarts.utils.ToastUtils;
 
 @Route(path = RouterConstant.MainActivityConst.PATH)
 public class MainActivity extends BaseActivity {
 
     private MainFragment mainFragment;
+    // 第一次按下返回键的事件
+    private long firstPressedTime;
 
     @Override
     protected int getLayoutResource() {
@@ -37,5 +40,16 @@ public class MainActivity extends BaseActivity {
         RouterManager.getInstance().inject(this);
         mainFragment = getStoredFragment(MainFragment.class);
         addFragment(mainFragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mainFragment.rightFragmentClose()) return;
+        if (System.currentTimeMillis() - firstPressedTime < 2000) {
+            super.onBackPressed();
+        } else {
+            ToastUtils.show(MainActivity.this, "再按一次退出");
+            firstPressedTime = System.currentTimeMillis();
+        }
     }
 }

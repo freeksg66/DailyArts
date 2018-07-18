@@ -27,6 +27,7 @@ import com.github.dailyarts.event.CollectionEvent;
 import com.github.dailyarts.router.RouterConstant;
 import com.github.dailyarts.router.RouterManager;
 import com.github.dailyarts.ui.widget.AppActionBar;
+import com.github.dailyarts.ui.widget.CommonDialog;
 import com.github.dailyarts.ui.widget.MyScrollView;
 import com.github.dailyarts.ui.widget.MySubsamplingScaleImageView;
 import com.github.dailyarts.ui.widget.ShareDialog;
@@ -182,6 +183,24 @@ public class ImageDetailsFragment extends BaseFragment {
             }
             animZoomEnable(isZoomEnable);
         });
+        ssivBigImage.setOnLongClickListener(v -> {
+            if(!isZoomEnable) return false;
+            CommonDialog.ButtonClickListener listener = new CommonDialog.ButtonClickListener() {
+                @Override
+                public void topButtonClick() {
+                    collectImage();
+                }
+
+                @Override
+                public void bottomButtonClick() {
+                    saveImage();
+                }
+            };
+            String upText = hasCollected ? "取消收藏" : "收藏";
+            CommonDialog dialog = CommonDialog.getInstance(getContext(), upText, "保存", listener);
+            dialog.show(getFragmentManager(), CommonDialog.class.getSimpleName());
+            return false;
+        });
         rlCover.setOnClickListener(v -> {
             isFirstPage = !isFirstPage;
             animJumpPage(isFirstPage);
@@ -189,7 +208,13 @@ public class ImageDetailsFragment extends BaseFragment {
         ivZoom.setOnClickListener(v ->
             RouterManager
                     .getInstance()
-                    .startActivity(RouterConstant.WatchImageActivityConst.PATH, RouterConstant.WatchImageActivityConst.BIG_IMAGE_URL, mImageModel.getBigImg())
+                    .startActivity(
+                            RouterConstant.WatchImageActivityConst.PATH,
+                            RouterConstant.WatchImageActivityConst.BIG_IMAGE_URL,
+                            mImageModel.getBigImg(),
+                            R.anim.activity_right_in_anim,
+                            R.anim.activity_right_out_anim
+                    )
         );
         ivComment.setOnClickListener(v -> ToastUtils.show(getContext(), "评论功能暂未开放！"));
         ivCollection.setOnClickListener(v -> collectImage());
