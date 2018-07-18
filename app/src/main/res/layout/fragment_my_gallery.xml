@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorHomeBg">
@@ -16,5 +15,31 @@
         android:layout_height="@dimen/margin_400dp"
         android:paddingLeft="@dimen/margin_60dp"
         android:paddingRight="@dimen/margin_60dp"
-        android:clipToPadding="false"/>
-</LinearLayout>
+        android:clipToPadding="false"
+        android:layout_below="@id/mine_toolbar"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:id="@+id/rl_my_gallery_nothing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible">
+        <ImageView
+            android:id="@+id/iv_my_gallery_nothing"
+            android:layout_width="@dimen/margin_60dp"
+            android:layout_height="@dimen/margin_60dp"
+            android:src="@drawable/ic_collection"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5dp"
+            android:text="暂无收藏"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_18"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_my_gallery_nothing"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -10,8 +10,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.transition.Fade;
 import android.transition.Transition;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.github.dailyarts.R;
 import com.github.dailyarts.entity.ImageModel;
@@ -32,6 +34,7 @@ import java.util.List;
 public class MyGalleryFragment extends BaseFragment {
     private AppActionBar appActionBar;
     private ViewPager vpCollection;
+    private RelativeLayout rlNothing;
 
     private IdiotGalleryAdapter mAdapter;
     private List<Fragment> mFragments;
@@ -47,6 +50,7 @@ public class MyGalleryFragment extends BaseFragment {
     @Override
     protected void onInitView() {
         appActionBar = rootView.findViewById(R.id.mine_toolbar);
+        rlNothing = rootView.findViewById(R.id.rl_my_gallery_nothing);
         vpCollection = rootView.findViewById(R.id.vp_my_gallery);
         ViewGroup.LayoutParams params = vpCollection.getLayoutParams();
         params.width = DeviceInfo.getDisplayMetrics(getContext()).widthPixels;
@@ -67,12 +71,17 @@ public class MyGalleryFragment extends BaseFragment {
         mFragments = new ArrayList<>();
         mDataList = SharedPreferencesUtils.getCollectImages(getContext());
         if (mDataList != null && mDataList.size() > 0) {
+            vpCollection.setVisibility(View.VISIBLE);
+            rlNothing.setVisibility(View.GONE);
             for (ImageModel item : mDataList) {
                 GalleryItemFragment fragment = new GalleryItemFragment();
                 fragment.setOnImageItemClick((imageModel, shareView) -> toImageDetailFragment(imageModel, shareView));
                 fragment.setData(item);
                 mFragments.add(fragment);
             }
+        }else {
+            vpCollection.setVisibility(View.GONE);
+            rlNothing.setVisibility(View.VISIBLE);
         }
     }
 
