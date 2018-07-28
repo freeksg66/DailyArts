@@ -136,7 +136,7 @@ public class ShareDialog extends DialogFragment {
         canvas = drawBitmap(canvas, R.drawable.qr_code, width - qrCodeHeight - margin / 2, height + margin / 2, qrCodeHeight, qrCodeHeight);
         // 写第二种下载方式
         drawText(canvas, "扫描二维码下载", margin, height + margin + logoHeight + margin * 2, ContextCompat.getColor(mContext, R.color.cG2), 8);
-        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/ej2d", margin, height + brandHeight - margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 8);
+        drawText(canvas, "或用手机浏览器输入这个网址 https://fir.im/8eb7", margin, height + brandHeight - margin * 3 / 2, ContextCompat.getColor(mContext, R.color.cG2), 8);
         return newBitmap;
     }
 

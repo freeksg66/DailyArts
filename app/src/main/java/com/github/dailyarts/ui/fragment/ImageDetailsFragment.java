@@ -106,29 +106,7 @@ public class ImageDetailsFragment extends BaseFragment {
         svIntro = rootView.findViewById(R.id.sv_details_introduction);
         llTools = rootView.findViewById(R.id.ll_details_tools);
 
-        Glide.with(this)
-                .load(mImageModel.getBigImg())
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        mImageWidth = resource.getWidth();
-                        mImageHeight = resource.getHeight();
-                        ssivBigImage.post(() -> {
-                            mScale = initImageViewScale(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight());
-                            dynamicSettingImageViewScale(ssivBigImage, mScale);
-                            if(mScale < 1) {
-                                ssivBigImage.setMinScale(mScale / 2);
-                                ssivBigImage.setMaxScale(2F);
-                            }else {
-                                ssivBigImage.setMinScale(0.5F);
-                                ssivBigImage.setMaxScale(mScale * 2);
-                            }
-                            ssivBigImage.setImage(ImageSource.bitmap(resource), new ImageViewState(mScale, getShowPoint(), 0));
-                        });
-                    }
-                });
+        ssivBigImage.post(() -> loadBigImage());
         Glide.with(this)
                 .load(mImageModel.getImage())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -415,11 +393,28 @@ public class ImageDetailsFragment extends BaseFragment {
         }
     }
 
-    private class PicDetail {
-        public Bitmap bitmap;
-        public String cacheFilePath;
-        public int originalWidth;
-        public int originalHeight;
+    private void loadBigImage() {
+        Glide.with(this)
+                .load(mImageModel.getBigImg())
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        mImageWidth = resource.getWidth();
+                        mImageHeight = resource.getHeight();
+                        mScale = initImageViewScale(mImageWidth, mImageHeight, ssivBigImage.getMeasuredWidth(), ssivBigImage.getMeasuredHeight());
+                        dynamicSettingImageViewScale(ssivBigImage, mScale);
+                        if(mScale < 1) {
+                            ssivBigImage.setMinScale(mScale / 2);
+                            ssivBigImage.setMaxScale(2F);
+                        }else {
+                            ssivBigImage.setMinScale(0.5F);
+                            ssivBigImage.setMaxScale(mScale * 2);
+                        }
+                        ssivBigImage.setImage(ImageSource.bitmap(resource), new ImageViewState(mScale, getShowPoint(), 0));
+                    }
+                });
     }
 
 }
